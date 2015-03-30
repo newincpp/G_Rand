@@ -1,0 +1,26 @@
+SRC	=engine.cpp
+
+EXT     =cpp
+NAME	=tinyGL.a
+CXXFLAGS= -Wall -Wextra -W -std=c++0x -DGLEW_STATIC
+LDFLAGS	=
+OBJS	= $(SRC:.$(EXT)=.o)
+RM	= rm -f
+CXX	= clang++
+LINKER	= ar
+
+all: $(NAME)
+
+$(NAME): $(OBJS)
+	$(LINKER) -cvq $(NAME) $(OBJS) $(LDFLAGS)
+
+clean:
+	$(RM) $(OBJS) *.swp *~ *#
+
+fclean: clean
+	$(RM) $(NAME)
+
+re: make -B -j4
+
+.PHONY: all clean fclean re
+
