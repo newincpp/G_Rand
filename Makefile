@@ -1,5 +1,5 @@
 SRC	=main.cpp \
-	 engine.cpp
+	 core.cpp
 EXT     =cpp
 NAME	=demo
 CXXFLAGS= -Wall -Wextra -W -std=c++0x -I./ `pkg-config --cflags glfw3`

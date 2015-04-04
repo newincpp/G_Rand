@@ -1,5 +1,5 @@
 #include <iostream>
-#include "engine.hh"
+#include "core.hh"
 
 tinyGL::Core::Core() : _window(NULL), _state(std::bind(&tinyGL::Core::_interal_WaitForWindow_, this)), _validState(true) {
 }
