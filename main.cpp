@@ -2,7 +2,7 @@
 #include <GRand>
 
 int main(void){
-    tinyGL::Engine* e = tinyGL::Engine::start();
+    tinyGL::Core* e = tinyGL::Core::start();
     float i = 0;
     while (true) {
 	e->queueIntruction([i](){ glClearColor(i, i, .0f, 0.0f); });

@@ -8,14 +8,10 @@
 #include <GLFW/glfw3.h>
 
 namespace tinyGL {
-    class Engine {
-	public:
-	    virtual ~Engine();
-	    static Engine* start();
-	    void queueIntruction(const std::function<void()>& instruction_) { _instructionQueue.push(instruction_); }
+    class Core {
 	private:
-	    explicit Engine();
-	    static void _exec(Engine**, std::thread*);
+	    explicit Core();
+	    static void _exec(Core**, std::thread*);
 	    void _coreLoop();
 
 	    void _interal_WaitForWindow_();
@@ -25,6 +21,10 @@ namespace tinyGL {
 	    std::function<void()> _state;
 	    std::queue<std::function<void(void)>> _instructionQueue;
 	    bool _validState;
+	public:
+	    virtual ~Core();
+	    static Core* start();
+	    void queueIntruction(const std::function<void()>& instruction_) { _instructionQueue.push(instruction_); }
     };
 }
 

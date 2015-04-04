@@ -1,22 +1,22 @@
 #include <iostream>
 #include "engine.hh"
 
-tinyGL::Engine::Engine() : _window(NULL), _state(std::bind(&tinyGL::Engine::_interal_WaitForWindow_, this)), _validState(true) {
+tinyGL::Core::Core() : _window(NULL), _state(std::bind(&tinyGL::Core::_interal_WaitForWindow_, this)), _validState(true) {
 }
 
-tinyGL::Engine::~Engine() {
+tinyGL::Core::~Core() {
     glfwTerminate();
     _scope->join();
 }
 
-void tinyGL::Engine::_interal_WaitForWindow_() {
+void tinyGL::Core::_interal_WaitForWindow_() {
     if (_window) {
 	glfwMakeContextCurrent(_window);
-	_state = std::bind(&tinyGL::Engine::_interal_render_, this);
+	_state = std::bind(&tinyGL::Core::_interal_render_, this);
     }
 }
 
-void tinyGL::Engine::_interal_render_() {
+void tinyGL::Core::_interal_render_() {
 	glClear(GL_COLOR_BUFFER_BIT);
 	if (_instructionQueue.size()) {
 	    _instructionQueue.front()();
@@ -27,12 +27,12 @@ void tinyGL::Engine::_interal_render_() {
 	_validState = !glfwWindowShouldClose(_window);
 }
 
-void tinyGL::Engine::_coreLoop() {
+void tinyGL::Core::_coreLoop() {
     while (_validState)
 	_state();
 }
 
-tinyGL::Engine* tinyGL::Engine::start() {
+tinyGL::Core* tinyGL::Core::start() {
     static bool glfwInititialized;
     if (!glfwInititialized) {
 	if (!glfwInit())
@@ -40,7 +40,7 @@ tinyGL::Engine* tinyGL::Engine::start() {
 	glfwInititialized = true;
 	std::cout << "glfw initialized !" << std::endl;
     }
-    tinyGL::Engine* e = NULL;
+    tinyGL::Core* e = NULL;
 
     std::thread* t = new std::thread(_exec, &e, t);
     while (!e) {std::cout << "wait for engine*" << std::endl; } // wierd lock to wait for the construction of the engine...
@@ -56,9 +56,9 @@ tinyGL::Engine* tinyGL::Engine::start() {
     return e;
 }
 
-void tinyGL::Engine::_exec(tinyGL::Engine** e_, std::thread* t_) {
+void tinyGL::Core::_exec(tinyGL::Core** e_, std::thread* t_) {
     std::cout << "run" << std::endl;
-    *e_ = new Engine();
+    *e_ = new Core();
     (*e_)->_scope = t_;
     std::cout << "yay" << std::endl;
     (*e_)->_coreLoop();
