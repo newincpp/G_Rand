@@ -21,10 +21,22 @@ namespace tinyGL {
 	    std::function<void()> _state;
 	    std::queue<std::function<void(void)>> _instructionQueue;
 	    bool _validState;
+
+	    static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 	public:
+	    struct Config {
+		unsigned int winWidth;
+		unsigned int winHeight;
+		std::string winName;
+		int refreshRate;
+		bool fullscreen;
+		static void autoConf(Config&);
+	    };
+
 	    virtual ~Core();
-	    static Core* start();
+	    static Core* start(const Config&);
 	    void queueIntruction(const std::function<void()>& instruction_) { _instructionQueue.push(instruction_); }
+	    bool getStateValidity();
     };
 }
 
