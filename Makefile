@@ -3,7 +3,7 @@ SRC	=main.cpp \
 EXT     =cpp
 NAME	=demo
 CXXFLAGS= -Wall -Wextra -W -std=c++0x -I./ `pkg-config --cflags glfw3`
-LDFLAGS	=`pkg-config --static --libs glfw3` 
+LDFLAGS	=`pkg-config --static --libs glfw3` -L./libs -lassimp
 OBJS	= $(SRC:.$(EXT)=.o)
 RM	= rm -f
 CXX	= clang++
