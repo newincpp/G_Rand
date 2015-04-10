@@ -3,6 +3,7 @@
 
 #include <string>
 #include <functional>
+#include <vector>
 #include <queue>
 #include <thread>
 #include <GLFW/glfw3.h>
@@ -20,6 +21,7 @@ namespace tinyGL {
 	    std::thread* _scope;
 	    std::function<void()> _state;
 	    std::queue<std::function<void(void)>> _instructionQueue;
+	    std::vector<std::function<void(void)>> _instructionList;
 	    bool _validState;
 
 	    static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
@@ -36,6 +38,7 @@ namespace tinyGL {
 	    virtual ~Core();
 	    static Core* start(const Config&);
 	    void queueIntruction(const std::function<void()>& instruction_) { _instructionQueue.push(instruction_); }
+void addPersistantInstruction(const std::function<void()>& instruction_) { _instructionList.push_back(instruction_); }
 	    bool getStateValidity();
     };
 }

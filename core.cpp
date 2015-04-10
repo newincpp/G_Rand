@@ -27,12 +27,16 @@ void tinyGL::Core::_interal_render_() {
 	    _instructionQueue.front()();
 	    _instructionQueue.pop();
 	}
+	for (std::function<void()>& f : _instructionList) {
+	    f();
+	}
 	glfwSwapBuffers(_window);
 	glfwPollEvents();
 	_validState = !glfwWindowShouldClose(_window);
 }
 
 void tinyGL::Core::_coreLoop() {
+    std::cout << "run" << std::endl;
     while (_validState) {
 	_state();
     }
@@ -90,7 +94,7 @@ void tinyGL::Core::Config::autoConf(Config& cfg_) {
 
 
 
-void tinyGL::Core::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+void tinyGL::Core::key_callback(GLFWwindow* window, int key, int, int action, int) {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
 	glfwSetWindowShouldClose(window, GL_TRUE);
     }
