@@ -1,1 +1,17 @@
-implement LOG system
+write documentation
+
+Core
+    implement LOG system
+    add nice system
+Mesh
+    Basic mesh support (vertex buffer(including normal) + index buffer support) using assimp 
+    shared material architecture
+    auto add to constant rendre queue at constuction
+Render
+    understand diffraction/refraction
+    understand what implie physically based shading model
+    understand physically based rendering
+    implement ssao as first light system (even if it's not a light system itself...)
+particle
+    implement geometry shader based point sprite particle
+    understand how work vector field
