@@ -9,8 +9,10 @@ namespace GRand {
 	    GLuint _vbo;
 	public:
 	    explicit GPUBuffer();
-	    void setBuffer(const std::vector<GLfloat>&);
+	    GPUBuffer(const GPUBuffer&);
 	    ~GPUBuffer();
+	    void operator=(const GPUBuffer&);
+	    void setBuffer(const std::vector<GLfloat>&);
     };
 }
 

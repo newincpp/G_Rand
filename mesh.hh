@@ -2,6 +2,7 @@
 # define MESH_H_
 
 #include <eigen3/Eigen/Dense>
+#include "GPUBuffer.hh"
 #include "core.hh"
 #include "material.hh"
 
@@ -15,6 +16,7 @@ namespace GRand {
 	    void _render();
 	public:
 	    explicit Mesh(Core* e, Material*);
+	    void set(const GPUBuffer&);
 	    ~Mesh();
     };
 }
