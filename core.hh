@@ -8,7 +8,7 @@
 #include <thread>
 #include <GLFW/glfw3.h>
 
-namespace tinyGL {
+namespace GRand {
     class Core {
 	private:
 	    explicit Core();

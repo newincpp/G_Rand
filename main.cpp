@@ -3,9 +3,9 @@
 #include <GRand>
 
 int main(void){
-    tinyGL::Core::Config cfg;
-    tinyGL::Core::Config::autoConf(cfg);
-    tinyGL::Core* e = tinyGL::Core::start(cfg);
+    GRand::Core::Config cfg;
+    GRand::Core::Config::autoConf(cfg);
+    GRand::Core* e = GRand::Core::start(cfg);
     float i = 0;
     e->addPersistantInstruction([&i](){ glClearColor(i, i, .0f, 0.0f); i+= 0.001f; if(i > 1) { i = 0.0f;} });
 

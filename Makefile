@@ -1,5 +1,7 @@
 SRC	=main.cpp \
-	 core.cpp
+	 core.cpp \
+	 mesh.cpp \
+	 material.cpp
 EXT     =cpp
 NAME	=demo
 CXXFLAGS= -Wall -Wextra -W -std=c++0x -I./ `pkg-config --cflags glfw3`

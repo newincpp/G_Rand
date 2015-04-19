@@ -1,7 +1,7 @@
 SRC	=engine.cpp
 
 EXT     =cpp
-NAME	=tinyGL.a
+NAME	=libGRand.a
 CXXFLAGS= -Wall -Wextra -W -std=c++0x -DGLEW_STATIC
 LDFLAGS	=
 OBJS	= $(SRC:.$(EXT)=.o)
