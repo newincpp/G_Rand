@@ -12,7 +12,8 @@ namespace GRand {
 	public:
 	    explicit Material();
 	    void addShader(GLenum, const std::string&) noexcept;
-	    void use();
+	    void link()noexcept;
+	    void use()noexcept;
 	    ~Material();
     };
 }

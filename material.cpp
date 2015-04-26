@@ -24,7 +24,7 @@ namespace GRand {
 	    public:
 		explicit Shader(GLenum, const std::string&);
 		void compile()noexcept;
-		GLuint getShaderId()const noexcept;
+		inline GLuint getId()const noexcept { return _shaderId; }
 		~Shader();
 	};
 }
@@ -42,19 +42,31 @@ void GRand::Shader::compile() noexcept {
     _checkCompile();
 }
 
-
-
 GRand::Shader::~Shader() {
+    glDeleteShader(_shaderId);
 }
 
 GRand::Material::Material() : _shaderProgram(0) {
 }
 
 void GRand::Material::addShader(GLenum type, const std::string& filename) noexcept {
-_shaders.push_back(Shader(type, filename));
+    _shaders.push_back(Shader(type, filename));
 }
 
-void GRand::Material::use() {
+void GRand::Material::link() noexcept {
+    std::cout << "linking shaders" << std::endl;
+    if (!_shaderProgram) {
+	glDeleteProgram(_shaderProgram);
+    }
+    _shaderProgram = glCreateProgram();
+    for (Shader& s : _shaders) {
+	glAttachShader(_shaderProgram, s.getId());
+    }
+    glLinkProgram(_shaderProgram);
+    std::cout << "shader compilation finished" << std::endl;
+}
+
+void GRand::Material::use() noexcept {
     glUseProgram(_shaderProgram);
 }
 
