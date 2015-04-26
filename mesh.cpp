@@ -9,3 +9,6 @@ void GRand::Mesh::set(const GPUBuffer& b_) {
 
 GRand::Mesh::~Mesh() {
 }
+
+void GRand::Mesh::_render() {
+}

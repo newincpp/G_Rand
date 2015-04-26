@@ -18,6 +18,14 @@ void GRand::Core::_interal_WaitForWindow_() {
 	glfwMakeContextCurrent(_window);
 	glfwSetKeyCallback(_window, GRand::Core::key_callback);
 	_state = std::bind(&GRand::Core::_interal_render_, this);
+	glewExperimental = GL_TRUE;
+	int err;
+	if ((err = glewInit()) != GLEW_OK) {
+	    std::cout << glewGetErrorString(err) << std::endl;
+	}
+	std::cout << "OpenGL version: " << glGetString(GL_VERSION) << std::endl;
+	std::cout << "runing on: " << glGetString(GL_VENDOR) << std::endl;
+	std::cout << "Shading language version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
     }
 }
 
@@ -66,6 +74,7 @@ GRand::Core* GRand::Core::start(const Config& conf_) {
 	glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
 	glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
     }
+
 
     GLFWwindow* w = glfwCreateWindow(conf_.winWidth, conf_.winHeight, conf_.winName.c_str(), monitor, NULL);
     if (!w) {
