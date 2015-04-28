@@ -63,7 +63,12 @@ void GRand::Material::link() noexcept {
 	glAttachShader(_shaderProgram, s.getId());
     }
     glLinkProgram(_shaderProgram);
-    std::cout << "shader compilation finished" << std::endl;
+
+    GLint InfoLogLength;
+    glGetProgramiv(_shaderProgram, GL_INFO_LOG_LENGTH, &InfoLogLength);
+    char ErrorMessage[InfoLogLength];
+    glGetProgramInfoLog(_shaderProgram, InfoLogLength, NULL, ErrorMessage);
+    std::cout << "error log: " << std::endl << ErrorMessage << std::endl << "-------------------" << std::endl;
 }
 
 void GRand::Material::use() noexcept {
