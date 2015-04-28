@@ -18,13 +18,13 @@ namespace GRand {
 		    GLint compileStatus;
 		    glGetShaderiv(_shaderId, GL_COMPILE_STATUS, &compileStatus);
 		    if (compileStatus == GL_TRUE) {
-			return
+			return;
 		    }
-		     GLint InfoLogLength;
-		     glGetShaderiv(_shaderId, GL_INFO_LOG_LENGTH, &InfoLogLength);
-		     char ErrorMessage[InfoLogLength];
-		     glGetShaderInfoLog(_shaderId, InfoLogLength, NULL, ErrorMessage);
-		     std::cout << "error log: " << std::endl << ErrorMessage << std::endl << "-------------------" << std::endl;
+		    GLint InfoLogLength;
+		    glGetShaderiv(_shaderId, GL_INFO_LOG_LENGTH, &InfoLogLength);
+		    char ErrorMessage[InfoLogLength];
+		    glGetShaderInfoLog(_shaderId, InfoLogLength, NULL, ErrorMessage);
+		    std::cout << "error log: " << std::endl << ErrorMessage << std::endl << "-------------------" << std::endl;
 		}
 	    public:
 		explicit Shader(GLenum, const std::string&);
@@ -71,7 +71,7 @@ void GRand::Material::link() noexcept {
 
 
     GLint compileStatus;
-    glGetShaderiv(_shaderId,  GL_LINK_STATUS, &compileStatus);
+    glGetShaderiv(_shaderProgram,  GL_LINK_STATUS, &compileStatus);
     if (compileStatus == GL_TRUE) {
 	std::cout << "shader successfully compiled" << std::endl;
 	return;
