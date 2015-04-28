@@ -22,6 +22,7 @@ namespace GRand {
 	    void set(const GPUBuffer&)noexcept;
 	    Controller* genController();
 	    Controller* getController();
+	    void setExistantController(std::shared_ptr<Controller>);
 	    ~Mesh();
     };
 }

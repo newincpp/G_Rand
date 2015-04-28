@@ -17,6 +17,10 @@ GRand::Controller* GRand::Mesh::getController() {
     return _remote.get();
 }
 
+void GRand::Mesh::setExistantController(std::shared_ptr<GRand::Controller> c_) {
+    _remote = c_;
+}
+
 GRand::Mesh::~Mesh() {
 }
 
