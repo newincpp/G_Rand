@@ -83,7 +83,7 @@ void GRand::Material::link() noexcept {
     std::cout << "error log: " << std::endl << ErrorMessage << std::endl << "-------------------" << std::endl;
 }
 
-void GRand::Material::use() noexcept {
+void GRand::Material::use() const noexcept {
     glUseProgram(_shaderProgram);
 }
 

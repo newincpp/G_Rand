@@ -39,7 +39,7 @@ namespace GRand {
 	    virtual ~Core();
 	    static Core* start(const Config&);
 	    void queueIntruction(const std::function<void()>& instruction_) { _instructionQueue.push(instruction_); }
-void addPersistantInstruction(const std::function<void()>& instruction_) { _instructionList.push_back(instruction_); }
+	    void addPersistantInstruction(const std::function<void()>& instruction_) { _instructionList.push_back(instruction_); }
 	    bool getStateValidity();
     };
 }

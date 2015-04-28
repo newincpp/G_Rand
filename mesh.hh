@@ -13,7 +13,7 @@ namespace GRand {
 	    Material* _material;
 	    Eigen::Matrix3f _transform;
 	    GPUBuffer _gb;
-	    void _render();
+	    void _render() const noexcept;
 	public:
 	    explicit Mesh(Core* e, Material*);
 	    void set(const GPUBuffer&);
