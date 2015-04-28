@@ -15,6 +15,11 @@ namespace GRand {
 		    return _t.c_str();
 		}
 		inline void _checkCompile()const noexcept {
+		    GLint compileStatus;
+		    glGetShaderiv(_shaderId, GL_COMPILE_STATUS, &compileStatus);
+		    if (compileStatus == GL_TRUE) {
+			return
+		    }
 		     GLint InfoLogLength;
 		     glGetShaderiv(_shaderId, GL_INFO_LOG_LENGTH, &InfoLogLength);
 		     char ErrorMessage[InfoLogLength];
@@ -64,6 +69,13 @@ void GRand::Material::link() noexcept {
     }
     glLinkProgram(_shaderProgram);
 
+
+    GLint compileStatus;
+    glGetShaderiv(_shaderId,  GL_LINK_STATUS, &compileStatus);
+    if (compileStatus == GL_TRUE) {
+	std::cout << "shader successfully compiled" << std::endl;
+	return;
+    }
     GLint InfoLogLength;
     glGetProgramiv(_shaderProgram, GL_INFO_LOG_LENGTH, &InfoLogLength);
     char ErrorMessage[InfoLogLength];
