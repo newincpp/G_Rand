@@ -1,6 +1,7 @@
 #ifndef GPUBUFFER_H_
 # define GPUBUFFER_H_
 #include <GL/glew.h>
+#include <string>
 #include <vector>
 
 namespace GRand {
@@ -16,7 +17,7 @@ namespace GRand {
 	    ~GPUBuffer();
 	    void operator=(const GPUBuffer&);
 	    void setBuffer(const std::vector<GLfloat>&);
-	    void loadFile();
+	    bool loadFile(std::string const &name);
 	    void generateVBOAndVertexArray();
     };
 }
