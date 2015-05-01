@@ -1,6 +1,7 @@
 #ifndef GPUBUFFER_H_
 # define GPUBUFFER_H_
 #include <GL/glew.h>
+#include <assimp/Importer.hpp>
 #include <string>
 #include <vector>
 
