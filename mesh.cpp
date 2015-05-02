@@ -26,7 +26,6 @@ GRand::Mesh::~Mesh() {
 }
 
 void GRand::Mesh::_render() const noexcept{
-    std::cout << "render" << std::endl;
     _material->use();
     _gb.draw(GL_TRIANGLES);
 }
@@ -36,9 +35,9 @@ void GRand::Mesh::_uploadBuffer() noexcept {
 
     //tmp body for testing
     std::vector<GLfloat> vertices = {
-	-1, -1, 0,
-	1, 1, 0,
-	-1, 1, 0,
+	0.0f, 0.5f, 0.0f,
+	0.5f, -0.5f, 0.0f,
+	-0.5f, -0.5f, 0.0f
     };
     GLuint VertexArray;
     glGenVertexArrays(1, &VertexArray);
