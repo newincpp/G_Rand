@@ -1,3 +1,4 @@
+#include <iostream>
 #include "mesh.hh"
 
 GRand::Mesh::Mesh(Core* e_, Material* m_) : _core(e_), _material(m_), _transform(Eigen::Matrix3f::Identity()) {
@@ -30,7 +31,7 @@ void GRand::Mesh::_render() const noexcept{
 }
 
 void GRand::Mesh::_uploadBuffer() noexcept {
-    //_gb.generateVBOAndVertexArray();
+    //_gb.generateVBOAndVertexArray(); 
 
     //tmp body for testing
     std::vector<GLfloat> vertices = {
@@ -39,7 +40,6 @@ void GRand::Mesh::_uploadBuffer() noexcept {
 	0.5f, -.5f, 1.0f, 1.0f, // Bottom-right
 	-.5f, -.5f, 0.0f, 1.0f  // Bottom-left
     };
-
     GLuint VertexArray;
     glGenVertexArrays(1, &VertexArray);
     glBindVertexArray(VertexArray);
