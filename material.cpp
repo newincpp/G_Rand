@@ -56,7 +56,7 @@ GRand::Material::Material() : _shaderProgram(0) {
 }
 
 void GRand::Material::addShader(GLenum type, const std::string& filename) noexcept {
-    _shaders.push_back(Shader(type, filename));
+    _shaders.emplace_back(type, filename);
 }
 
 void GRand::Material::link() noexcept {
