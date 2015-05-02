@@ -4,8 +4,9 @@ GRand::Mesh::Mesh(Core* e_, Material* m_) : _core(e_), _material(m_), _transform
     _core->addPersistantInstruction(std::bind(&Mesh::_render, this));
 }
 
-void GRand::Mesh::set(const GPUBuffer& b_) noexcept {
-    _gb = b_;
+void GRand::Mesh::set(const GPUBuffer&) noexcept {
+    //_gb = b_;
+    _core->queueIntruction(std::bind(&Mesh::_uploadBuffer, this));
 }
 
 GRand::Controller* GRand::Mesh::genController() {
@@ -26,4 +27,19 @@ GRand::Mesh::~Mesh() {
 
 void GRand::Mesh::_render() const noexcept{
     _material->use();
+    _gb.draw(GL_LINE_STRIP);
+}
+
+void GRand::Mesh::_uploadBuffer() noexcept {
+    std::vector<GLfloat> vertices = {
+	-.5f, .5f, 0.0f, 0.0f,// Top-left
+	.5f, .5f, 1.0f, 0.0f, // Top-right
+	0.5f, -.5f, 1.0f, 1.0f, // Bottom-right
+	-.5f, -.5f, 0.0f, 1.0f  // Bottom-left
+    };
+
+    GLuint VertexArray;
+    glGenVertexArrays(1, &VertexArray);
+    glBindVertexArray(VertexArray);
+    _gb.setBuffer(vertices);
 }

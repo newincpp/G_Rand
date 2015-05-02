@@ -20,6 +20,7 @@ namespace GRand {
 	    void setBuffer(const std::vector<GLfloat>&);
 	    bool loadFile(std::string const &name);
 	    void generateVBOAndVertexArray();
+	    void draw(GLenum drawStyle_)const noexcept;
     };
 }
 

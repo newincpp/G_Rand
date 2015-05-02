@@ -91,3 +91,17 @@ void GRand::GPUBuffer::setBuffer(const std::vector<GLfloat>& b_) {
 
 GRand::GPUBuffer::~GPUBuffer() {
 }
+
+void GRand::GPUBuffer::draw(GLenum drawStyle_) const noexcept {
+    glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+    glVertexAttribPointer(
+	    0, // attribute 0. No particular reason for 0, but must match the layout in the shader.
+	    2, // size
+	    GL_FLOAT, // type
+	    GL_TRUE,// normalized?
+	    4 * sizeof(float),// stride
+	    (void*)0 // array buffer offset
+	    );
+    // draw the polygon with the shader on the OpenGL draw buffer
+    glDrawArrays(drawStyle_, 0, 4);
+}

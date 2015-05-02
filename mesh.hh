@@ -17,6 +17,7 @@ namespace GRand {
 	    Eigen::Matrix3f _transform;
 	    std::shared_ptr<Controller> _remote; 
 	    void _render() const noexcept;
+	    void _uploadBuffer() noexcept;
 	public:
 	    explicit Mesh(Core* e, Material*);
 	    void set(const GPUBuffer&)noexcept;
