@@ -18,13 +18,14 @@ namespace GRand {
 		    GLint compileStatus;
 		    glGetShaderiv(_shaderId, GL_COMPILE_STATUS, &compileStatus);
 		    if (compileStatus == GL_TRUE) {
+			std::cout << "\033[1;32mcompilation done with success\033[0m" << std::endl;
 			return;
 		    }
 		    GLint InfoLogLength;
 		    glGetShaderiv(_shaderId, GL_INFO_LOG_LENGTH, &InfoLogLength);
 		    char ErrorMessage[InfoLogLength];
 		    glGetShaderInfoLog(_shaderId, InfoLogLength, NULL, ErrorMessage);
-		    std::cout << "error log: " << std::endl << ErrorMessage << std::endl << "-------------------" << std::endl;
+		    std::cout << "\033[1;31mfailed to compile shader, error log: " << std::endl << ErrorMessage << std::endl << "-------------------\033[0m" << std::endl;
 		}
 	    public:
 		explicit Shader(GLenum, const std::string&);
@@ -36,14 +37,15 @@ namespace GRand {
 
 GRand::Shader::Shader(GLenum type, const std::string& filename) : _shaderId(0) {
     _shaderId = glCreateShader(type);
-    const char* _ = getStringFromFile(filename);
-    glShaderSource(_shaderId, 1, &_, NULL);
+    const char* source = getStringFromFile(filename);
+    std::cout << source << std::endl;
+    glShaderSource(_shaderId, 1, &source, NULL);
+    std::cout << "new id: " << _shaderId << " " << filename << std::endl;
 }
 
 void GRand::Shader::compile() noexcept {
-    std::cout << "compiling shaders..." << std::endl;
+    std::cout << "compiling shader..." << std::endl;
     glCompileShader(_shaderId);
-    std::cout << "shader compiled" << std::endl;
     _checkCompile();
 }
 
@@ -65,6 +67,7 @@ void GRand::Material::link() noexcept {
     }
     _shaderProgram = glCreateProgram();
     for (Shader& s : _shaders) {
+	s.compile();
 	glAttachShader(_shaderProgram, s.getId());
     }
     glLinkProgram(_shaderProgram);
@@ -80,7 +83,7 @@ void GRand::Material::link() noexcept {
     glGetProgramiv(_shaderProgram, GL_INFO_LOG_LENGTH, &InfoLogLength);
     char ErrorMessage[InfoLogLength];
     glGetProgramInfoLog(_shaderProgram, InfoLogLength, NULL, ErrorMessage);
-    std::cout << "error log: " << std::endl << ErrorMessage << std::endl << "-------------------" << std::endl;
+    std::cout << "\033[0;31mfailed to link error log: " << std::endl << ErrorMessage << std::endl << "-------------------\033[0m" << std::endl;
 }
 
 void GRand::Material::use() const noexcept {

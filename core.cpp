@@ -16,6 +16,8 @@ bool GRand::Core::getStateValidity() {
 void GRand::Core::_interal_WaitForWindow_() {
     if (_window) {
 	glfwMakeContextCurrent(_window);
+	glfwWindowHint(GLFW_SAMPLES, 4);
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwSetKeyCallback(_window, GRand::Core::key_callback);
 	_state = std::bind(&GRand::Core::_interal_render_, this);
 	glewExperimental = GL_TRUE;

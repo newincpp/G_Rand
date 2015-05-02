@@ -5,7 +5,6 @@ GRand::Mesh::Mesh(Core* e_, Material* m_) : _core(e_), _material(m_), _transform
 }
 
 void GRand::Mesh::set(const GPUBuffer&) noexcept {
-    //_gb = b_;
     _core->queueIntruction(std::bind(&Mesh::_uploadBuffer, this));
 }
 
@@ -31,6 +30,9 @@ void GRand::Mesh::_render() const noexcept{
 }
 
 void GRand::Mesh::_uploadBuffer() noexcept {
+    //_gb.generateVBOAndVertexArray();
+
+    //tmp body for testing
     std::vector<GLfloat> vertices = {
 	-.5f, .5f, 0.0f, 0.0f,// Top-left
 	.5f, .5f, 1.0f, 0.0f, // Top-right

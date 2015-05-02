@@ -24,6 +24,7 @@ namespace GRand {
 	    Controller* genController();
 	    Controller* getController();
 	    void setExistantController(std::shared_ptr<Controller>);
+	    void setMaterial(Material* m_) { _material = m_; }
 	    ~Mesh();
     };
 }
