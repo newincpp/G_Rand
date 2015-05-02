@@ -14,7 +14,7 @@ int main(void){
     e->queueIntruction([&m](){ m.addShader(GL_VERTEX_SHADER, "./shaders/defaultVertex.glsl"); });
     e->queueIntruction([&m](){ m.link(); });
 
-    sleep(9);
+    sleep(5);
     //while (e->getStateValidity()) {
         //e->queueIntruction([i](){ glClearColor(i, i, .0f, 0.0f); });
         //i += 0.001f;
