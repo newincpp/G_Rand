@@ -12,6 +12,7 @@ int main(void){
     GRand::Material m;
     e->queueIntruction([&m](){ m.addShader(GL_FRAGMENT_SHADER, "./shaders/defaultFragment.glsl"); });
     e->queueIntruction([&m](){ m.addShader(GL_VERTEX_SHADER, "./shaders/defaultVertex.glsl"); });
+    e->queueIntruction([&m](){ m.compileAll(); });
     e->queueIntruction([&m](){ m.link(); });
 
     sleep(5);

@@ -9,47 +9,55 @@ namespace GRand {
 	class Shader {
 	    private:
 		GLuint _shaderId;
+		bool _compiled;
 		inline const char* getStringFromFile(const std::string& filename) const noexcept {
 		    std::ifstream t(filename);
 		    const std::string _t((std::istreambuf_iterator<char>(t)), std::istreambuf_iterator<char>());
 		    return _t.c_str();
 		}
-		inline void _checkCompile()const noexcept {
+		inline bool _checkCompile()const noexcept {
 		    GLint compileStatus;
 		    glGetShaderiv(_shaderId, GL_COMPILE_STATUS, &compileStatus);
 		    if (compileStatus == GL_TRUE) {
 			std::cout << "\033[1;32mcompilation done with success\033[0m" << std::endl;
-			return;
+			return true;
 		    }
 		    GLint InfoLogLength;
 		    glGetShaderiv(_shaderId, GL_INFO_LOG_LENGTH, &InfoLogLength);
 		    char ErrorMessage[InfoLogLength];
 		    glGetShaderInfoLog(_shaderId, InfoLogLength, NULL, ErrorMessage);
 		    std::cout << "\033[1;31mfailed to compile shader, error log: " << std::endl << ErrorMessage << std::endl << "-------------------\033[0m" << std::endl;
+		    return false;
 		}
 	    public:
 		explicit Shader(GLenum, const std::string&);
+		Shader(Shader&&);
 		void compile()noexcept;
 		inline GLuint getId()const noexcept { return _shaderId; }
+		inline bool getCompileStatus()const noexcept { return _compiled; }
 		~Shader();
 	};
 }
 
-GRand::Shader::Shader(GLenum type, const std::string& filename) : _shaderId(0) {
+GRand::Shader::Shader(GLenum type, const std::string& filename) : _shaderId(0), _compiled(false) {
     _shaderId = glCreateShader(type);
     const char* source = getStringFromFile(filename);
     glShaderSource(_shaderId, 1, &source, NULL);
     std::cout << "new id: " << _shaderId << " " << filename << std::endl;
 }
 
+GRand::Shader::Shader(Shader&& s_) : _shaderId(s_._shaderId), _compiled(s_._compiled) {
+}
+
 void GRand::Shader::compile() noexcept {
     std::cout << "compiling shader: " << _shaderId << std::endl;
     glCompileShader(_shaderId);
-    _checkCompile();
+    _compiled = _checkCompile();
 }
 
 GRand::Shader::~Shader() {
-    glDeleteShader(_shaderId);
+    //std::cout << "deleting shader " << _shaderId << std::endl;
+    //glDeleteShader(_shaderId);
 }
 
 GRand::Material::Material() : _shaderProgram(0) {
@@ -59,6 +67,12 @@ void GRand::Material::addShader(GLenum type, const std::string& filename) noexce
     _shaders.emplace_back(type, filename);
 }
 
+void GRand::Material::compileAll() noexcept{
+    for (Shader& s : _shaders) {
+	s.compile();
+    }
+}
+
 void GRand::Material::link() noexcept {
     std::cout << "linking shaders" << std::endl;
     if (!_shaderProgram) {
@@ -66,7 +80,9 @@ void GRand::Material::link() noexcept {
     }
     _shaderProgram = glCreateProgram();
     for (Shader& s : _shaders) {
-	s.compile();
+	if (!s.getCompileStatus()) {
+	    std::cout << "\033[1;33m warning: not compiled shader found" << std::endl;
+	}
 	glAttachShader(_shaderProgram, s.getId());
     }
     glLinkProgram(_shaderProgram);
