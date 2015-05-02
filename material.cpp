@@ -43,7 +43,7 @@ GRand::Shader::Shader(GLenum type, const std::string& filename) : _shaderId(0) {
 }
 
 void GRand::Shader::compile() noexcept {
-    std::cout << "compiling shader..." << std::endl;
+    std::cout << "compiling shader: " << _shaderId << std::endl;
     glCompileShader(_shaderId);
     _checkCompile();
 }
