@@ -21,15 +21,8 @@ int main(void){
     e->queueIntruction([&mesh](){ mesh.set(GRand::GPUBuffer()); });
 
 
-    sleep(5);
-    //while (e->getStateValidity()) {
-        //e->queueIntruction([i](){ glClearColor(i, i, .0f, 0.0f); });
-        //i += 0.001f;
-        //if (i > 1) {
-        //    i = 0.0f;
-        //}
-	//std::cout << i << std::endl;
-    //}
+    //sleep(5);
+    while (e->getStateValidity()) { }
 
     delete e;
     return 0;

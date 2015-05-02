@@ -27,18 +27,19 @@ GRand::Mesh::~Mesh() {
 
 void GRand::Mesh::_render() const noexcept{
     //_material->use();
-    _gb.draw(GL_LINE_STRIP);
+    _gb.draw(GL_TRIANGLES);
 }
 
 void GRand::Mesh::_uploadBuffer() noexcept {
     //_gb.generateVBOAndVertexArray(); 
 
+
+
     //tmp body for testing
     std::vector<GLfloat> vertices = {
-	-.5f, .5f, 0.0f, 0.0f,// Top-left
-	.5f, .5f, 1.0f, 0.0f, // Top-right
-	0.5f, -.5f, 1.0f, 1.0f, // Bottom-right
-	-.5f, -.5f, 0.0f, 1.0f  // Bottom-left
+	-1, -1, 0,
+	1, 1, 0,
+	-1, 1, 0,
     };
     GLuint VertexArray;
     glGenVertexArrays(1, &VertexArray);

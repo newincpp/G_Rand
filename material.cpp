@@ -82,6 +82,7 @@ void GRand::Material::link() noexcept {
 	}
 	glAttachShader(_shaderProgram, s.getId());
     }
+    glBindFragDataLocation(_shaderProgram, 0, "outColor");
     glLinkProgram(_shaderProgram);
 
 
@@ -94,6 +95,13 @@ void GRand::Material::link() noexcept {
 	glGetProgramInfoLog(_shaderProgram, InfoLogLength, NULL, ErrorMessage);
 	std::cout << "\033[0;31mfailed to link error log: " << std::endl << ErrorMessage << std::endl << "-------------------\033[0m" << std::endl;
     }
+
+    // Link the vertex and fragment shader into a shader program
+
+    // Specify the layout of the vertex data
+    GLint posAttrib = glGetAttribLocation(_shaderProgram, "position");
+    glEnableVertexAttribArray(posAttrib);
+    glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 0, 0);
     std::cout << "\033[0;32msuccessfully linked\033[0m" << std::endl;
 }
 
