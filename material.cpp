@@ -38,7 +38,6 @@ namespace GRand {
 GRand::Shader::Shader(GLenum type, const std::string& filename) : _shaderId(0) {
     _shaderId = glCreateShader(type);
     const char* source = getStringFromFile(filename);
-    std::cout << source << std::endl;
     glShaderSource(_shaderId, 1, &source, NULL);
     std::cout << "new id: " << _shaderId << " " << filename << std::endl;
 }
