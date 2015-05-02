@@ -26,7 +26,7 @@ GRand::Mesh::~Mesh() {
 }
 
 void GRand::Mesh::_render() const noexcept{
-    _material->use();
+    //_material->use();
     _gb.draw(GL_LINE_STRIP);
 }
 
