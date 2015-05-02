@@ -26,14 +26,12 @@ GRand::Mesh::~Mesh() {
 }
 
 void GRand::Mesh::_render() const noexcept{
-    //_material->use();
+    _material->use();
     _gb.draw(GL_TRIANGLES);
 }
 
 void GRand::Mesh::_uploadBuffer() noexcept {
     //_gb.generateVBOAndVertexArray(); 
-
-
 
     //tmp body for testing
     std::vector<GLfloat> vertices = {
