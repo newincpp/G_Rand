@@ -1,7 +1,7 @@
 #version 330
 
-out vec4 uOutColor;
+out vec4 outColor;
 
 void main() {
-    uOutColor = vec4(0,1,0, 1.0);
+    outColor = vec4(0,0.3,0, 1.0);
 }

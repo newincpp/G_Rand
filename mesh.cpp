@@ -37,7 +37,7 @@ void GRand::Mesh::_uploadBuffer() noexcept {
     std::vector<GLfloat> vertices = {
 	-1.0f, -1.0f, 0.0f,
 	1.0f, -1.0f, 0.0f,
-	0.0f,  1.0f, 0.0f,
+	0.0f,  .0f, 0.0f,
     };
 
     _gb.setBuffer(vertices);

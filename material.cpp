@@ -81,9 +81,6 @@ void GRand::Material::link() noexcept {
 	}
 	glAttachShader(_shaderProgram, s.getId());
     }
-    glBindAttribLocation(_shaderProgram, 0, "uPos");
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
     glLinkProgram(_shaderProgram);
 
 
