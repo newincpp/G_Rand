@@ -3,6 +3,7 @@ SRC	=main.cpp \
 	 mesh.cpp \
 	 material.cpp \
 	 controller.cpp \
+	 uniform.cpp \
 	 GPUBuffer.cpp
 
 EXT     =cpp

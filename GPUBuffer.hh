@@ -1,9 +1,11 @@
 #ifndef GPUBUFFER_H_
 # define GPUBUFFER_H_
-#include <GL/glew.h>
-#include <assimp/Importer.hpp>
 #include <string>
 #include <vector>
+#include <uniform.hh>
+#include <GL/glew.h>
+#include <eigen3/Eigen/Dense>
+#include <assimp/Importer.hpp>
 
 namespace GRand {
     class GPUBuffer {

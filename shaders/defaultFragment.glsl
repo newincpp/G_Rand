@@ -1,6 +1,6 @@
 #version 330
 in vec2 Texcoord;
-out vec4 outColor;
+layout(location = 1) out vec4 outColor;
 uniform sampler2D textureSampleId;
 uniform vec4 filterColor;
 uniform mat3 frameMatrix;

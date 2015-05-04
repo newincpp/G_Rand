@@ -1,5 +1,5 @@
 #version 330
-layout(location = 0) in vec2 position;
+layout(location = 0) in vec3 uPos;
 in vec2 texcoord;
 out vec2 Texcoord;
 uniform mat3 displacement;
