@@ -35,12 +35,10 @@ void GRand::Mesh::_uploadBuffer() noexcept {
 
     //tmp body for testing
     std::vector<GLfloat> vertices = {
-	0.0f, 0.5f, 0.0f,
-	0.5f, -0.5f, 0.0f,
-	-0.5f, -0.5f, 0.0f
+	-1.0f, -1.0f, 0.0f,
+	1.0f, -1.0f, 0.0f,
+	0.0f,  1.0f, 0.0f,
     };
-    GLuint VertexArray;
-    glGenVertexArrays(1, &VertexArray);
-    glBindVertexArray(VertexArray);
+
     _gb.setBuffer(vertices);
 }

@@ -19,7 +19,7 @@ namespace GRand {
 		inline bool _checkCompile()const noexcept {
 		    GLint compileStatus;
 		    glGetShaderiv(_shaderId, GL_COMPILE_STATUS, &compileStatus);
-		    if (compileStatus == GL_TRUE) {
+		    if (compileStatus) {
 			std::cout << "\033[0;32msuccesfully compiled\033[0m" << std::endl;
 			return true;
 		    }
@@ -84,13 +84,12 @@ void GRand::Material::link() noexcept {
     glBindAttribLocation(_shaderProgram, 0, "uPos");
     glEnableVertexAttribArray(0);
     glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-    glBindFragDataLocation(_shaderProgram, 1, "uOutColor");
     glLinkProgram(_shaderProgram);
 
 
     GLint linkStatus;
     glGetShaderiv(_shaderProgram,  GL_LINK_STATUS, &linkStatus);
-    if (linkStatus == GL_FALSE) {
+    if (!linkStatus) {
 	GLint InfoLogLength;
 	glGetProgramiv(_shaderProgram, GL_INFO_LOG_LENGTH, &InfoLogLength);
 	char ErrorMessage[InfoLogLength];

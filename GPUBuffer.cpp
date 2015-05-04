@@ -87,14 +87,17 @@ void GRand::GPUBuffer::setBuffer(const std::vector<GLfloat>& b_) {
     _vertexArray = b_;
     glGenBuffers(1, &_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-    glBufferData(GL_ARRAY_BUFFER, b_.size(), &b_[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, _vertexArray.size()*sizeof(float), &_vertexArray[0], GL_STATIC_DRAW);
 }
 
 GRand::GPUBuffer::~GPUBuffer() {
 }
 
 void GRand::GPUBuffer::draw(GLenum drawStyle_) const noexcept {
+    glEnableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+    glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
     // draw the polygon with the shader on the OpenGL draw buffer
     glDrawArrays(drawStyle_, 0, _vertexArray.size());
+    glDisableVertexAttribArray(0);
 }

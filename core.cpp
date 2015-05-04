@@ -28,21 +28,25 @@ void GRand::Core::_interal_WaitForWindow_() {
 	std::cout << "OpenGL version: " << glGetString(GL_VERSION) << std::endl;
 	std::cout << "runing on: " << glGetString(GL_VENDOR) << std::endl;
 	std::cout << "Shading language version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
+
+	GLuint VertexArray;
+	glGenVertexArrays(1, &VertexArray);
+	glBindVertexArray(VertexArray);
     }
 }
 
 void GRand::Core::_interal_render_() {
-	glClear(GL_COLOR_BUFFER_BIT);
-	if (_instructionQueue.size()) {
-	    _instructionQueue.front()();
-	    _instructionQueue.pop();
-	}
-	for (std::function<void()>& f : _instructionList) {
-	    f();
-	}
-	glfwSwapBuffers(_window);
-	glfwPollEvents();
-	_validState = !glfwWindowShouldClose(_window);
+    glClear(GL_COLOR_BUFFER_BIT);
+    if (_instructionQueue.size()) {
+	_instructionQueue.front()();
+	_instructionQueue.pop();
+    }
+    for (std::function<void()>& f : _instructionList) {
+	f();
+    }
+    glfwSwapBuffers(_window);
+    glfwPollEvents();
+    _validState = !glfwWindowShouldClose(_window);
 }
 
 void GRand::Core::_coreLoop() {
