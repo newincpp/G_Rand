@@ -80,14 +80,14 @@ void GRand::GPUBuffer::generateVBOAndVertexArray() {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
 }
 
-void GRand::GPUBuffer::setBuffer(const std::vector<GLfloat>& b_) {
+void GRand::GPUBuffer::setBuffer(const decltype(_vertexArray)& b_) {
     if (_vbo) {
         glDeleteBuffers(1, &_vbo);
     }
     _vertexArray = b_;
     glGenBuffers(1, &_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-    glBufferData(GL_ARRAY_BUFFER, _vertexArray.size()*sizeof(float), &_vertexArray[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, _vertexArray.size() * sizeof(decltype(_vertexArray)::value_type), &_vertexArray[0], GL_STATIC_DRAW);
 }
 
 GRand::GPUBuffer::~GPUBuffer() {
