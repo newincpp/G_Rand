@@ -13,7 +13,7 @@ namespace GRand {
 	    GLuint _vbo;
 	    const aiScene* _scene;
 	    std::vector<GLfloat> _vertexArray;
-	    void getAllFaces(const struct aiNode*);
+	    void getAllFaces(const struct aiScene *sc, const struct aiNode*);
 	public:
 	    explicit GPUBuffer();
 	    GPUBuffer(const GPUBuffer&);

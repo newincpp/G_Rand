@@ -40,5 +40,7 @@ void GRand::Mesh::_uploadBuffer() noexcept {
 	0.0f,  .0f, 0.0f,
     };
 
-    _gb.setBuffer(vertices);
+    _gb.loadFile("/home/sicarde/monkey.dae");
+    _gb.generateVBOAndVertexArray();
+    //_gb.setBuffer(vertices);
 }
