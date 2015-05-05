@@ -107,10 +107,19 @@ void GRand::Core::Config::autoConf(Config& cfg_) {
 
 
 
+void GRand::Core::addInputCallback(int key, const std::function<void(void)>& call) {
+    _inputMap[key] = call;
+}
 
 
 void GRand::Core::key_callback(GLFWwindow* window, int key, int, int action, int) {
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-	glfwSetWindowShouldClose(window, GL_TRUE);
+    if (action == GLFW_PRESS) {
+	if (key == GLFW_KEY_ESCAPE) {
+	    glfwSetWindowShouldClose(window, GL_TRUE);
+	}
+//	const decltype(_inputMap)::const_iterator i = _inputMap.find(key);
+//	if (i != _inputMap.end()) {
+//	    i->second();
+//	}
     }
 }

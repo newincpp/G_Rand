@@ -5,6 +5,7 @@
 #include <functional>
 #include <vector>
 #include <queue>
+#include <map>
 #include <thread>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -23,6 +24,7 @@ namespace GRand {
 	    std::function<void()> _state;
 	    std::queue<std::function<void(void)>> _instructionQueue;
 	    std::vector<std::function<void(void)>> _instructionList;
+	    std::map<int, std::function<void(void)>> _inputMap;
 	    bool _validState;
 
 	    static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
@@ -40,6 +42,7 @@ namespace GRand {
 	    static Core* start(const Config&);
 	    void queueIntruction(const std::function<void()>& instruction_) { _instructionQueue.push(instruction_); }
 	    void addPersistantInstruction(const std::function<void()>& instruction_) { _instructionList.push_back(instruction_); }
+	    void addInputCallback(int, const std::function<void(void)>&);
 	    bool getStateValidity();
     };
 }

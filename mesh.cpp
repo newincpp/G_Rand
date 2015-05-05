@@ -18,6 +18,7 @@ void GRand::Mesh::fromFile(const std::string& fname_) {
 
 GRand::Controller* GRand::Mesh::genController() {
     _remote = std::make_shared<Controller>(_transform);
+    _remote->setUniform(_material->getUniform<GRand::Controller::matType>("model"));
     return _remote.get();
 }
 
@@ -34,6 +35,7 @@ GRand::Mesh::~Mesh() {
 
 void GRand::Mesh::_render() const noexcept{
     _material->use();
+    _remote->refresh();
     _gb.draw(GL_TRIANGLES);
 }
 
