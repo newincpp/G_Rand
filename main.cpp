@@ -15,8 +15,8 @@ int main(void){
     GRand::Mesh mesh(e, &mat);
     mesh.set(gb);
 
-    PUSH_CORE_INSTA(e, mat, mat.addShader(GL_VERTEX_SHADER, "./shaders/simpleVert.glsl"); );
-    PUSH_CORE_INSTA(e, mat, mat.addShader(GL_FRAGMENT_SHADER, "./shaders/simpleFrag.glsl"); );
+    PUSH_CORE_INSTA(e, mat, mat.addShader(GL_FRAGMENT_SHADER, "./shaders/phongFrag.glsl"); );
+    PUSH_CORE_INSTA(e, mat, mat.addShader(GL_VERTEX_SHADER, "./shaders/phongVert.glsl"); );
     PUSH_CORE_INSTA(e, mat, mat.link());
 
     //e->queueIntruction([&mat](){ mat.addShader(GL_FRAGMENT_SHADER, "./shaders/defaultFragment.glsl"); });
