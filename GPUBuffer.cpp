@@ -149,7 +149,6 @@ void GRand::GPUBuffer::draw(GLenum drawStyle_) const noexcept {
     //glDrawArrays(drawStyle_, 0, _vertexArray.size());
     //glDrawElements(drawStyle_, _elementArray.size(), GL_UNSIGNED_INT, 0);
     glDrawElements(drawStyle_, 6, GL_UNSIGNED_INT, 0);
-    //glDrawArrays(drawStyle_, 0, 4);
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
 }

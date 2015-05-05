@@ -24,10 +24,11 @@ int main(void){
 
     //sleep(5);
     GRand::Controller* ctrl = mesh.genController();
-    //ctrl->rotate(1.571f, Eigen::Vector3f::UnitX());
+    ctrl->rotate(1.571f, Eigen::Vector3f::UnitX());
     ctrl->scale(Eigen::Vector3f(0.2f, 0.2f, 0.2f));
     while (e->getStateValidity()) { 
 	ctrl->rotate(0.00001f, Eigen::Vector3f::UnitZ());
+	ctrl->rotate(0.00005f, Eigen::Vector3f::UnitX());
     }
 
     delete e;
