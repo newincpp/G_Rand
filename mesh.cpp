@@ -12,7 +12,6 @@ void GRand::Mesh::set(const GPUBuffer& b_) noexcept {
 
 void GRand::Mesh::fromFile(const std::string& fname_) {
     _gb.loadFile(fname_);
-    std::cout << "load" << std::endl;
     _core->queueIntruction(std::bind(&Mesh::_uploadBuffer, this));
 }
 

@@ -13,13 +13,11 @@ int main(void){
     gb.loadFile("./testModels/monkey.dae");
 
     GRand::Mesh mesh(e, &mat);
-    //mesh.set(gb);
+    mesh.set(gb);
 
     PUSH_CORE_INSTA(e, mat, mat.addShader(GL_VERTEX_SHADER, "./shaders/simpleVert.glsl"); );
     PUSH_CORE_INSTA(e, mat, mat.addShader(GL_FRAGMENT_SHADER, "./shaders/simpleFrag.glsl"); );
     PUSH_CORE_INSTA(e, mat, mat.link());
-
-    PUSH_CORE_INSTA(e, mesh, mesh.fromFile("./testModels/monkey.dae"););
 
     //e->queueIntruction([&mat](){ mat.addShader(GL_FRAGMENT_SHADER, "./shaders/defaultFragment.glsl"); });
     //e->queueIntruction([&mat](){ mat.addShader(GL_VERTEX_SHADER, "./shaders/defaultVertex.glsl"); });
