@@ -28,12 +28,12 @@ bool GRand::GPUBuffer::loadFile(std::string const &name) {
 
     std::ifstream fin(name.c_str());
     if (!fin.fail()) {
-        fin.close();
+	fin.close();
     } else {
-        std::cout << "Couldn't open file: " << name << std::endl;
-        return false;
+	std::cout << "Couldn't open file: " << name << std::endl;
+	return false;
     }
-    _scene = importer.ReadFile(name.c_str(), aiProcessPreset_TargetRealtime_Quality);
+    _scene = importer.ReadFile(name.c_str(), aiProcessPreset_TargetRealtime_Quality | aiProcess_Triangulate);
     if (!_scene) {
 	std::cout << importer.GetErrorString() << std::endl;
 	return false;
@@ -53,28 +53,34 @@ void GRand::GPUBuffer::getAllFaces(const struct aiScene *sc, const struct aiNode
 	if (_vertexArray.size() + mesh->mNumFaces * 6 > _vertexArray.capacity()) {
 	    _vertexArray.reserve(_vertexArray.capacity() + mesh->mNumFaces * 6);
 	}
+	for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
+	    //std::cout << i << ":" << mesh->mVertices[i].x << " " << mesh->mVertices[i].y << " " << mesh->mVertices[i].z << std::endl;
+	    _vertexArray.push_back(mesh->mVertices[i].x);
+	    _vertexArray.push_back(mesh->mVertices[i].y);
+	    _vertexArray.push_back(mesh->mVertices[i].z);
+	}
 	if (_elementArray.size() + mesh->mNumFaces > _elementArray.capacity()) {
 	    _elementArray.reserve(_elementArray.capacity() + mesh->mNumFaces);
 	}
 	for (unsigned int t = 0; t < mesh->mNumFaces; ++t) {
 	    const struct aiFace* face = &mesh->mFaces[t];
 	    for (unsigned int i = 0; i < face->mNumIndices; i++) { // go through all vertices in face
-		if (find(_index.begin(), _index.end(), face->mIndices[i]) == _index.end()) {
-		    int vertexIndex = face->mIndices[i]; // get group index for current index
-		    //_vertexArray.push_back(mesh->mNormals[vertexIndex].x);
-		    //_vertexArray.push_back(mesh->mNormals[vertexIndex].y);
-		    //_vertexArray.push_back(mesh->mNormals[vertexIndex].z);
-		    _vertexArray.push_back(mesh->mVertices[vertexIndex].x);
-		    _vertexArray.push_back(mesh->mVertices[vertexIndex].y);
-		    _vertexArray.push_back(mesh->mVertices[vertexIndex].z);
-		    _index.push_back(face->mIndices[i]);
-		    //std::cout << vertexIndex << ":" << mesh->mVertices[vertexIndex].x << " " << mesh->mVertices[vertexIndex].y << " " << mesh->mVertices[vertexIndex].z << std::endl;
-		}
+		//if (find(_index.begin(), _index.end(), face->mIndices[i]) == _index.end()) {
+		//    int vertexIndex = face->mIndices[i]; // get group index for current index
+		//    //_vertexArray.push_back(mesh->mNormals[vertexIndex].x);
+		//    //_vertexArray.push_back(mesh->mNormals[vertexIndex].y);
+		//    //_vertexArray.push_back(mesh->mNormals[vertexIndex].z);
+		//    _vertexArray.push_back(mesh->mVertices[vertexIndex].x);
+		//    _vertexArray.push_back(mesh->mVertices[vertexIndex].y);
+		//    _vertexArray.push_back(mesh->mVertices[vertexIndex].z);
+		//    _index.push_back(face->mIndices[i]);
+		//    //std::cout << vertexIndex << ":" << mesh->mVertices[vertexIndex].x << " " << mesh->mVertices[vertexIndex].y << " " << mesh->mVertices[vertexIndex].z << std::endl;
+		//}
 		_elementArray.push_back(face->mIndices[i]);
 		//std::cout << "ea:" << face->mIndices[i] << std::endl;
 	    }
 	    //memcpy(&faceArray[faceIndex], face->mIndices,3 * sizeof(unsigned int));
-	    faceIndex += 3;
+	    //faceIndex += 3;
 	}
 	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * mesh->mNumFaces * 3, faceArray, GL_STATIC_DRAW);
     }
@@ -84,23 +90,35 @@ void GRand::GPUBuffer::getAllFaces(const struct aiScene *sc, const struct aiNode
 }
 
 void GRand::GPUBuffer::generateVBOAndVertexArray() {
+    GLfloat vertices[] = {
+	-0.5f,  0.5f, // Top-left
+	0.5f,  0.5f, // Top-right
+	0.5f, -0.5f, // Bottom-right
+	-0.5f, -0.5f // Bottom-left
+    };
+    GLuint elements[] = {
+        0, 1, 2,
+        2, 3, 0
+    };
     if (_vbo) {
-        glDeleteBuffers(1, &_vbo);
+	glDeleteBuffers(1, &_vbo);
     }
     //_vertexArray = b_;
     glGenBuffers(1, &_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-    glBufferData(GL_ARRAY_BUFFER, _vertexArray.size() * sizeof(decltype(_vertexArray)::value_type), &_vertexArray[0], GL_STATIC_DRAW);
+    //glBufferData(GL_ARRAY_BUFFER, _vertexArray.size() * sizeof(decltype(_vertexArray)::value_type), &_vertexArray[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
     glGenBuffers(1, &_ebo);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, _elementArray.size() * sizeof(decltype(_vertexArray)::value_type), &(_elementArray[0]), GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
+    //glBufferData(GL_ELEMENT_ARRAY_BUFFER, _elementArray.size() * sizeof(decltype(_vertexArray)::value_type), &(_elementArray[0]), GL_STATIC_DRAW);
 }
 
 void GRand::GPUBuffer::setBuffer(const decltype(_vertexArray)& b_) {
     if (_vbo) {
-        glDeleteBuffers(1, &_vbo);
+	glDeleteBuffers(1, &_vbo);
     }
     _vertexArray = b_;
     glGenBuffers(1, &_vbo);
@@ -126,6 +144,7 @@ void GRand::GPUBuffer::draw(GLenum drawStyle_) const noexcept {
     // glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(decltype(_vertexArray)::value_type), 6 * sizeof(decltype(_vertexArray)::value_type)); // vertex color
     
     // draw the polygon with the shader on the OpenGL draw buffer
-    glDrawArrays(drawStyle_, 0, _vertexArray.size());
+    //glDrawArrays(drawStyle_, 0, _vertexArray.size());
     //glDrawElements(drawStyle_, _elementArray.size(), GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
