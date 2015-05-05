@@ -64,8 +64,6 @@ GRand::Shader::~Shader() {
 }
 
 GRand::Material::Material() : _shaderProgram(0) {
-    glEnableVertexAttribArray(0); // enable vertex shader parameter value 
-    glEnableVertexAttribArray(1); // enable normal shader parameter value 
 }
 
 void GRand::Material::addShader(GLenum type, const std::string& filename) noexcept {

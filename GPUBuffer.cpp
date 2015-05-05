@@ -130,6 +130,8 @@ GRand::GPUBuffer::~GPUBuffer() {
 }
 
 void GRand::GPUBuffer::draw(GLenum drawStyle_) const noexcept {
+    glEnableVertexAttribArray(0); // enable vertex shader parameter value 
+    glEnableVertexAttribArray(1); // enable normal shader parameter value 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ebo);
     glBindBuffer(GL_ARRAY_BUFFER, _vbo);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(decltype(_vertexArray)::value_type), (void*)0);
@@ -147,4 +149,6 @@ void GRand::GPUBuffer::draw(GLenum drawStyle_) const noexcept {
     //glDrawArrays(drawStyle_, 0, _vertexArray.size());
     //glDrawElements(drawStyle_, _elementArray.size(), GL_UNSIGNED_INT, 0);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    glDisableVertexAttribArray(0);
+    glDisableVertexAttribArray(1);
 }
