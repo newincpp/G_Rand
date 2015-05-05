@@ -148,7 +148,8 @@ void GRand::GPUBuffer::draw(GLenum drawStyle_) const noexcept {
     // draw the polygon with the shader on the OpenGL draw buffer
     //glDrawArrays(drawStyle_, 0, _vertexArray.size());
     //glDrawElements(drawStyle_, _elementArray.size(), GL_UNSIGNED_INT, 0);
-    glDrawElements(drawStyle_, 6, GL_UNSIGNED_INT, 0);
+    //glDrawElements(drawStyle_, 6, GL_UNSIGNED_INT, 0);
+    glDrawArrays(drawStyle_, 0, 4);
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
 }
