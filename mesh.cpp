@@ -5,7 +5,14 @@ GRand::Mesh::Mesh(Core* e_, Material* m_) : _core(e_), _material(m_), _transform
     _core->addPersistantInstruction(std::bind(&Mesh::_render, this));
 }
 
-void GRand::Mesh::set(const GPUBuffer&) noexcept {
+void GRand::Mesh::set(const GPUBuffer& b_) noexcept {
+    _gb = b_;
+    _core->queueIntruction(std::bind(&Mesh::_uploadBuffer, this));
+}
+
+void GRand::Mesh::fromFile(const std::string& fname_) {
+    _gb.loadFile(fname_);
+    std::cout << "load" << std::endl;
     _core->queueIntruction(std::bind(&Mesh::_uploadBuffer, this));
 }
 
@@ -31,16 +38,5 @@ void GRand::Mesh::_render() const noexcept{
 }
 
 void GRand::Mesh::_uploadBuffer() noexcept {
-    //_gb.generateVBOAndVertexArray(); 
-
-    //tmp body for testing
-    std::vector<GLfloat> vertices = {
-	-1.0f, -1.0f, 0.0f,
-	1.0f, -1.0f, 0.0f,
-	0.0f,  .0f, 0.0f,
-    };
-
-    _gb.loadFile("./testModels/monkey.dae");
     _gb.generateVBOAndVertexArray();
-    //_gb.setBuffer(vertices);
 }

@@ -10,10 +10,17 @@ GRand::GPUBuffer::GPUBuffer() : _vbo(0), _scene(NULL) {
 }
 
 GRand::GPUBuffer::GPUBuffer(const GPUBuffer& o_) : _vbo(o_._vbo) {
+    if (_vbo == 0) {
+	_vertexArray = o_._vertexArray;
+    }
 }
 
 void GRand::GPUBuffer::operator=(const GPUBuffer& o_) {
     _vbo = o_._vbo;
+    if (_vbo) {
+	return;
+    }
+    _vertexArray = o_._vertexArray;
 }
 
 bool GRand::GPUBuffer::loadFile(std::string const &name) {

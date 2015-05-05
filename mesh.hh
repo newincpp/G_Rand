@@ -21,6 +21,7 @@ namespace GRand {
 	public:
 	    explicit Mesh(Core* e, Material*);
 	    void set(const GPUBuffer&)noexcept;
+	    void fromFile(const std::string&);
 	    Controller* genController();
 	    Controller* getController();
 	    void setExistantController(std::shared_ptr<Controller>);
