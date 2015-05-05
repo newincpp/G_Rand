@@ -112,15 +112,20 @@ GRand::GPUBuffer::~GPUBuffer() {
 }
 
 void GRand::GPUBuffer::draw(GLenum drawStyle_) const noexcept {
-    glEnableVertexAttribArray(0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ebo);
     glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(decltype(_vertexArray)::value_type), (void*)0);
 
     // when normal enabled
-    // glVertexAttribPointer( 1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(decltype(_vertexArray)::value_type), (void*)0); 
+    // glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(decltype(_vertexArray)::value_type), (void*)0); // vertex
+    // glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(decltype(_vertexArray)::value_type), 3 * sizeof(decltype(_vertexArray)::value_type)); //normal
+    
+    // with vertex color enabled
+    // glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(decltype(_vertexArray)::value_type), (void*)0); // vertex
+    // glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(decltype(_vertexArray)::value_type), 3 * sizeof(decltype(_vertexArray)::value_type)); // normal
+    // glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(decltype(_vertexArray)::value_type), 6 * sizeof(decltype(_vertexArray)::value_type)); // vertex color
+    
     // draw the polygon with the shader on the OpenGL draw buffer
-    //glDrawArrays(drawStyle_, 0, _vertexArray.size());
-    glDrawElements(drawStyle_, _elementArray.size(), GL_UNSIGNED_INT, 0);
-    glDisableVertexAttribArray(0);
+    glDrawArrays(drawStyle_, 0, _vertexArray.size());
+    //glDrawElements(drawStyle_, _elementArray.size(), GL_UNSIGNED_INT, 0);
 }
