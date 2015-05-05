@@ -91,10 +91,10 @@ void GRand::GPUBuffer::getAllFaces(const struct aiScene *sc, const struct aiNode
 
 void GRand::GPUBuffer::generateVBOAndVertexArray() {
     GLfloat vertices[] = {
-	-0.5f,  0.5f, // Top-left
-	0.5f,  0.5f, // Top-right
-	0.5f, -0.5f, // Bottom-right
-	-0.5f, -0.5f // Bottom-left
+	-0.5f,  0.5f, 0.5f, // Top-left
+	0.5f,  0.5f, 0.5f, // Top-right
+	0.5f, -0.5f, 0.5f, // Bottom-right
+	-0.5f, -0.5f, 0.5f // Bottom-left
     };
     GLuint elements[] = {
         0, 1, 2,
@@ -148,7 +148,8 @@ void GRand::GPUBuffer::draw(GLenum drawStyle_) const noexcept {
     // draw the polygon with the shader on the OpenGL draw buffer
     //glDrawArrays(drawStyle_, 0, _vertexArray.size());
     //glDrawElements(drawStyle_, _elementArray.size(), GL_UNSIGNED_INT, 0);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    glDrawElements(drawStyle_, 6, GL_UNSIGNED_INT, 0);
+    //glDrawArrays(drawStyle_, 0, 4);
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
 }
