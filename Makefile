@@ -4,7 +4,8 @@ SRC	=main.cpp \
 	 material.cpp \
 	 controller.cpp \
 	 uniform.cpp \
-	 GPUBuffer.cpp
+	 GPUBuffer.cpp \
+	 camera.cpp
 
 EXT     =cpp
 NAME	=demo

@@ -117,8 +117,7 @@ void GRand::GPUBuffer::draw(GLenum drawStyle_) const noexcept {
 
     // when normal enabled
      glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(decltype(_vertexArray)::value_type), (void*)0); // vertex
-     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(decltype(_vertexArray)::value_type), (void*)0); // vertex
-     //glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(decltype(_vertexArray)::value_type), (void*)3 * sizeof(decltype(_vertexArray)::value_type)); //normal
+     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(decltype(_vertexArray)::value_type), (void*)(3 * sizeof(decltype(_vertexArray)::value_type))); //normal
 
     // with vertex color enabled
     // glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(decltype(_vertexArray)::value_type), (void*)0); // vertex

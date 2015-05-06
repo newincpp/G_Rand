@@ -1,18 +1,28 @@
 #include "controller.hh"
 
-GRand::Controller::Controller(Eigen::Matrix3f& l_) : _transform(l_) {
+GRand::Controller::Controller(matType& l_) : _transform(l_) {
+    _transform = matType::Identity();
+    _utrans.__manual_Location_setting__(2);
 }
 
 void GRand::Controller::translate(const Eigen::Vector3f& f_) {
-    _transform.col(3) += f_;
+//    _transform.rightCols(1) += Eigen::Vector4f(f_.x(), f_.y(), f_.z(), 1);
+    Eigen::Transform<float,3,Eigen::Affine> t;
+    t.translate(f_);
+    _transform = t.matrix() * _transform;
 }
 
 void GRand::Controller::rotate(float angle_, const Eigen::Vector3f& f_) {
-    _transform = Eigen::AngleAxisf(angle_, f_) * _transform;
+    Eigen::Transform<float,3,Eigen::Affine> t;
+    t.rotate( Eigen::AngleAxisf(angle_, f_));
+    _transform = t.matrix() * _transform;
+    //_transform = Eigen::AngleAxisf(angle_, f_).toRotationMatrix().z() * _transform;
 }
 
 void GRand::Controller::scale(const Eigen::Vector3f& f_) {
-    _transform = Eigen::Scaling(f_) * _transform;
+    Eigen::Transform<float,3,Eigen::Affine> t;
+    t.scale(f_);
+    _transform = t.matrix() * _transform;
 }
 
 void GRand::Controller::setUniform(const decltype(_utrans)& _newUniform) {

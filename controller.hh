@@ -7,12 +7,12 @@
 namespace GRand {
     class Controller {
 	public:
-	    typedef Eigen::Matrix3f matType;
+	    typedef Eigen::Matrix4f matType;
 	private:
 	    matType& _transform;
 	    Uniform<matType> _utrans;
 	public:
-	    explicit Controller(Eigen::Matrix3f&);
+	    explicit Controller(matType&);
 	    void translate(const Eigen::Vector3f&);
 	    void rotate(float, const Eigen::Vector3f&);
 	    void scale(const Eigen::Vector3f&);

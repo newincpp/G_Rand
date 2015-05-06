@@ -23,6 +23,7 @@ class Uniform {
 		explicit Uniform() : _value(T()), _location(0) {}
 		explicit Uniform(const T& v_) : _value(v_), _location(0) {}
 		void relocate(GLuint prgm, const std::string& name) { _location = glGetUniformLocation(prgm, name.c_str()); }
+		void __manual_Location_setting__(GLint l_) noexcept { _location = l_; }
 		void copyLocation(const Uniform<T>& o) { _location = o._location; }
 		inline GLint getLct() const noexcept { return _location; }
 		const Uniform<T>& operator=(const T& v) { _value = v; return *this; }
