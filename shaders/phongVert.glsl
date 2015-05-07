@@ -9,7 +9,7 @@ out vec3 fNormal;
 void main() {
     mat4 proj = mat4(1.0);
     float tanHalfFovy = tan((3.1415926 / 2) / 2);
-    float zFar = 100000;
+    float zFar = 100;
     float zNear = 0.1;
 
     proj[0][0] = 1.0 / ((16.0/9.0) * tanHalfFovy);
@@ -20,5 +20,5 @@ void main() {
 
     vec4 p = vec4(vPos, 1.0) ;
     fNormal = vNormal;
-    gl_Position = proj * view *  model * p;
+    gl_Position = proj * view * model * p;
 }
