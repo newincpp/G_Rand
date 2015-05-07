@@ -1,6 +1,7 @@
 #ifndef EIGENUTILITY_H_
 # define EIGENUTILITY_H_
 
+#include <iostream>
 #include <eigen3/Eigen/Core>
 
 template<class T>
@@ -35,6 +36,7 @@ Eigen::Matrix<T,4,4> lookAt(Eigen::Matrix<T,3,1> const & eye, Eigen::Matrix<T,3,
 	u.x(),u.y(),u.z(),-u.dot(eye),
 	-f.x(),-f.y(),-f.z(),f.dot(eye),
 	0,0,0,1;
+    res.transposeInPlace();
 
     return res;
 }

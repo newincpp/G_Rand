@@ -18,7 +18,7 @@ void main() {
     proj[3][2] = - 1.0;
     proj[2][3] = - (2.0 * zFar * zNear) / (zFar - zNear);
 
-    vec4 p = vec4(vPos - vec3(0,0,1) , 1.0) ;
+    vec4 p = vec4(vPos, 1.0) ;
     fNormal = vNormal;
-    gl_Position = proj * /*view * model */ p;
+    gl_Position = proj * view *  model * p;
 }
