@@ -8,9 +8,9 @@ out vec3 fNormal;
 
 void main() {
     mat4 proj = mat4(1.0);
-    float tanHalfFovy = tan((3.1415926 / 2) / 2);
+    float tanHalfFovy = tan(0.785 / 2);
     float zFar = 100;
-    float zNear = 0.1;
+    float zNear = 0.01;
 
     proj[0][0] = 1.0 / ((16.0/9.0) * tanHalfFovy);
     proj[1][1] = 1.0 / (tanHalfFovy);

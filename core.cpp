@@ -34,6 +34,7 @@ void GRand::Core::_interal_WaitForWindow_() {
 	glGenVertexArrays(1, &VertexArray);
 	glBindVertexArray(VertexArray);
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
     }
 }
 
