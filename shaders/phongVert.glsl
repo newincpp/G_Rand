@@ -4,11 +4,10 @@ layout(location = 0) in vec3 vPos;
 layout(location = 1) in vec3 vNormal;
 layout(location = 2) uniform mat4 model;
 layout(location = 3) uniform mat4 view;
-layout(location = 4) uniform mat4 projection;
 out vec3 fNormal;
 
 void main() {
-    mat4 proj;
+    mat4 proj = mat4(1.0);
     float tanHalfFovy = tan((3.1415926 / 2) / 2);
     float zFar = 100000;
     float zNear = 0.1;
@@ -19,10 +18,7 @@ void main() {
     proj[3][2] = - 1.0;
     proj[2][3] = - (2.0 * zFar * zNear) / (zFar - zNear);
 
-
-    vec3 lightPos = vec3(1.5,1,0);
-    vec4 p = vec4(vPos, 1.0);
-    p = proj * view * model * p;
+    vec4 p = vec4(vPos - vec3(0,0,1) , 1.0) ;
     fNormal = vNormal;
-    gl_Position = p;
+    gl_Position = proj * /*view * model */ p;
 }

@@ -31,11 +31,11 @@ void Uniform<Eigen::Matrix2f>::upload() const {
 }
 template <>
 void Uniform<Eigen::Matrix3f>::upload() const {
-	glUniformMatrix3fv(_location, 1, GL_TRUE, _value.data());
+	glUniformMatrix3fv(_location, 1, GL_FALSE, _value.data());
 }
 template <>
 void Uniform<Eigen::Matrix4f>::upload() const {
-	glUniformMatrix4fv(_location, 1, GL_TRUE, _value.data());
+	glUniformMatrix4fv(_location, 1, GL_FALSE, _value.data());
 }
 template <>
 void Uniform<Eigen::Matrix<float, 2, 3> >::upload() const {

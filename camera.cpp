@@ -12,6 +12,11 @@ void GRand::Camera::translate(const Eigen::Vector3f& f_) {
     _utrans = ::lookAt<float>(_center, _target, Eigen::Vector3f::UnitY());
 }
 
+void GRand::Camera::setPos(const Eigen::Vector3f& f_) {
+    _center = f_;
+    _utrans = ::lookAt<float>(_center, _target, Eigen::Vector3f::UnitY());
+}
+
 void GRand::Camera::lookAt(const Eigen::Vector3f& f_) {
     _target = f_;
     _utrans = ::lookAt<float>(_center, _target, Eigen::Vector3f::UnitY());

@@ -18,6 +18,7 @@ void GRand::Core::_interal_WaitForWindow_() {
 	glfwMakeContextCurrent(_window);
 	glfwWindowHint(GLFW_SAMPLES, 4);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+	glfwWindowHint(GLFW_DEPTH_BITS, 32);
 	glfwSetKeyCallback(_window, GRand::Core::key_callback);
 	_state = std::bind(&GRand::Core::_interal_render_, this);
 	glewExperimental = GL_TRUE;

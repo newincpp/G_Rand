@@ -18,6 +18,7 @@ namespace GRand {
 	public:
 	    explicit Camera(Core*);
 	    void translate(const Eigen::Vector3f&);
+	    void setPos(const Eigen::Vector3f&);
 	    void lookAt(const Eigen::Vector3f&);
     };
 }

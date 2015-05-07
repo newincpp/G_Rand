@@ -20,6 +20,6 @@ void main() {
     float intSpec = max(dot(h,fNormal),0.0);
     spec = specular * pow(intSpec, shininess);
   }
-  0utColor = max(intensity * diffuse + spec, ambient);
+  outColor = max(intensity * diffuse + spec, ambient);
   //outColor = vec4(0,0.3,0, 1.0);
 }
