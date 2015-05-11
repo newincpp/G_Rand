@@ -29,9 +29,10 @@ int main(void){
     //ctrl->scale(Eigen::Vector3f(0.8f, 0.8f, 0.8f));
     GRand::Camera cam(e);
 
-    cam.setPos(Eigen::Vector3f(4,3,3));
-    ctrl->rotate(-1.571, Eigen::Vector3f::UnitX());
+    //cam.setPos(Eigen::Vector3f(4,3,3));
+    ctrl->translate(Eigen::Vector3f(0,2,0));
     ctrl->scale(Eigen::Vector3f(0.3, 0.3, 0.3));
+    ctrl->rotate(-1.571, Eigen::Vector3f::UnitX());
     while (e->getStateValidity()) { 
 	usleep(10000);
 	ctrl->rotate(0.01, Eigen::Vector3f::UnitY());
