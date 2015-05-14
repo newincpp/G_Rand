@@ -1,6 +1,6 @@
 #include "mesh.hh"
 
-GRand::Mesh::Mesh(Core* e_, Material* m_) : _core(e_), _material(m_), _transform(Controller::matType::Identity()) {
+GRand::Mesh::Mesh(Core* e_, Material* m_) : _core(e_), _material(m_) {
     _core->addPersistantInstruction(std::bind(&Mesh::_render, this));
 }
 
@@ -15,7 +15,7 @@ void GRand::Mesh::fromFile(const std::string& fname_) {
 }
 
 GRand::Controller* GRand::Mesh::genController() {
-    _remote = std::make_shared<Controller>(_transform);
+    _remote = std::make_shared<Controller>();
     return _remote.get();
 }
 
