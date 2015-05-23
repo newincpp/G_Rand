@@ -31,7 +31,7 @@ int main(void){
 
     ctrl->rotate(-1.571, Eigen::Vector3f::UnitX());
     ctrl->translate(Eigen::Vector3f(0,0,0));
-    //ctrl->scale(Eigen::Vector3f(0.3,0.3,0.3));
+    ctrl->scale(Eigen::Vector3f(0.3,0.3,0.3));
     while (e->getStateValidity()) { 
 	usleep(10000);
 	cam.translate(Eigen::Vector3f(0,0,0.01));

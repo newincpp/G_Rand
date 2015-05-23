@@ -9,19 +9,16 @@ GRand::Camera::Camera(Core* e_) : _core(e_), _center(Eigen::Vector3f::Zero()), _
 
 void GRand::Camera::translate(const Eigen::Vector3f& f_) {
     _center += f_;
-    std::cout << "center " << _center << std::endl;
     _utrans.get() = ::lookAt<float>(_center, _target, Eigen::Vector3f::UnitY());
 }
 
 void GRand::Camera::setPos(const Eigen::Vector3f& f_) {
     _center = f_;
-    std::cout << "center " << _center << std::endl;
     _utrans.get() = ::lookAt<float>(_center, _target, Eigen::Vector3f::UnitY());
 }
 
 void GRand::Camera::lookAt(const Eigen::Vector3f& f_) {
     _target = f_;
-    std::cout << "target " << _target << std::endl;
     _utrans.get() = ::lookAt<float>(_center, _target, Eigen::Vector3f::UnitY());
 }
 

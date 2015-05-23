@@ -1,7 +1,6 @@
 #ifndef EIGENUTILITY_H_
 # define EIGENUTILITY_H_
 
-#include <iostream>
 #include <eigen3/Eigen/Core>
 
 template<class T>

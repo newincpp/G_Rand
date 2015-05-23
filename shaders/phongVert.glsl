@@ -13,11 +13,11 @@ void main() {
     float zFar = 10000;
     float zNear = 0.001;
 
-    proj[0][0] = 1.0 / ((16.0/9.0) * tanHalfFovy);
-    proj[1][1] = 1.0 / (tanHalfFovy);
-    proj[2][2] = - (zFar + zNear) / (zFar - zNear);
-    proj[3][2] = - 1.0;
-    proj[2][3] = - (2.0 * zFar * zNear) / (zFar - zNear);
+    //proj[0][0] = 1.0 / ((16.0/9.0) * tanHalfFovy);
+    //proj[1][1] = 1.0 / (tanHalfFovy);
+    //proj[2][2] = - (zFar + zNear) / (zFar - zNear);
+    //proj[3][2] = - 1.0;
+    //proj[2][3] = - (2.0 * zFar * zNear) / (zFar - zNear);
 
     vec4 p = vec4(vPos, 1.0) ;
     fNormal = vNormal;
