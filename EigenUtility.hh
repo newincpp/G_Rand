@@ -54,7 +54,6 @@ Eigen::Matrix<Scalar,4,4> lookAt(const Eigen::Matrix<Scalar, 3 , 1>& eye_, const
 	   right.y(), up.y(), forward.y(), 0,
 	   right.z(), up.z(), forward.z(), 0,
 	   -(right.dot(eye_)), -(up.dot(eye_)), -(forward.dot(eye_)), 1;
-    std::cout << mat << std::endl;
     return mat;
 }
 
