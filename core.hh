@@ -27,6 +27,7 @@ namespace GRand {
 	    std::map<int, std::function<void(void)>> _inputMap;
 	    bool _validState;
 
+	    void _rmFunc(unsigned long);
 	    static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 	public:
 	    struct Config {
@@ -40,8 +41,9 @@ namespace GRand {
 
 	    virtual ~Core();
 	    static Core* start(const Config&);
-	    void queueIntruction(const std::function<void()>& instruction_) { _instructionQueue.push(instruction_); }
-	    void addPersistantInstruction(const std::function<void()>& instruction_) { _instructionList.push_back(instruction_); }
+	    void queueIntruction(const std::function<void()>& instruction_);
+	    unsigned long addPersistantInstruction(const std::function<void()>& instruction_);
+	    void deletePersistantInstruction(unsigned long i_);
 	    void addInputCallback(int, const std::function<void(void)>&);
 	    bool getStateValidity();
     };

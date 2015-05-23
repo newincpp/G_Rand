@@ -109,6 +109,27 @@ void GRand::Core::Config::autoConf(Config& cfg_) {
     cfg_.fullscreen = false;
 }
 
+void GRand::Core::queueIntruction(const std::function<void()>& instruction_) {
+    _instructionQueue.push(instruction_); 
+}
+
+unsigned long GRand::Core::addPersistantInstruction(const std::function<void()>& instruction_) {
+    _instructionList.push_back(instruction_);
+    return _instructionList.size() - 1;
+}
+
+void GRand::Core::deletePersistantInstruction(unsigned long i_) {
+    if (i_ >= _instructionList.size()) {
+	return;
+    }
+    _instructionList[i_] = [](){};
+    _instructionQueue.push(std::bind(&::GRand::Core::_rmFunc, this, i_));
+}
+
+void GRand::Core::_rmFunc(unsigned long id_) {
+    _instructionList.erase(_instructionList.begin() + id_);
+}
+
 
 
 void GRand::Core::addInputCallback(int key, const std::function<void(void)>& call) {
