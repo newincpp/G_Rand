@@ -42,28 +42,19 @@ Eigen::Matrix<T,4,4> perspective(double fovy, double aspect, double zNear, doubl
 //}
 
 template<typename Scalar>
-Eigen::Matrix<Scalar,4,4> lookAt(const Eigen::Matrix<Scalar, 3 , 1> & eye, const Eigen::Matrix<Scalar, 3 , 1>& center, const Eigen::Matrix<Scalar, 3 , 1>& up){
+Eigen::Matrix<Scalar,4,4> lookAt(const Eigen::Matrix<Scalar, 3 , 1>& eye_, const Eigen::Matrix<Scalar, 3 , 1>& target_, const Eigen::Matrix<Scalar, 3 , 1>& up_){
     typedef Eigen::Matrix<Scalar,4,4> Matrix4;
     typedef Eigen::Matrix<Scalar,3,1> Vector3;
-    Vector3 f = (center - eye).normalized();
-    Vector3 u = up.normalized();
-    Vector3 s = f.cross(u).normalized();
-    u = s.cross(f);
+    Vector3 forward = (target_ - eye_).normalized();
+    Vector3 u = up_.normalized();
+    Vector3 s = forward.cross(u).normalized();
+    u = s.cross(forward);
     Matrix4 mat = Matrix4::Zero();
-    mat(0,0) = s.x();
-    mat(0,1) = s.y();
-    mat(0,2) = s.z();
-    mat(0,3) = -s.dot(eye);
-    mat(1,0) = u.x();
-    mat(1,1) = u.y();
-    mat(1,2) = u.z();
-    mat(1,3) = -u.dot(eye);
-    mat(2,0) = -f.x();
-    mat(2,1) = -f.y();
-    mat(2,2) = -f.z();
-    mat(2,3) = f.dot(eye);
-    mat.row(3) << 0,0,0,1; 
-    mat.transposeInPlace();
+
+    mat << s.x(), s.y(), s.z(), 0,
+	    u.x(), u.y(), u.z(), 0,
+	    -forward.x(), -forward.y(), -forward.z(), 0,
+	    -(s.dot(eye_)), -(u.dot(eye_)), -(u.dot(eye_)), 1;
     std::cout << mat << std::endl;
     return mat;
 }
