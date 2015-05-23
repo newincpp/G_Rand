@@ -45,16 +45,15 @@ template<typename Scalar>
 Eigen::Matrix<Scalar,4,4> lookAt(const Eigen::Matrix<Scalar, 3 , 1>& eye_, const Eigen::Matrix<Scalar, 3 , 1>& target_, const Eigen::Matrix<Scalar, 3 , 1>& up_){
     typedef Eigen::Matrix<Scalar,4,4> Matrix4;
     typedef Eigen::Matrix<Scalar,3,1> Vector3;
-    Vector3 forward = (target_ - eye_).normalized();
-    Vector3 u = up_.normalized();
-    Vector3 s = forward.cross(u).normalized();
-    u = s.cross(forward);
+    Vector3 forward = (eye_ - target_).normalized();
+    Vector3 right = forward.cross(up_.normalized()).normalized();
+    Vector3 up = right.cross(forward);
     Matrix4 mat = Matrix4::Zero();
 
-    mat << s.x(), s.y(), s.z(), 0,
-	    u.x(), u.y(), u.z(), 0,
-	    -forward.x(), -forward.y(), -forward.z(), 0,
-	    -(s.dot(eye_)), -(u.dot(eye_)), -(u.dot(eye_)), 1;
+    mat << right.x(), up.x(), forward.x(), 0,
+	   right.y(), up.y(), forward.y(), 0,
+	   right.z(), up.z(), forward.z(), 0,
+	   -(right.dot(eye_)), -(up.dot(eye_)), -(forward.dot(eye_)), 1;
     std::cout << mat << std::endl;
     return mat;
 }

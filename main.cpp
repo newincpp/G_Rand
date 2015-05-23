@@ -29,13 +29,12 @@ int main(void){
     //ctrl->scale(Eigen::Vector3f(0.8f, 0.8f, 0.8f));
     GRand::Camera cam(e);
 
-    cam.setPos(Eigen::Vector3f(0,0,-10));
-    cam.lookAt(Eigen::Vector3f(0,0,0));
     ctrl->rotate(-1.571, Eigen::Vector3f::UnitX());
     ctrl->translate(Eigen::Vector3f(0,0,0));
     //ctrl->scale(Eigen::Vector3f(0.3,0.3,0.3));
     while (e->getStateValidity()) { 
 	usleep(10000);
+	cam.translate(Eigen::Vector3f(0,0,0.01));
 	//ctrl->rotate(0.01, Eigen::Vector3f::UnitZ());
     }
 
