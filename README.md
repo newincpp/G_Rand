@@ -3,7 +3,8 @@ G_Rand is a tiny portable OpenGL based engine with minimal dependency at executi
 G_Rand is using OpenGL for now for rendering but it is written with Vulkan in mind (openGL will be dropped when Vulkan will be released).
 This engine is purely public which imply:
 
-    * you can download it modity it as you want without any obligation (you don't even need to ask me to copy it)
+    * you can download it modity it as you want without any obligation
+		(you don't even need to ask me to copy it)
     * I will accept most of pull request
     * this engine will be free for all and forever
     * this engine do not include any library that imply restrictive licence
@@ -13,7 +14,7 @@ This engine is purely public which imply:
 
     * easy mesh loading with assimp with element buffer and normals
     * easy glsl sader architecture
-    * thead separated rendring
+    * thead separated rendering
     * simple direct phong shading
     * remote-style transformation (see controller class example)
     * easy display configuration
@@ -22,7 +23,6 @@ This engine is purely public which imply:
 **what does still not work properly:**
 
     * MVP matrix has some bugs
-    * persistant instruction cannot be deleted at all
     * _a lot_ of features in the mesh are ignored
     * light are static to the shader for now (for test purpuse)
 
@@ -37,14 +37,14 @@ This engine is purely public which imply:
 
     * animation system with interpolation
     * BVH support
-    * mesh deform target
+    * mesh deform
     * GPU sprites particle
     * Vectorfield for GPU sprite particle
 
 **what I would like to add but I have no idea how it work yet** (if you know how it work I will be happy to ear your explanation):
 
     * SSAO
-    * volume light propagation
+    * Volume light propagation
     * physically based shading model
     * diffraction/relfection (using volume capture ?)
 
