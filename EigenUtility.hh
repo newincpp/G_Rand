@@ -49,10 +49,12 @@ Eigen::Matrix<Scalar,4,4> lookAt(const Eigen::Matrix<Scalar, 3 , 1>& eye_, const
     Vector3 up = right.cross(forward);
     Matrix4 mat = Matrix4::Zero();
 
-    mat << right.x(), up.x(), forward.x(), 0,
-	   right.y(), up.y(), forward.y(), 0,
-	   right.z(), up.z(), forward.z(), 0,
-	   -(right.dot(eye_)), -(up.dot(eye_)), -(forward.dot(eye_)), 1;
+    mat << right.x(), up.x(), -forward.x(), -(right.dot(eye_)),
+	right.y(), up.y(), -forward.y(), -(up.dot(eye_)),
+	right.z(), up.z(), -forward.z(), -(forward.dot(eye_)),
+	0, 0, 0, 1;
+
+    mat.transposeInPlace();
     return mat;
 }
 

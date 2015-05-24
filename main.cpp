@@ -36,7 +36,7 @@ int main(void){
 
     while (e->getStateValidity()) { 
 	usleep(10000);
-	cam.translate(Eigen::Vector3f(0,0.001,0));
+	cam.translate(Eigen::Vector3f(0,0,-0.001));
     }
 
     delete e;
