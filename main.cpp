@@ -31,12 +31,12 @@ int main(void){
     cam.lookAt(Eigen::Vector3f(0,0,1));
 
     ctrl->rotate(-1.571, Eigen::Vector3f::UnitX());
-    ctrl->translate(Eigen::Vector3f(0,0.1,0));
+    ctrl->translate(Eigen::Vector3f(0,0.5,0));
     ctrl->scale(Eigen::Vector3f(0.3,0.3,0.3));
 
     while (e->getStateValidity()) { 
 	usleep(10000);
-	cam.translate(Eigen::Vector3f(0,0,-0.001));
+	cam.translate(Eigen::Vector3f(0,0,-0.01));
     }
 
     delete e;
