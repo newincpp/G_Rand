@@ -9,8 +9,8 @@ SRC	=main.cpp \
 
 EXT     =cpp
 NAME	=demo
-CXXFLAGS= -Wall -Wextra -W -std=c++0x -I./ `pkg-config --cflags glfw3`
-LDFLAGS	=`pkg-config --static --libs glfw3` -lassimp ./libs/libGLEW.a /usr/lib/libz.a
+CXXFLAGS= -Wall -Wextra -W -std=c++0x -I./ -I./include
+LDFLAGS	= -lassimp ./libs/libGLEW.a /usr/lib/libz.a ./libs/libglfw.a   -lXrandr -lXi -lGL -lpthread -lX11 -lXxf86vm 
 OBJS	= $(SRC:.$(EXT)=.o)
 RM	= rm -f
 CXX	= clang++
