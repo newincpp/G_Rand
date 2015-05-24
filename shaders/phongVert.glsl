@@ -10,7 +10,7 @@ out vec3 eye;
 void main() {
     mat4 proj = mat4(1.0);
     float tanHalfFovy = tan(0.785 / 2);
-    float zFar = 10000;
+    float zFar = 100000;
     float zNear = 0.5;
 
     proj[0][0] = 1.0 / ((16.0/9.0) * tanHalfFovy);

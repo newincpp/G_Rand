@@ -28,15 +28,16 @@ int main(void){
     //ctrl->rotate(1.571f, Eigen::Vector3f::UnitX());
     //ctrl->scale(Eigen::Vector3f(0.8f, 0.8f, 0.8f));
     GRand::Camera cam(e);
-    cam.lookAt(Eigen::Vector3f(0,0,1));
+    cam.lookAt(Eigen::Vector3f(1,-1,0));
+    cam.setPos(Eigen::Vector3f(2,-2,-1));
 
     ctrl->rotate(-1.571, Eigen::Vector3f::UnitX());
-    ctrl->translate(Eigen::Vector3f(0,0.5,0));
-    ctrl->scale(Eigen::Vector3f(0.3,0.3,0.3));
+    ctrl->translate(Eigen::Vector3f(0,1,0));
+    ctrl->scale(Eigen::Vector3f(0.5,0.5,0.5));
 
     while (e->getStateValidity()) { 
 	usleep(10000);
-	cam.translate(Eigen::Vector3f(0,0,-0.01));
+	ctrl->rotate(0.01, Eigen::Vector3f::UnitZ());
     }
 
     delete e;
