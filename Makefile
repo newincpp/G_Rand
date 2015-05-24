@@ -10,7 +10,7 @@ SRC	=main.cpp \
 EXT     =cpp
 NAME	=demo
 CXXFLAGS= -Wall -Wextra -W -std=c++0x -I./ -I./include
-LDFLAGS	= -lassimp ./libs/libGLEW.a /usr/lib/libz.a ./libs/libglfw.a   -lXrandr -lXi -lGL -lpthread -lX11 -lXxf86vm 
+LDFLAGS	= ./libs/libassimp.a ./libs/libminizip.a ./libs/libz.a ./libs/libGLEW.a ./libs/libglfw.a   -lXrandr -lXi -lGL -lpthread -lX11 -lXxf86vm 
 OBJS	= $(SRC:.$(EXT)=.o)
 RM	= rm -f
 CXX	= clang++
