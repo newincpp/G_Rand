@@ -22,10 +22,10 @@ This engine is purely public which imply:
 
 **what does still not work properly:**
 
-    * MVP matrix has some bugs
-    * _a lot_ of features in the mesh are ignored
+    *  a lot of features in the mesh are ignored
     * light are static to the shader for now (for test purpuse)
-
+   ~~MVP matrix has some bugs~~ (thanks to Yaakuro)
+   
 **what is planed soon:**
 
     * textures (every types in the generic way)
