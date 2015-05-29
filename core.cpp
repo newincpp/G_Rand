@@ -19,7 +19,7 @@ void GRand::Core::_interal_WaitForWindow_() {
 	glfwWindowHint(GLFW_SAMPLES, 4);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_DEPTH_BITS, 32);
-	glfwSetKeyCallback(_window, GRand::Core::key_callback);
+	glfwSetKeyCallback(_window, key_callback);
 	_state = std::bind(&GRand::Core::_interal_render_, this);
 	glewExperimental = GL_TRUE;
 	int err;
@@ -84,7 +84,6 @@ GRand::Core* GRand::Core::start(const Config& conf_) {
 	glfwWindowHint(GLFW_DEPTH_BITS, 32);
 	glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
     }
-
 
     GLFWwindow* w = glfwCreateWindow(conf_.winWidth, conf_.winHeight, conf_.winName.c_str(), monitor, NULL);
     if (!w) {
