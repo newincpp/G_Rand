@@ -6,7 +6,7 @@
 #include <fstream>
 #include "GPUBuffer.hh"
 
-GRand::GPUBuffer::GPUBuffer() : _vbo(0), _ebo(0), _scene(NULL) {
+GRand::GPUBuffer::GPUBuffer() : _vbo(0), _ebo(0) {
 }
 
 GRand::GPUBuffer::GPUBuffer(const GPUBuffer& o_) : _vbo(o_._vbo), _ebo(o_._ebo) {
@@ -38,16 +38,16 @@ bool GRand::GPUBuffer::loadFile(std::string const &name) {
 	std::cout << "Couldn't open file: " << name << std::endl;
 	return false;
     }
-    _scene = importer.ReadFile(name.c_str(), aiProcessPreset_TargetRealtime_Quality | aiProcess_Triangulate);
-    if (!_scene) {
+    const aiScene* scene = importer.ReadFile(name.c_str(), aiProcessPreset_TargetRealtime_Quality | aiProcess_Triangulate);
+    if (!scene) {
 	std::cout << importer.GetErrorString() << std::endl;
 	return false;
     }
-    getAllFaces(_scene, _scene->mRootNode);
+    _getAllFaces(scene, scene->mRootNode);
     return true;
 }
 
-void GRand::GPUBuffer::getAllFaces(const struct aiScene *sc, const struct aiNode* nd) {
+void GRand::GPUBuffer::_getAllFaces(const struct aiScene *sc, const struct aiNode* nd) {
     unsigned int n = 0;
 
     for (; n < nd->mNumMeshes; ++n) {
@@ -56,7 +56,6 @@ void GRand::GPUBuffer::getAllFaces(const struct aiScene *sc, const struct aiNode
 	    _vertexArray.reserve(_vertexArray.capacity() + mesh->mNumFaces * 9);
 	}
 	for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
-//	    std::cout << i << ":" << mesh->mVertices[i].x << " " << mesh->mVertices[i].y << " " << mesh->mVertices[i].z << std::endl;
 	    _vertexArray.push_back(mesh->mVertices[i].x);
 	    _vertexArray.push_back(mesh->mVertices[i].y);
 	    _vertexArray.push_back(mesh->mVertices[i].z);
@@ -78,7 +77,7 @@ void GRand::GPUBuffer::getAllFaces(const struct aiScene *sc, const struct aiNode
 	}
     }
     for (n = 0; n < nd->mNumChildren; ++n) {
-	getAllFaces(sc, nd->mChildren[n]);
+	_getAllFaces(sc, nd->mChildren[n]);
     }
 }
 
