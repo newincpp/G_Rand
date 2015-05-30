@@ -22,7 +22,7 @@ namespace GRand {
 	    GPUBuffer(const GPUBuffer&);
 	    ~GPUBuffer();
 	    void operator=(const GPUBuffer&);
-	    void setBuffer(const std::vector<GLfloat>&);
+	    void setBuffer(const decltype(_vertexArray)& , const decltype(_elementArray)&);
 	    bool loadFile(std::string const &name);
 	    void generateVBOAndVertexArray();
 	    void draw(GLenum drawStyle_)const noexcept;

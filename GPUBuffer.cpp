@@ -85,6 +85,7 @@ void GRand::GPUBuffer::getAllFaces(const struct aiScene *sc, const struct aiNode
 void GRand::GPUBuffer::generateVBOAndVertexArray() {
     if (_vbo) {
 	glDeleteBuffers(1, &_vbo);
+	glDeleteBuffers(1, &_ebo);
     }
     glGenBuffers(1, &_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, _vbo);
@@ -96,14 +97,13 @@ void GRand::GPUBuffer::generateVBOAndVertexArray() {
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, _elementArray.size() * sizeof(decltype(_vertexArray)::value_type), &(_elementArray[0]), GL_STATIC_DRAW);
 }
 
-void GRand::GPUBuffer::setBuffer(const decltype(_vertexArray)& b_) {
+void GRand::GPUBuffer::setBuffer(const decltype(_vertexArray)& v_, const decltype(_elementArray)& e_) {
     if (_vbo) {
 	glDeleteBuffers(1, &_vbo);
     }
-    _vertexArray = b_;
-    glGenBuffers(1, &_vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-    glBufferData(GL_ARRAY_BUFFER, _vertexArray.size() * sizeof(decltype(_vertexArray)::value_type), &_vertexArray[0], GL_STATIC_DRAW);
+    _vertexArray = v_;
+    _elementArray = e_;
+    generateVBOAndVertexArray();
 }
 
 GRand::GPUBuffer::~GPUBuffer() {
@@ -122,7 +122,6 @@ void GRand::GPUBuffer::draw(GLenum drawStyle_) const noexcept {
     glVertexAttribPointer(4, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(decltype(_vertexArray)::value_type), (void*)(6 * sizeof(decltype(_vertexArray)::value_type))); //uv
 
     // draw the polygon with the shader on the OpenGL draw buffer
-    //glDrawArrays(drawStyle_, 0, _vertexArray.size());
     glDrawElements(drawStyle_, _elementArray.size(), GL_UNSIGNED_INT, 0);
     glDisableVertexAttribArray(2);
     glDisableVertexAttribArray(3);
