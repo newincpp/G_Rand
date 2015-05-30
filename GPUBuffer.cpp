@@ -110,23 +110,21 @@ GRand::GPUBuffer::~GPUBuffer() {
 }
 
 void GRand::GPUBuffer::draw(GLenum drawStyle_) const noexcept {
-    glEnableVertexAttribArray(0); // enable vertex shader parameter value
-    glEnableVertexAttribArray(1); // enable normal shader parameter value
-    glEnableVertexAttribArray(2); 
+    glEnableVertexAttribArray(2); // enable vertex shader parameter value
+    glEnableVertexAttribArray(3); // enable normal shader parameter value
+    glEnableVertexAttribArray(4); 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ebo);
     glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-    //glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(decltype(_vertexArray)::value_type), (void*)0);
-    //glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(decltype(_vertexArray)::value_type), (void*)0);
 
     // when normal enabled
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(decltype(_vertexArray)::value_type), (void*)0); // vertex
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(decltype(_vertexArray)::value_type), (void*)(3 * sizeof(decltype(_vertexArray)::value_type))); //normal
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(decltype(_vertexArray)::value_type), (void*)(6 * sizeof(decltype(_vertexArray)::value_type))); //uv
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(decltype(_vertexArray)::value_type), (void*)0); // vertex
+    glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(decltype(_vertexArray)::value_type), (void*)(3 * sizeof(decltype(_vertexArray)::value_type))); //normal
+    glVertexAttribPointer(4, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(decltype(_vertexArray)::value_type), (void*)(6 * sizeof(decltype(_vertexArray)::value_type))); //uv
 
     // draw the polygon with the shader on the OpenGL draw buffer
     //glDrawArrays(drawStyle_, 0, _vertexArray.size());
     glDrawElements(drawStyle_, _elementArray.size(), GL_UNSIGNED_INT, 0);
-    glDisableVertexAttribArray(0);
-    glDisableVertexAttribArray(1);
     glDisableVertexAttribArray(2);
+    glDisableVertexAttribArray(3);
+    glDisableVertexAttribArray(4);
 }

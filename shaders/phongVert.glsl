@@ -1,10 +1,10 @@
 #version 440
 
-layout(location = 0) in vec3 vPos;
-layout(location = 1) in vec3 vNormal;
-layout(location = 2) in vec2 vUVCoord;
-layout(location = 3) uniform mat4 model;
-layout(location = 4) uniform mat4 view;
+layout(location = 0) uniform mat4 model;
+layout(location = 1) uniform mat4 camera;
+layout(location = 2) in vec3 vPos;
+layout(location = 3) in vec3 vNormal;
+layout(location = 4) in vec2 vUVCoord;
 out vec3 fNormal;
 out vec2 fUVCoord;
 out vec3 eye;
@@ -24,8 +24,8 @@ void main() {
     vec4 p = vec4(vPos, 1.0) ;
     fNormal = vNormal;
     fUVCoord = vUVCoord;
-    eye.x = -view[0][3];
-    eye.y = -view[1][3];
-    eye.z = -view[2][3];
-    gl_Position = proj * view * model * p;
+    eye.x = -camera[0][3];
+    eye.y = -camera[1][3];
+    eye.z = -camera[2][3];
+    gl_Position = proj * camera * model * p;
 }

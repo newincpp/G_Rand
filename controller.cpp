@@ -3,7 +3,7 @@
 GRand::Controller::Controller() {
     _transform.setIdentity();
     _utrans.get() = _transform.matrix();
-    _utrans.__manual_Location_setting__(3);
+    _utrans.__manual_Location_setting__(0);
 }
 
 void GRand::Controller::translate(const Eigen::Vector3f& f_) {

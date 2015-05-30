@@ -3,7 +3,7 @@
 
 GRand::Camera::Camera(Core* e_) : _core(e_), _center(Eigen::Vector3f::Zero()), _target(Eigen::Vector3f::Zero()) {
     _utrans.get() = matType::Identity();
-    _utrans.__manual_Location_setting__(4);
+    _utrans.__manual_Location_setting__(1);
     _core->addPersistantInstruction(std::bind(&Camera::_refresh, this));
 }
 
