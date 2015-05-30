@@ -53,7 +53,7 @@ void GRand::GPUBuffer::getAllFaces(const struct aiScene *sc, const struct aiNode
     for (; n < nd->mNumMeshes; ++n) {
 	const struct aiMesh* mesh = sc->mMeshes[nd->mMeshes[n]];
 	if (_vertexArray.size() + mesh->mNumFaces * 6 > _vertexArray.capacity()) {
-	    _vertexArray.reserve(_vertexArray.capacity() + mesh->mNumFaces * 6);
+	    _vertexArray.reserve(_vertexArray.capacity() + mesh->mNumFaces * 9);
 	}
 	for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
 //	    std::cout << i << ":" << mesh->mVertices[i].x << " " << mesh->mVertices[i].y << " " << mesh->mVertices[i].z << std::endl;
@@ -63,6 +63,8 @@ void GRand::GPUBuffer::getAllFaces(const struct aiScene *sc, const struct aiNode
 	    _vertexArray.push_back(mesh->mNormals[i].x);
 	    _vertexArray.push_back(mesh->mNormals[i].y);
 	    _vertexArray.push_back(mesh->mNormals[i].z);
+	    _vertexArray.push_back(mesh->mTextureCoords[0][i].x);
+	    _vertexArray.push_back(mesh->mTextureCoords[0][i].y);
 	}
 	if (_elementArray.size() + mesh->mNumFaces > _elementArray.capacity()) {
 	    _elementArray.reserve(_elementArray.capacity() + mesh->mNumFaces);
@@ -110,23 +112,21 @@ GRand::GPUBuffer::~GPUBuffer() {
 void GRand::GPUBuffer::draw(GLenum drawStyle_) const noexcept {
     glEnableVertexAttribArray(0); // enable vertex shader parameter value
     glEnableVertexAttribArray(1); // enable normal shader parameter value
+    glEnableVertexAttribArray(2); 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ebo);
     glBindBuffer(GL_ARRAY_BUFFER, _vbo);
     //glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(decltype(_vertexArray)::value_type), (void*)0);
     //glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(decltype(_vertexArray)::value_type), (void*)0);
 
     // when normal enabled
-     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(decltype(_vertexArray)::value_type), (void*)0); // vertex
-     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(decltype(_vertexArray)::value_type), (void*)(3 * sizeof(decltype(_vertexArray)::value_type))); //normal
-
-    // with vertex color enabled
-    // glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(decltype(_vertexArray)::value_type), (void*)0); // vertex
-    // glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(decltype(_vertexArray)::value_type), 3 * sizeof(decltype(_vertexArray)::value_type)); // normal
-    // glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(decltype(_vertexArray)::value_type), 6 * sizeof(decltype(_vertexArray)::value_type)); // vertex color
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(decltype(_vertexArray)::value_type), (void*)0); // vertex
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(decltype(_vertexArray)::value_type), (void*)(3 * sizeof(decltype(_vertexArray)::value_type))); //normal
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(decltype(_vertexArray)::value_type), (void*)(6 * sizeof(decltype(_vertexArray)::value_type))); //uv
 
     // draw the polygon with the shader on the OpenGL draw buffer
     //glDrawArrays(drawStyle_, 0, _vertexArray.size());
     glDrawElements(drawStyle_, _elementArray.size(), GL_UNSIGNED_INT, 0);
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
+    glDisableVertexAttribArray(2);
 }

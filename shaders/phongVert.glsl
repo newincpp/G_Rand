@@ -2,10 +2,11 @@
 
 layout(location = 0) in vec3 vPos;
 layout(location = 1) in vec3 vNormal;
-layout(location = 2) in vec3 vUVCoord;
+layout(location = 2) in vec2 vUVCoord;
 layout(location = 3) uniform mat4 model;
 layout(location = 4) uniform mat4 view;
 out vec3 fNormal;
+out vec2 fUVCoord;
 out vec3 eye;
 
 void main() {
@@ -22,6 +23,7 @@ void main() {
 
     vec4 p = vec4(vPos, 1.0) ;
     fNormal = vNormal;
+    fUVCoord = vUVCoord;
     eye.x = -view[0][3];
     eye.y = -view[1][3];
     eye.z = -view[2][3];

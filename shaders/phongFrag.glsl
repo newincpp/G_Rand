@@ -1,13 +1,14 @@
 #version 440
 
 in vec3 fNormal;
+in vec2 fUVCoord;
 in vec3 eye;
+
 out vec4 outColor;
 
 void main() {
   vec4 spec = vec4(0.0);
   vec3 lDir = vec3(1.0,1.0,.3);
-  //vec3 eye = vec3(0.0, 0.0, 0.0);
   
   vec4 diffuse = vec4(0.8,0.8,0.8,1);
   vec4 ambient = vec4(0.,0.,0.,1);
