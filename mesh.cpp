@@ -39,5 +39,5 @@ void GRand::Mesh::_render() const noexcept{
 }
 
 void GRand::Mesh::_uploadBuffer() noexcept {
-    _gb.generateVBOAndVertexArray();
+    _gb.regenVboEbo();
 }

@@ -82,7 +82,7 @@ void GRand::GPUBuffer::getAllFaces(const struct aiScene *sc, const struct aiNode
     }
 }
 
-void GRand::GPUBuffer::generateVBOAndVertexArray() {
+void GRand::GPUBuffer::regenVboEbo() {
     if (_vbo) {
 	glDeleteBuffers(1, &_vbo);
 	glDeleteBuffers(1, &_ebo);
@@ -103,10 +103,21 @@ void GRand::GPUBuffer::setBuffer(const decltype(_vertexArray)& v_, const decltyp
     }
     _vertexArray = v_;
     _elementArray = e_;
-    generateVBOAndVertexArray();
+    regenVboEbo();
 }
 
 GRand::GPUBuffer::~GPUBuffer() {
+    GPUFree();
+}
+
+void GRand::GPUBuffer::GPUFree() {
+    glDeleteBuffers(1, &_vbo);
+    glDeleteBuffers(1, &_ebo);
+}
+
+void GRand::GPUBuffer::CPUFree() {
+    _vertexArray.clear();
+    _elementArray.clear();
 }
 
 void GRand::GPUBuffer::draw(GLenum drawStyle_) const noexcept {

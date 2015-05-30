@@ -15,7 +15,6 @@ namespace GRand {
 	    const aiScene* _scene;
 	    std::vector<GLfloat> _vertexArray;
 	    std::vector<GLuint> _elementArray;
-	    std::vector<unsigned int> _index;
 	    void getAllFaces(const struct aiScene *sc, const struct aiNode*);
 	public:
 	    explicit GPUBuffer();
@@ -24,7 +23,9 @@ namespace GRand {
 	    void operator=(const GPUBuffer&);
 	    void setBuffer(const decltype(_vertexArray)& , const decltype(_elementArray)&);
 	    bool loadFile(std::string const &name);
-	    void generateVBOAndVertexArray();
+	    void regenVboEbo();
+	    void GPUFree();
+	    void CPUFree();
 	    void draw(GLenum drawStyle_)const noexcept;
     };
 }
