@@ -6,6 +6,9 @@ in vec3 eye;
 
 out vec4 outColor;
 
+uniform int textureAmount;
+uniform sampler2D tex[8];
+
 void main() {
   vec4 spec = vec4(0.0);
   vec3 lDir = vec3(1.0,1.0,.3);
@@ -22,5 +25,9 @@ void main() {
     float intSpec = max(dot(h,fNormal),0.0);
     spec = specular * pow(intSpec, shininess);
   }
+  int i = 0;
   outColor = max(intensity * diffuse + spec, ambient);
+  while (i < textureAmount) {
+      outColor *= texture(tex[i], fUVCoord);
+  }
 }

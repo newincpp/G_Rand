@@ -7,6 +7,7 @@ SRC	=main.cpp \
 	 GPUBuffer.cpp \
 	 camera.cpp \
 	 texture.cpp \
+	 renderTexture.cpp \
 	 depthTexture.cpp
 
 EXT     =cpp

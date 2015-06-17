@@ -83,7 +83,6 @@ void GRand::Material::link() noexcept {
     }
     glLinkProgram(_shaderProgram);
 
-
     GLint linkStatus;
     glGetShaderiv(_shaderProgram,  GL_LINK_STATUS, &linkStatus);
     if (!linkStatus) {
@@ -97,7 +96,29 @@ void GRand::Material::link() noexcept {
 }
 
 void GRand::Material::use() const noexcept {
+    unsigned int i = GL_TEXTURE0;
+    for (decltype(_textures)::value_type t : _textures) {
+	t->use(i);
+    }
     glUseProgram(_shaderProgram);
+}
+
+decltype(GRand::Material::_textures)::const_iterator GRand::Material::addTexture(Texture* t_) {
+    GLint maxTex;
+    glGetIntegerv(GL_MAX_TEXTURE_UNITS, &maxTex);
+    if (maxTex > (int)_textures.size()) {
+	std::cout << "\e[33myou are exeeding the maximum amout of textures\e[0m" << std::endl;
+    }
+    _textures.push_back(t_);
+    return _textures.end()--;
+}
+
+void GRand::Material::excludeTexture(decltype(_textures)::iterator iterator_) {
+    _textures.erase(iterator_);
+}
+
+decltype(GRand::Material::_textures)& GRand::Material::getTextureList() {
+    return _textures;
 }
 
 GRand::Material::~Material() {

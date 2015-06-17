@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <uniform.hh>
+#include "texture.hh"
 
 namespace GRand {
     class Shader;
@@ -10,14 +11,17 @@ namespace GRand {
 	private:
 	    GLuint _shaderProgram;
 	    std::vector<Shader> _shaders;
+	    std::vector<const Texture*> _textures;
 	public:
 	    explicit Material();
 	    void addShader(GLenum, const std::string&) noexcept;
 	    void link()noexcept;
 	    void use()const noexcept;
 	    void compileAll()noexcept;
-	    template <typename T>
-	    Uniform<T> getUniform(const std::string&);
+	    decltype(_textures)::const_iterator addTexture(Texture*);
+	    void excludeTexture(decltype(_textures)::iterator);
+	    template <typename T> Uniform<T> getUniform(const std::string&);
+	    inline decltype(_textures)& getTextureList();
 	    ~Material();
     };
 }
