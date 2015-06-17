@@ -63,14 +63,22 @@ void GRand::Shader::compile() noexcept {
 GRand::Shader::~Shader() {
 }
 
-GRand::Material::Material() : _shaderProgram(0) {
+GRand::Material::Material(Core* c_) : _shaderProgram(0), _core(c_) {
 }
 
-void GRand::Material::addShader(GLenum type, const std::string& filename) noexcept {
-    _shaders.emplace_back(type, filename);
+void GRand::Material::_addShader(GLenum type_, const std::string& filename_) noexcept {
+    _shaders.emplace_back(type_, filename_);
+}
+
+void GRand::Material::addShader(GLenum type_, const std::string& filename_) noexcept {
+    _core->queueIntruction(std::bind(&::GRand::Material::_addShader, this, type_, filename_));
 }
 
 void GRand::Material::link() noexcept {
+    _core->queueIntruction(std::bind(&::GRand::Material::_link, this));
+}
+
+void GRand::Material::_link() noexcept {
     if (!_shaderProgram) {
 	glDeleteProgram(_shaderProgram);
     }
@@ -84,15 +92,16 @@ void GRand::Material::link() noexcept {
     glLinkProgram(_shaderProgram);
 
     GLint linkStatus;
-    glGetShaderiv(_shaderProgram,  GL_LINK_STATUS, &linkStatus);
-    if (!linkStatus) {
+    glGetProgramiv(_shaderProgram, GL_LINK_STATUS, &linkStatus);
+    if (linkStatus != GL_TRUE) {
 	GLint InfoLogLength;
 	glGetProgramiv(_shaderProgram, GL_INFO_LOG_LENGTH, &InfoLogLength);
 	char ErrorMessage[InfoLogLength];
 	glGetProgramInfoLog(_shaderProgram, InfoLogLength, NULL, ErrorMessage);
 	std::cout << "\033[0;31mfailed to link error log: " << std::endl << ErrorMessage << std::endl << "-------------------\033[0m" << std::endl;
+    } else {
+	std::cout << "\033[0;32msuccessfully linked\033[0m" << std::endl;
     }
-    std::cout << "\033[0;32msuccessfully linked\033[0m" << std::endl;
 }
 
 void GRand::Material::use() const noexcept {

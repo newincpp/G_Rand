@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <uniform.hh>
+#include "core.hh"
 #include "texture.hh"
 
 namespace GRand {
@@ -10,10 +11,13 @@ namespace GRand {
     class Material {
 	private:
 	    GLuint _shaderProgram;
+	    Core* _core;
 	    std::vector<Shader> _shaders;
 	    std::vector<const Texture*> _textures;
+	    void _link()noexcept;
+	    void _addShader(GLenum, const std::string&) noexcept;
 	public:
-	    explicit Material();
+	    explicit Material(Core*);
 	    void addShader(GLenum, const std::string&) noexcept;
 	    void link()noexcept;
 	    void use()const noexcept;

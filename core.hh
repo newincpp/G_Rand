@@ -49,4 +49,7 @@ namespace GRand {
     };
 }
 
+#define PUSH_CORE_INST(e, exp) e->queueIntruction([](){ exp; });
+#define PUSH_CORE_INSTA(e, arg, exp) e->queueIntruction([&arg](){ exp; });
+
 #endif /* !STARTUPENGINE_H_ */

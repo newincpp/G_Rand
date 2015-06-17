@@ -1,13 +1,16 @@
 #include "texture.hh"
 
 GRand::Texture::Texture() {
-    glGenTextures(1, &_textureId);
 }
 
 GRand::Texture::~Texture() {
 }
 
 void GRand::Texture::load() noexcept {
+    if (!_textureId) {
+	 glDeleteTextures(1, &_textureId);
+    }
+    glGenTextures(1, &_textureId);
     glBindTexture(GL_TEXTURE_2D, _textureId);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
