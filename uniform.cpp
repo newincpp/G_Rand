@@ -11,6 +11,10 @@ void Uniform<int>::upload() const {
 	glUniform1i(_location, _value);
 }
 template <>
+void Uniform<unsigned int>::upload() const {
+	glUniform1ui(_location, _value);
+}
+template <>
 void Uniform<Eigen::Vector2f>::upload() const {
 	glUniform2f(_location, _value[0], _value[1]);
 }

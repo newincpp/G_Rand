@@ -1,12 +1,13 @@
 #version 440
 
+layout(location = 8)uniform int textureAmount;
+
 in vec3 fNormal;
 in vec2 fUVCoord;
 in vec3 eye;
 
 out vec4 outColor;
 
-uniform int textureAmount;
 uniform sampler2D tex[8];
 
 void main() {
@@ -25,9 +26,10 @@ void main() {
     float intSpec = max(dot(h,fNormal),0.0);
     spec = specular * pow(intSpec, shininess);
   }
-  int i = 0;
+  //outColor = texture(tex[0], fUVCoord);
+
   outColor = max(intensity * diffuse + spec, ambient);
-  while (i < textureAmount) {
-      outColor *= texture(tex[i], fUVCoord);
-  }
+  //while (i < textureAmount) {
+  //    outColor *= texture(tex[i], fUVCoord);
+  //}
 }

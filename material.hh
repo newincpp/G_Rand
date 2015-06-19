@@ -2,6 +2,8 @@
 # define MATERIAL_H_
 
 #include <vector>
+#include <string>
+#include <array>
 #include <uniform.hh>
 #include "core.hh"
 #include "texture.hh"
@@ -10,8 +12,11 @@ namespace GRand {
     class Shader;
     class Material {
 	private:
+	    static const char* const _StexStringArray_[8];
 	    GLuint _shaderProgram;
+	    GLuint _samplerArrayLocation;
 	    Core* _core;
+	    Uniform<unsigned int> _uTextureAmount;
 	    std::vector<Shader> _shaders;
 	    std::vector<const Texture*> _textures;
 	    void _link()noexcept;

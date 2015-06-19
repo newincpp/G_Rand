@@ -63,6 +63,16 @@ void GRand::Shader::compile() noexcept {
 GRand::Shader::~Shader() {
 }
 
+const char* const GRand::Material::_StexStringArray_[8] = {
+    "tex[0]",
+    "tex[1]",
+    "tex[2]",
+    "tex[3]",
+    "tex[4]",
+    "tex[5]",
+    "tex[7]",
+};
+
 GRand::Material::Material(Core* c_) : _shaderProgram(0), _core(c_) {
 }
 
@@ -102,23 +112,35 @@ void GRand::Material::_link() noexcept {
     } else {
 	std::cout << "\033[0;32msuccessfully linked\033[0m" << std::endl;
     }
+
+    _uTextureAmount.__manual_Location_setting__(8);
+    _samplerArrayLocation = glGetUniformLocation(_shaderProgram, "tex");
 }
 
 void GRand::Material::use() const noexcept {
-    unsigned int i = GL_TEXTURE0;
+    unsigned int i = 0;
+
     for (decltype(_textures)::value_type t : _textures) {
-	t->use(i);
+	glActiveTexture(i + GL_TEXTURE0);
+	t->bind();
+	glUniform1i(glGetUniformLocation(_shaderProgram, _StexStringArray_[i]), 0);
+	++i;
     }
+    _uTextureAmount.upload(); 
     glUseProgram(_shaderProgram);
 }
 
 decltype(GRand::Material::_textures)::const_iterator GRand::Material::addTexture(Texture* t_) {
     GLint maxTex;
     glGetIntegerv(GL_MAX_TEXTURE_UNITS, &maxTex);
-    if (maxTex > (int)_textures.size()) {
-	std::cout << "\e[33myou are exeeding the maximum amout of textures\e[0m" << std::endl;
+    if ((int)_textures.size() > maxTex) {
+	std::cout << "\e[33myou are exeeding the maximum amout of textures:" << maxTex << "\e[0m" << std::endl;
+    }
+    if (!t_->isLoaded()) {
+	t_->load();
     }
     _textures.push_back(t_);
+    _uTextureAmount.get() = _textures.size();
     return _textures.end()--;
 }
 

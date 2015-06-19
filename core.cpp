@@ -1,4 +1,7 @@
 #include <iostream>
+#include "IL/ilut.h"
+#include "IL/ilu.h"
+#include "IL/il.h"
 #include "core.hh"
 
 GRand::Core::Core() : _window(NULL), _state(std::bind(&GRand::Core::_interal_WaitForWindow_, this)), _validState(true) {
@@ -25,6 +28,14 @@ void GRand::Core::_interal_WaitForWindow_() {
 	int err;
 	if ((err = glewInit()) != GLEW_OK) {
 	    std::cout << glewGetErrorString(err) << std::endl;
+	}
+	ilInit();
+	ilClearColour(0, 255, 0, 0);
+	ilutRenderer(ILUT_OPENGL);
+
+	GLenum error;
+	if((error = ilGetError()) != IL_NO_ERROR) {
+	    std::cout << "Error initializing DevIL: " << iluErrorString(error) << std::endl;
 	}
 	std::cout << "OpenGL version: " << glGetString(GL_VERSION) << std::endl;
 	std::cout << "runing on: " << glGetString(GL_VENDOR) << std::endl;
