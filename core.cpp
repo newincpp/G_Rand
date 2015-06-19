@@ -29,9 +29,6 @@ void GRand::Core::_interal_WaitForWindow_() {
 	if ((err = glewInit()) != GLEW_OK) {
 	    std::cout << glewGetErrorString(err) << std::endl;
 	}
-	ilInit();
-	ilClearColour(0, 255, 0, 0);
-	ilutRenderer(ILUT_OPENGL);
 
 	GLenum error;
 	if((error = ilGetError()) != IL_NO_ERROR) {
@@ -46,6 +43,10 @@ void GRand::Core::_interal_WaitForWindow_() {
 	glBindVertexArray(VertexArray);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
+
+	ilInit();
+	ilClearColour(0, 255, 0, 0);
+	ilutRenderer(ILUT_OPENGL);
     }
 }
 
