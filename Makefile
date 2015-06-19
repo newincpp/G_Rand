@@ -13,7 +13,8 @@ SRC	=main.cpp \
 EXT     =cpp
 NAME	=demo
 CXXFLAGS= -Wall -Wextra -W -std=c++0x -I./ -I./include
-LIBDEVIL= ./libs/libIL.a ./libs/libILU.a ./libs/libILUT.a
+LIBDEVIL= ./libs/libILUT.a ./libs/libILU.a ./libs/libIL.a  
+#LIBDEVIL= -lIL -lILU -lILUT
 LIBASSIMPANDDEPS= ./libs/libassimp.a ./libs/libminizip.a ./libs/libz.a
 DISPLAYLIBS=./libs/libGLEW.a ./libs/libglfw.a -lXrandr -lXi -lGL -lpthread -lX11 -lXxf86vm
 LDFLAGS	= $(LIBDEVIL) $(LIBASSIMPANDDEPS) $(DISPLAYLIBS)
