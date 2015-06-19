@@ -13,7 +13,10 @@ SRC	=main.cpp \
 EXT     =cpp
 NAME	=demo
 CXXFLAGS= -Wall -Wextra -W -std=c++0x -I./ -I./include
-LDFLAGS	= ./libs/libIL.a ./libs/libILU.a ./libs/libILUT.a ./libs/libassimp.a ./libs/libminizip.a ./libs/libz.a ./libs/libGLEW.a ./libs/libglfw.a   -lXrandr -lXi -lGL -lpthread -lX11 -lXxf86vm
+LIBDEVIL= ./libs/libIL.a ./libs/libILU.a ./libs/libILUT.a
+LIBASSIMPANDDEPS= ./libs/libassimp.a ./libs/libminizip.a ./libs/libz.a
+DISPLAYLIBS=./libs/libGLEW.a ./libs/libglfw.a -lXrandr -lXi -lGL -lpthread -lX11 -lXxf86vm
+LDFLAGS	= $(LIBDEVIL) $(LIBASSIMPANDDEPS) $(DISPLAYLIBS)
 OBJS	= $(SRC:.$(EXT)=.o)
 RM	= rm -f
 CXX	= clang++
