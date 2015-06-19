@@ -14,7 +14,6 @@ EXT     =cpp
 NAME	=demo
 CXXFLAGS= -Wall -Wextra -W -std=c++0x -I./ -I./include
 LIBDEVIL= ./libs/libILUT.a ./libs/libILU.a ./libs/libIL.a -ljpeg -lpng16 -ltiff -lGLU
-#LIBDEVIL= -lIL -lILU -lILUT
 LIBASSIMPANDDEPS= ./libs/libassimp.a ./libs/libminizip.a ./libs/libz.a
 DISPLAYLIBS=./libs/libGLEW.a ./libs/libglfw.a -lXrandr -lXi -lGL -lpthread -lX11 -lXxf86vm
 LDFLAGS	= $(LIBDEVIL) $(LIBASSIMPANDDEPS) $(DISPLAYLIBS)

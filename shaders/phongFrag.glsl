@@ -26,9 +26,7 @@ void main() {
     float intSpec = max(dot(h,fNormal),0.0);
     spec = specular * pow(intSpec, shininess);
   }
-  //outColor = texture(tex[0], fUVCoord);
-
-  outColor = max(intensity * diffuse + spec, ambient);
+  outColor = texture(tex[0], fUVCoord) * max(intensity * diffuse + spec, ambient);
   //while (i < textureAmount) {
   //    outColor *= texture(tex[i], fUVCoord);
   //}
