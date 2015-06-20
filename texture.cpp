@@ -40,7 +40,7 @@ void GRand::Texture::load() noexcept {
     ilEnable(IL_ORIGIN_SET);
     ilOriginFunc(IL_ORIGIN_LOWER_LEFT);	
     if (!ilLoadImage(_filename.c_str())) {
-	std::cout << "\e[31;1mfailed to load: " << _filename << "\e0m" << std::endl;
+	std::cout << "\e[31;1mfailed to load: " << _filename << "\e[0m" << std::endl;
 	return;
     }
     ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
