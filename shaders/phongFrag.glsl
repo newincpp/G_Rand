@@ -10,23 +10,29 @@ out vec4 outColor;
 
 uniform sampler2D tex[8];
 
+
+vec4 lighting() {
+    vec4 spec = vec4(0.0);
+    vec3 lDir = vec3(1.0,1.0,.3);
+
+    vec4 diffuse = vec4(0.8,0.8,0.8,1);
+    vec4 ambient = vec4(0.,0.,0.,1);
+    vec4 specular = vec4(0.1,0.1,0.1,1);
+    float shininess = 0.7;
+
+    float intensity = max(dot(fNormal, lDir), 0.0);
+
+    if (intensity > 0.0) {
+	vec3 h = normalize(lDir + eye);
+	float intSpec = max(dot(h,fNormal),0.0);
+	spec = specular * pow(intSpec, shininess);
+    }
+    return max(intensity * diffuse + spec, ambient);
+}
+
 void main() {
-  vec4 spec = vec4(0.0);
-  vec3 lDir = vec3(1.0,1.0,.3);
-  
-  vec4 diffuse = vec4(0.8,0.8,0.8,1);
-  vec4 ambient = vec4(0.,0.,0.,1);
-  vec4 specular = vec4(0.1,0.1,0.1,1);
-  float shininess = 0.7;
-  
-  float intensity = max(dot(fNormal, lDir), 0.0);
-  
-  if (intensity > 0.0) {
-    vec3 h = normalize(lDir + eye);
-    float intSpec = max(dot(h,fNormal),0.0);
-    spec = specular * pow(intSpec, shininess);
-  }
-  outColor = texture(tex[0], fUVCoord) * max(intensity * diffuse + spec, ambient);
+  outColor = texture(tex[0], fUVCoord) * lighting();
+  outColor = vec4(fUVCoord, 0, 1) * lighting();
   //while (i < textureAmount) {
   //    outColor *= texture(tex[i], fUVCoord);
   //}
