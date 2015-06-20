@@ -32,7 +32,6 @@ vec4 lighting() {
 
 void main() {
   outColor = texture(tex[0], fUVCoord) * lighting();
-  outColor = vec4(fUVCoord, 0, 1) * lighting();
   //while (i < textureAmount) {
   //    outColor *= texture(tex[i], fUVCoord);
   //}
