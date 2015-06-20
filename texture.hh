@@ -9,6 +9,7 @@
 namespace GRand {
     class Texture {
 	private:
+	    static const char* const _glErrorToString[7];
 	    bool _loaded;
 	    ILuint _imgId;
 	    GLuint _textureId;
