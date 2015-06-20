@@ -27,6 +27,7 @@ void GRand::Texture::load() noexcept {
     glBindTexture(GL_TEXTURE_2D, _textureId);
 
     if (_filename.size() == 0) {
+	std::cout << "\e[33;1mno texture file name, using the default one\e[0m" << std::endl;
 	float pixels[] = {
 	    .7f, .7f, .7f,   .7f, .0f, .0f,
 	    .7f, .0f, .0f, .7f, .7f, .7f
@@ -39,7 +40,7 @@ void GRand::Texture::load() noexcept {
     ilEnable(IL_ORIGIN_SET);
     ilOriginFunc(IL_ORIGIN_LOWER_LEFT);	
     if (!ilLoadImage(_filename.c_str())) {
-	std::cout << "failed to load: " << _filename << std::endl;
+	std::cout << "\e[31;1mfailed to load: " << _filename << "\e0m" << std::endl;
 	return;
     }
     ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
