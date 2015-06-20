@@ -43,6 +43,7 @@ void GRand::Core::_interal_WaitForWindow_() {
 	glBindVertexArray(VertexArray);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
+	glEnable(GL_TEXTURE_2D);
 
 	ilInit();
 	ilClearColour(0, 255, 0, 0);

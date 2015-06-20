@@ -120,12 +120,16 @@ void GRand::Material::_link() noexcept {
 void GRand::Material::use() const noexcept {
     unsigned int i = 0;
 
-    for (decltype(_textures)::value_type t : _textures) {
-	glActiveTexture(i + GL_TEXTURE0);
-	t->bind();
-	glUniform1i(glGetUniformLocation(_shaderProgram, _StexStringArray_[i]), 0);
-	++i;
-    }
+    glActiveTexture(GL_TEXTURE0);
+    _textures[0]->bind();
+    glUniform1i(glGetUniformLocation(_shaderProgram, _StexStringArray_[0]), 0);
+
+    //for (decltype(_textures)::value_type t : _textures) {
+    //    glActiveTexture(GL_TEXTURE0);
+    //    t->bind();
+    //    glUniform1i(glGetUniformLocation(_shaderProgram, _StexStringArray_[i]), 0);
+    //    ++i;
+    //}
     _uTextureAmount.upload(); 
     glUseProgram(_shaderProgram);
 }

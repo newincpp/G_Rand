@@ -10,7 +10,6 @@ out vec4 outColor;
 
 uniform sampler2D tex[8];
 
-
 vec4 lighting() {
     vec4 spec = vec4(0.0);
     vec3 lDir = vec3(1.0,1.0,.3);

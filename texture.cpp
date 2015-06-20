@@ -50,8 +50,8 @@ void GRand::Texture::load() noexcept {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     float pixels[] = {
-	0.0f, 0.0f, 0.0f,   1.0f, 1.0f, 1.0f,
-	1.0f, 1.0f, 1.0f,   0.0f, 0.0f, 0.0f
+	.1f, .1f, .9f,   .3f, .6f, 1.0f,
+	1.0f, 1.0f, 1.0f, .2f, .3f, .9f
     };
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 2, 2, 0, GL_RGB, GL_FLOAT, pixels);
 
