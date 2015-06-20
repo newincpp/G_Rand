@@ -20,7 +20,7 @@ int main(void){
     mat.addShader(GL_VERTEX_SHADER, "./shaders/phongVert.glsl");
     mat.link();
 
-    GRand::Texture t("lol");
+    GRand::Texture t("tex.png");
     mat.addTexture(&t);
 
     GRand::Controller* ctrl = mesh.genController();
