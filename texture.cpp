@@ -26,12 +26,20 @@ void GRand::Texture::load() noexcept {
     glGenTextures(1, &_textureId);
     glBindTexture(GL_TEXTURE_2D, _textureId);
 
-    /*
+    if (_filename.size() == 0) {
+	float pixels[] = {
+	    .7f, .7f, .7f,   .7f, .0f, .0f,
+	    .7f, .0f, .0f, .7f, .7f, .7f
+	};
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 2, 2, 0, GL_RGB, GL_FLOAT, pixels);
+	return;
+    }
+    std::cout << "loading file: " << _filename << std::endl;
     ilBindImage(_imgId);
     ilEnable(IL_ORIGIN_SET);
     ilOriginFunc(IL_ORIGIN_LOWER_LEFT);	
     if (!ilLoadImage(_filename.c_str())) {
-	ilDeleteImages(1, &_imgId); 
+	std::cout << "failed to load: " << _filename << std::endl;
 	return;
     }
     ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
@@ -39,21 +47,14 @@ void GRand::Texture::load() noexcept {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), 0, GL_RGBA, GL_UNSIGNED_BYTE, ilGetData());
     GLenum errCode;
     if ((errCode = glGetError()) != GL_NO_ERROR) {
-	//std::cout << "failed to upload on the VRam with error: \"" << errCode << "\"" << std::endl;
 	std::cout << _glErrorToString[errCode - GL_INVALID_ENUM] << std::endl;
     }
     //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 2, 2, 0, GL_RGB, GL_FLOAT, pixels);
 
-    */
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    float pixels[] = {
-	.1f, .1f, .9f,   .3f, .6f, 1.0f,
-	1.0f, 1.0f, 1.0f, .2f, .3f, .9f
-    };
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 2, 2, 0, GL_RGB, GL_FLOAT, pixels);
 
     //glGenerateMipmap(GL_TEXTURE_2D);
     _loaded = true;
