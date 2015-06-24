@@ -12,6 +12,8 @@ namespace GRand {
 	private:
 	    GLuint _vbo;
 	    GLuint _ebo;
+	    bool _hasNormals;
+	    bool _hasTexture;
 	    std::vector<GLfloat> _vertexArray;
 	    std::vector<GLuint> _elementArray;
 	    void _getAllFaces(const struct aiScene *sc, const struct aiNode*);
