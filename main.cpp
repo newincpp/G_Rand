@@ -12,7 +12,11 @@ int main(int ac, char** av){
     GRand::Material mat(e);
     GRand::GPUBuffer gb;
     if (ac > 1) {
-	gb.loadFile(av[1]);
+	while (ac - 1) {
+	    std::cout << "model: " << av[ac - 1] << std::endl;
+	    gb.loadFile(av[ac - 1]);
+	    ac--;
+	}
     } else {
 	gb.loadFile("./testModels/monkey.dae");
     }

@@ -43,6 +43,9 @@ bool GRand::GPUBuffer::loadFile(std::string const &name) {
 	std::cout << importer.GetErrorString() << std::endl;
 	return false;
     }
+    std::cout << "loading" << std::endl;
+    _vertexArray.clear();
+    _elementArray.clear();
     _getAllFaces(scene, scene->mRootNode);
     return true;
 }
@@ -50,7 +53,6 @@ bool GRand::GPUBuffer::loadFile(std::string const &name) {
 void GRand::GPUBuffer::_getAllFaces(const struct aiScene *sc, const struct aiNode* nd) {
     unsigned int n = 0;
 
-    std::cout << "loading" << std::endl;
     for (; n < nd->mNumMeshes; ++n) {
 	const struct aiMesh* mesh = sc->mMeshes[nd->mMeshes[n]];
 	if (_vertexArray.size() + mesh->mNumFaces * 6 > _vertexArray.capacity()) {
