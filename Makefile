@@ -4,6 +4,7 @@ SRC	=main.cpp \
 	 material.cpp \
 	 controller.cpp \
 	 uniform.cpp \
+	 AssimpProgressHandlerOverload.cpp \
 	 GPUBuffer.cpp \
 	 camera.cpp \
 	 texture.cpp \

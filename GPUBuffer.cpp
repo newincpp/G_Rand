@@ -1,15 +1,18 @@
 #include <istream>
+#include <fstream>
 #include <iostream>
 #include <assimp/scene.h>
 #include <assimp/Importer.hpp>
 #include <assimp/postprocess.h>
+#include "assimp/ProgressHandler.hpp"
 #include <fstream>
+#include "AssimpProgressHandlerOverload.hh"
 #include "GPUBuffer.hh"
 
-GRand::GPUBuffer::GPUBuffer() : _vbo(0), _ebo(0) {
+GRand::GPUBuffer::GPUBuffer() : _vbo(0), _ebo(0), _hasNormals(false), _hasTexture(false) {
 }
 
-GRand::GPUBuffer::GPUBuffer(const GPUBuffer& o_) : _vbo(o_._vbo), _ebo(o_._ebo) {
+GRand::GPUBuffer::GPUBuffer(const GPUBuffer& o_) : _vbo(o_._vbo), _ebo(o_._ebo), _hasNormals(o_._hasNormals), _hasTexture(o_._hasTexture) {
     if (_vbo == 0) {
 	_vertexArray = o_._vertexArray;
     }
@@ -21,6 +24,8 @@ GRand::GPUBuffer::GPUBuffer(const GPUBuffer& o_) : _vbo(o_._vbo), _ebo(o_._ebo) 
 void GRand::GPUBuffer::operator=(const GPUBuffer& o_) {
     _vbo = o_._vbo;
     _ebo = o_._ebo;
+    _hasNormals = o_._hasNormals;
+    _hasTexture = o_._hasTexture;
     if (_vbo) {
 	return;
     }
@@ -38,12 +43,12 @@ bool GRand::GPUBuffer::loadFile(std::string const &name) {
 	std::cout << "Couldn't open file: " << name << std::endl;
 	return false;
     }
+    importer.SetProgressHandler(new AssimpProgressHandlerOverload(" " + name));
     const aiScene* scene = importer.ReadFile(name.c_str(), aiProcessPreset_TargetRealtime_Quality | aiProcess_Triangulate);
     if (!scene) {
 	std::cout << importer.GetErrorString() << std::endl;
 	return false;
     }
-    std::cout << "loading" << std::endl;
     _vertexArray.clear();
     _elementArray.clear();
     _getAllFaces(scene, scene->mRootNode);
@@ -52,6 +57,7 @@ bool GRand::GPUBuffer::loadFile(std::string const &name) {
 
 void GRand::GPUBuffer::_getAllFaces(const struct aiScene *sc, const struct aiNode* nd) {
     unsigned int n = 0;
+    unsigned int pctg = 0;
 
     for (; n < nd->mNumMeshes; ++n) {
 	const struct aiMesh* mesh = sc->mMeshes[nd->mMeshes[n]];
@@ -59,18 +65,23 @@ void GRand::GPUBuffer::_getAllFaces(const struct aiScene *sc, const struct aiNod
 	    _vertexArray.reserve(_vertexArray.capacity() + mesh->mNumFaces * 9);
 	}
 	for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
-	    _vertexArray.push_back(mesh->mVertices[i].z);
-	    _vertexArray.push_back(mesh->mVertices[i].y);
 	    _vertexArray.push_back(mesh->mVertices[i].x);
-	    _vertexArray.push_back(mesh->mNormals[i].z);
-	    _vertexArray.push_back(mesh->mNormals[i].y);
-	    _vertexArray.push_back(mesh->mNormals[i].x);
+	    _vertexArray.push_back(mesh->mVertices[i].y);
+	    _vertexArray.push_back(mesh->mVertices[i].z);
+	    if (mesh->HasNormals()) {
+		_vertexArray.push_back(mesh->mNormals[i].x);
+		_vertexArray.push_back(mesh->mNormals[i].y);
+		_vertexArray.push_back(mesh->mNormals[i].z);
+		if (!_hasNormals) {
+		    _hasNormals = true;
+		}
+	    }
 	    if (mesh->HasTextureCoords(0)) {
-		_vertexArray.push_back(mesh->mTextureCoords[0][i].y);
 		_vertexArray.push_back(mesh->mTextureCoords[0][i].x);
-	    } else {
-		_vertexArray.push_back(0);
-		_vertexArray.push_back(0);
+		_vertexArray.push_back(mesh->mTextureCoords[0][i].y);
+		if (!_hasTexture) {
+		    _hasTexture = true;
+		}
 	    }
 	}
 	if (_elementArray.size() + mesh->mNumFaces > _elementArray.capacity()) {
@@ -128,20 +139,34 @@ void GRand::GPUBuffer::CPUFree() {
 }
 
 void GRand::GPUBuffer::draw(GLenum drawStyle_) const noexcept {
+    int numberFloatsPerVertex = 3; // there are always the 3 coord of the vertex
     glEnableVertexAttribArray(2); // enable vertex shader parameter value
-    glEnableVertexAttribArray(3); // enable normal shader parameter value
-    glEnableVertexAttribArray(4); 
+    if (_hasNormals) {
+	numberFloatsPerVertex += 3;
+	glEnableVertexAttribArray(3); // enable normal shader parameter value
+    }
+    if (_hasTexture) {
+	numberFloatsPerVertex += 2;
+	glEnableVertexAttribArray(4);
+    }
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ebo);
     glBindBuffer(GL_ARRAY_BUFFER, _vbo);
 
-    // when normal enabled
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(decltype(_vertexArray)::value_type), (void*)0); // vertex
-    glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(decltype(_vertexArray)::value_type), (void*)(3 * sizeof(decltype(_vertexArray)::value_type))); //normal
-    glVertexAttribPointer(4, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(decltype(_vertexArray)::value_type), (void*)(6 * sizeof(decltype(_vertexArray)::value_type))); //uv
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, numberFloatsPerVertex * sizeof(decltype(_vertexArray)::value_type), (void*)0); // vertex
+    if (_hasNormals) {
+	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, numberFloatsPerVertex * sizeof(decltype(_vertexArray)::value_type), (void*)(3 * sizeof(decltype(_vertexArray)::value_type))); //normal
+    }
+    if (_hasTexture) {
+	glVertexAttribPointer(4, 2, GL_FLOAT, GL_FALSE, numberFloatsPerVertex * sizeof(decltype(_vertexArray)::value_type), (void*)(6 * sizeof(decltype(_vertexArray)::value_type))); //uv
+    }
 
     // draw the polygon with the shader on the OpenGL draw buffer
     glDrawElements(drawStyle_, _elementArray.size(), GL_UNSIGNED_INT, 0);
     glDisableVertexAttribArray(2);
-    glDisableVertexAttribArray(3);
-    glDisableVertexAttribArray(4);
+    if (_hasNormals) {
+	glDisableVertexAttribArray(3);
+    }
+    if (_hasTexture) {
+	glDisableVertexAttribArray(4);
+    }
 }
