@@ -50,7 +50,6 @@ void GRand::Texture::load() noexcept {
     if ((errCode = glGetError()) != GL_NO_ERROR) {
 	std::cout << _glErrorToString[errCode - GL_INVALID_ENUM] << std::endl;
     }
-    //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 2, 2, 0, GL_RGB, GL_FLOAT, pixels);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);

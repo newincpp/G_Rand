@@ -21,7 +21,8 @@ namespace GRand {
 	    void locate(GLuint)noexcept;
 	    inline bool isLoaded() const noexcept { return _loaded; }
 	    inline void setFilename(const std::string& f_) { _filename = f_; }
-	    inline void bind() const noexcept {
+	    inline void bind(GLenum textureUnit_) const noexcept {
+		glActiveTexture(textureUnit_);
 		glBindTexture(GL_TEXTURE_2D, _textureId);
 	    }
     };

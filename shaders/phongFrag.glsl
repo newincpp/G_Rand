@@ -3,6 +3,7 @@
 layout(location = 8)uniform int textureAmount;
 
 in vec3 fNormal;
+in vec3 fVertex;
 in vec2 fUVCoord;
 in vec3 eye;
 
@@ -10,11 +11,10 @@ out vec4 outColor;
 
 uniform sampler2D tex[8];
 
-vec4 lighting() {
+vec4 lighting(vec4 diffuse) {
     vec4 spec = vec4(0.0);
-    vec3 lDir = vec3(1.0,1.0,.3);
+    vec3 lDir = normalize(vec3(2.0,2.0,1) - fVertex);
 
-    vec4 diffuse = vec4(0.8,0.8,0.8,1);
     vec4 ambient = vec4(0.,0.,0.,1);
     vec4 specular = vec4(0.1,0.1,0.1,1);
     float shininess = 0.7;
@@ -30,8 +30,11 @@ vec4 lighting() {
 }
 
 void main() {
-  outColor = texture(tex[0], fUVCoord) * lighting();
-  //while (i < textureAmount) {
-  //    outColor *= texture(tex[i], fUVCoord);
-  //}
+    vec4 diffuse = vec4(1);
+    int i = 0;
+    while (i++ < textureAmount) {
+	diffuse *= texture(tex[i], fUVCoord);
+    }
+    diffuse = vec4(fUVCoord, 0,1);
+    outColor = lighting(diffuse);
 }

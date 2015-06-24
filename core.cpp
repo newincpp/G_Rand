@@ -42,6 +42,7 @@ void GRand::Core::_interal_WaitForWindow_() {
 	glGenVertexArrays(1, &VertexArray);
 	glBindVertexArray(VertexArray);
 	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_TEXTURE_2D);
 
