@@ -50,6 +50,7 @@ bool GRand::GPUBuffer::loadFile(std::string const &name) {
 void GRand::GPUBuffer::_getAllFaces(const struct aiScene *sc, const struct aiNode* nd) {
     unsigned int n = 0;
 
+    std::cout << "loading" << std::endl;
     for (; n < nd->mNumMeshes; ++n) {
 	const struct aiMesh* mesh = sc->mMeshes[nd->mMeshes[n]];
 	if (_vertexArray.size() + mesh->mNumFaces * 6 > _vertexArray.capacity()) {
@@ -62,8 +63,13 @@ void GRand::GPUBuffer::_getAllFaces(const struct aiScene *sc, const struct aiNod
 	    _vertexArray.push_back(mesh->mNormals[i].z);
 	    _vertexArray.push_back(mesh->mNormals[i].y);
 	    _vertexArray.push_back(mesh->mNormals[i].x);
-	    _vertexArray.push_back(mesh->mTextureCoords[0][i].y);
-	    _vertexArray.push_back(mesh->mTextureCoords[0][i].x);
+	    if (mesh->HasTextureCoords(0)) {
+		_vertexArray.push_back(mesh->mTextureCoords[0][i].y);
+		_vertexArray.push_back(mesh->mTextureCoords[0][i].x);
+	    } else {
+		_vertexArray.push_back(0);
+		_vertexArray.push_back(0);
+	    }
 	}
 	if (_elementArray.size() + mesh->mNumFaces > _elementArray.capacity()) {
 	    _elementArray.reserve(_elementArray.capacity() + mesh->mNumFaces);
