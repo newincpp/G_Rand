@@ -58,7 +58,7 @@ void GRand::GPUBuffer::_getAllFaces(const struct aiScene *sc, const struct aiNod
 	if (_vertexArray.size() + mesh->mNumFaces * 6 > _vertexArray.capacity()) {
 	    _vertexArray.reserve(_vertexArray.capacity() + mesh->mNumFaces * 9);
 	}
-	for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
+	for (unsigned int i = 0; i < mesh->mNumVertices; ++i) {
 	    _vertexArray.push_back(mesh->mVertices[i].z);
 	    _vertexArray.push_back(mesh->mVertices[i].y);
 	    _vertexArray.push_back(mesh->mVertices[i].x);
