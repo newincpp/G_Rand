@@ -35,13 +35,14 @@ int main(int ac, char** av){
     cam.setPos(Eigen::Vector3f(0,-0.4,0));
     cam.lookAt(Eigen::Vector3f(0,-0.3,1));
 
-    ctrl->rotate(-1.571, Eigen::Vector3f::UnitX());
+    //ctrl->rotate(-1.571, Eigen::Vector3f::UnitX());
+    ctrl->rotate(0, Eigen::Vector3f::UnitX());
     ctrl->translate(Eigen::Vector3f(0,-0.5,0));
-    ctrl->scale(Eigen::Vector3f(0.3,0.3,0.3));
+    ctrl->scale(Eigen::Vector3f(0.1,0.1,0.1));
 
     while (e->getStateValidity()) { 
 	usleep(10000);
-	ctrl->rotate(0.01, Eigen::Vector3f::UnitZ());
+	ctrl->rotate(0.01, Eigen::Vector3f::UnitY());
     }
 
     delete e;

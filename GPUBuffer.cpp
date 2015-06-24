@@ -56,14 +56,14 @@ void GRand::GPUBuffer::_getAllFaces(const struct aiScene *sc, const struct aiNod
 	    _vertexArray.reserve(_vertexArray.capacity() + mesh->mNumFaces * 9);
 	}
 	for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
-	    _vertexArray.push_back(mesh->mVertices[i].x);
-	    _vertexArray.push_back(mesh->mVertices[i].y);
 	    _vertexArray.push_back(mesh->mVertices[i].z);
-	    _vertexArray.push_back(mesh->mNormals[i].x);
-	    _vertexArray.push_back(mesh->mNormals[i].y);
+	    _vertexArray.push_back(mesh->mVertices[i].y);
+	    _vertexArray.push_back(mesh->mVertices[i].x);
 	    _vertexArray.push_back(mesh->mNormals[i].z);
-	    _vertexArray.push_back(mesh->mTextureCoords[0][i].x);
+	    _vertexArray.push_back(mesh->mNormals[i].y);
+	    _vertexArray.push_back(mesh->mNormals[i].x);
 	    _vertexArray.push_back(mesh->mTextureCoords[0][i].y);
+	    _vertexArray.push_back(mesh->mTextureCoords[0][i].x);
 	}
 	if (_elementArray.size() + mesh->mNumFaces > _elementArray.capacity()) {
 	    _elementArray.reserve(_elementArray.capacity() + mesh->mNumFaces);
