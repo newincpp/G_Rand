@@ -1,7 +1,7 @@
 #include "mesh.hh"
 
 GRand::Mesh::Mesh(Core* e_, Material* m_) : _core(e_), _material(m_) {
-    _core->addPersistantInstruction(std::bind(&Mesh::_render, this));
+    std::cout << "add mesh" << std::endl;
 }
 
 void GRand::Mesh::set(const GPUBuffer& b_) noexcept {
@@ -12,6 +12,7 @@ void GRand::Mesh::set(const GPUBuffer& b_) noexcept {
 void GRand::Mesh::fromFile(const std::string& fname_) {
     _gb.loadFile(fname_);
     _core->queueIntruction(std::bind(&Mesh::_uploadBuffer, this));
+    _core->addPersistantInstruction(std::bind(&Mesh::_render, this));
 }
 
 GRand::Controller* GRand::Mesh::genController() {

@@ -143,12 +143,9 @@ void GRand::Core::_rmFunc(unsigned long id_) {
     _instructionList.erase(_instructionList.begin() + id_);
 }
 
-
-
 void GRand::Core::addInputCallback(int key, const std::function<void(void)>& call) {
     _inputMap[key] = call;
 }
-
 
 void GRand::Core::key_callback(GLFWwindow* window, int key, int, int action, int) {
     if (action == GLFW_PRESS) {

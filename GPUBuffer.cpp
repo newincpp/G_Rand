@@ -31,6 +31,7 @@ void GRand::GPUBuffer::operator=(const GPUBuffer& o_) {
 bool GRand::GPUBuffer::loadFile(std::string const &name) {
     Assimp::Importer importer;
 
+    std::cout << "loading:" << name << std::endl;
     std::ifstream fin(name.c_str());
     if (!fin.fail()) {
 	fin.close();
@@ -43,10 +44,11 @@ bool GRand::GPUBuffer::loadFile(std::string const &name) {
 	std::cout << importer.GetErrorString() << std::endl;
 	return false;
     }
-    std::cout << "loading" << std::endl;
+    std::cout << "file read" << std::endl;
     _vertexArray.clear();
     _elementArray.clear();
     _getAllFaces(scene, scene->mRootNode);
+    std::cout << "loading finished" << std::endl;
     return true;
 }
 
@@ -128,6 +130,7 @@ void GRand::GPUBuffer::CPUFree() {
 }
 
 void GRand::GPUBuffer::draw(GLenum drawStyle_) const noexcept {
+    std::cout << "draw" << _vbo << std::endl;
     glEnableVertexAttribArray(2); // enable vertex shader parameter value
     glEnableVertexAttribArray(3); // enable normal shader parameter value
     glEnableVertexAttribArray(4); 

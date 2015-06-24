@@ -1,3 +1,4 @@
+#include <vector>
 #include <unistd.h>
 #include <iostream>
 
@@ -10,19 +11,18 @@ int main(int ac, char** av){
     e->addPersistantInstruction([](){ glClearColor(0.05f, 0.05f, 0.05f, 0.0f);} );
     e->addPersistantInstruction([](){ glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); });
     GRand::Material mat(e);
-    GRand::GPUBuffer gb;
+    std::vector<GRand::Mesh> mesh;
     if (ac > 1) {
 	while (ac - 1) {
-	    std::cout << "model: " << av[ac - 1] << std::endl;
-	    gb.loadFile(av[ac - 1]);
+	    mesh.emplace_back(e, &mat);
+	    mesh[mesh.size() - 1].fromFile(av[ac - 1]);
 	    ac--;
 	}
     } else {
-	gb.loadFile("./testModels/monkey.dae");
+	mesh.emplace_back(e, &mat);
+	mesh[0].fromFile("./testModels/monkey.dae");
     }
 
-    GRand::Mesh mesh(e, &mat);
-    mesh.set(gb);
 
     mat.addShader(GL_FRAGMENT_SHADER, "./shaders/phongFrag.glsl");
     mat.addShader(GL_VERTEX_SHADER, "./shaders/phongVert.glsl");
@@ -31,7 +31,7 @@ int main(int ac, char** av){
     GRand::Texture t;//("tex.png");
     mat.addTexture(&t);
 
-    GRand::Controller* ctrl = mesh.genController();
+    GRand::Controller* ctrl = mesh[0].genController();
     //ctrl->translate(Eigen::Vector3f(0,0,1.0f));
     //ctrl->rotate(1.571f, Eigen::Vector3f::UnitX());
     //ctrl->scale(Eigen::Vector3f(0.8f, 0.8f, 0.8f));
