@@ -2,7 +2,7 @@
 # define TEXTURE_H_
 
 #include <string>
-#include <GL/glew.h>
+#include "core.hh"
 #include "uniform.hh"
 #include "IL/il.h"
 
@@ -10,12 +10,14 @@ namespace GRand {
     class Texture {
 	private:
 	    static const char* const _glErrorToString[7];
+	    Core* _core;
 	    bool _loaded;
 	    ILuint _imgId;
 	    GLuint _textureId;
 	    std::string _filename;
+	    void _load();
 	public:
-	    explicit Texture(const std::string& = "");
+	    explicit Texture(Core*, const std::string& = "");
 	    virtual ~Texture();
 	    virtual void load()noexcept;
 	    void locate(GLuint)noexcept;

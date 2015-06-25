@@ -59,6 +59,7 @@ class Uniform {
 		T& operator>>(T&& v) { v = _value; return _value; }
 		// if you need a member of _value or your operator is not binded you need to call this function 
 		T& get() { return _value; }
+		const T& get() const { return _value; }
 		// this function update uniform value on GPU  (so usually need to call it before drawing polygons)
 		virtual void upload() const;
 };

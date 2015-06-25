@@ -32,9 +32,10 @@ vec4 lighting(vec4 diffuse) {
 void main() {
     vec4 diffuse = vec4(1);
     int i = 0;
-    while (i++ < textureAmount) {
-	diffuse *= texture(tex[i], fUVCoord);
-    }
-    diffuse = vec4(fUVCoord, 0,1);
+    //while (i++ < textureAmount) {
+    //    diffuse *= texture(tex[i], fUVCoord);
+    //}
+    //diffuse = vec4(fUVCoord, 0,1);
+    diffuse = texture(tex[i], fUVCoord);
     outColor = lighting(diffuse);
 }

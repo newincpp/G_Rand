@@ -119,10 +119,11 @@ void GRand::Material::_link() noexcept {
 
 void GRand::Material::use() const noexcept {
     unsigned int i = 0;
+    glEnable(GL_TEXTURE_2D);
 
     for (decltype(_textures)::value_type t : _textures) {
 	t->bind(GL_TEXTURE0 + i);
-        glUniform1i(glGetUniformLocation(_shaderProgram, _StexStringArray_[i]), 0);
+        glUniform1i(glGetUniformLocation(_shaderProgram, _StexStringArray_[i]), i);
     }
     _uTextureAmount.upload(); 
     glUseProgram(_shaderProgram);
@@ -155,4 +156,3 @@ GRand::Material::~Material() {
 	glDeleteShader(s.getId());
     }
 }
-

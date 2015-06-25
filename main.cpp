@@ -28,7 +28,7 @@ int main(int ac, char** av){
     mat.addShader(GL_VERTEX_SHADER, "./shaders/phongVert.glsl");
     mat.link();
 
-    GRand::Texture t;//("tex.png");
+    GRand::Texture t(e, "tex.png");
     mat.addTexture(&t);
 
     GRand::Controller* ctrl = mesh[0].genController();
@@ -36,8 +36,8 @@ int main(int ac, char** av){
     //ctrl->rotate(1.571f, Eigen::Vector3f::UnitX());
     //ctrl->scale(Eigen::Vector3f(0.8f, 0.8f, 0.8f));
     GRand::Camera cam(e);
-    cam.setPos(Eigen::Vector3f(0,-0.4,0));
-    cam.lookAt(Eigen::Vector3f(0,-0.3,1));
+    cam.setPos(Eigen::Vector3f(0,.2,0.6));
+    cam.lookAt(Eigen::Vector3f(0,0,1.4));
 
     //ctrl->rotate(-1.571, Eigen::Vector3f::UnitX());
     ctrl->rotate(0, Eigen::Vector3f::UnitX());

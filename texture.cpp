@@ -10,7 +10,7 @@ const char* const GRand::Texture::_glErrorToString[7] = {
     "GL_INVALID_FRAMEBUFFER_OPERATION" // 1286
 };
 
-GRand::Texture::Texture(const std::string& fname_) : _loaded(false), _textureId(0), _filename(fname_) {
+GRand::Texture::Texture(Core* c_, const std::string& fname_) : _core(c_), _loaded(false), _textureId(0), _filename(fname_) {
     ilGenImages(1, &_imgId);
 }
 
@@ -18,13 +18,21 @@ GRand::Texture::~Texture() {
     ilDeleteImage(_imgId);
 }
 
-void GRand::Texture::load() noexcept {
+void GRand::Texture::_load() {
+    std::cout << "load texture:" << _filename << std::endl;
     if (!_textureId) {
 	 glDeleteTextures(1, &_textureId);
 	 _textureId = 0;
     }
     glGenTextures(1, &_textureId);
     glBindTexture(GL_TEXTURE_2D, _textureId);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    glGenerateMipmap(GL_TEXTURE_2D);
 
     if (_filename.size() == 0) {
 	std::cout << "\e[33;1mno texture file name, using the default one\e[0m" << std::endl;
@@ -50,12 +58,9 @@ void GRand::Texture::load() noexcept {
     if ((errCode = glGetError()) != GL_NO_ERROR) {
 	std::cout << _glErrorToString[errCode - GL_INVALID_ENUM] << std::endl;
     }
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    //glGenerateMipmap(GL_TEXTURE_2D);
     _loaded = true;
+}
+
+void GRand::Texture::load() noexcept {
+    _core->queueIntruction(std::bind(&Texture::_load, this));
 }
