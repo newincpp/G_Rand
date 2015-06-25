@@ -9,7 +9,7 @@ in vec3 eye;
 
 out vec4 outColor;
 
-uniform sampler2D tex[8];
+uniform sampler2D tex[16];
 
 vec4 lighting(vec4 diffuse) {
     vec4 spec = vec4(0.0);

@@ -63,7 +63,7 @@ void GRand::Shader::compile() noexcept {
 GRand::Shader::~Shader() {
 }
 
-const char* const GRand::Material::_StexStringArray_[8] = {
+const char* const GRand::Material::_StexStringArray_[16] = {
     "tex[0]",
     "tex[1]",
     "tex[2]",
@@ -71,6 +71,14 @@ const char* const GRand::Material::_StexStringArray_[8] = {
     "tex[4]",
     "tex[5]",
     "tex[7]",
+    "tex[8]",
+    "tex[9]",
+    "tex[10]",
+    "tex[11]",
+    "tex[12]",
+    "tex[13]",
+    "tex[14]",
+    "tex[15]",
 };
 
 GRand::Material::Material(Core* c_) : _shaderProgram(0), _core(c_) {

@@ -44,6 +44,7 @@ bool GRand::GPUBuffer::loadFile(std::string const &name) {
 	std::cout << "Couldn't open file: " << name << std::endl;
 	return false;
     }
+    std::cout << "file" << name << " read" << std::endl;
     importer.SetProgressHandler(new AssimpProgressHandlerOverload(" " + name));
     const aiScene* scene = importer.ReadFile(name.c_str(), aiProcessPreset_TargetRealtime_Quality | aiProcess_Triangulate);
     if (!scene) {
@@ -54,12 +55,12 @@ bool GRand::GPUBuffer::loadFile(std::string const &name) {
     _elementArray.clear();
     _getAllFaces(scene, scene->mRootNode);
     std::cout << "loading finished" << std::endl;
+    importer.FreeScene();
     return true;
 }
 
 void GRand::GPUBuffer::_getAllFaces(const struct aiScene *sc, const struct aiNode* nd) {
     unsigned int n = 0;
-    unsigned int pctg = 0;
 
     for (; n < nd->mNumMeshes; ++n) {
 	const struct aiMesh* mesh = sc->mMeshes[nd->mMeshes[n]];
@@ -141,16 +142,11 @@ void GRand::GPUBuffer::CPUFree() {
 }
 
 void GRand::GPUBuffer::draw(GLenum drawStyle_) const noexcept {
-    int numberFloatsPerVertex = 3; // there are always the 3 coord of the vertex
+    int numberFloatsPerVertex = 3 + (3 * _hasNormals) + (2 * _hasTexture); // there are always the 3 coord of the vertex
     glEnableVertexAttribArray(2); // enable vertex shader parameter value
-    if (_hasNormals) {
-	numberFloatsPerVertex += 3;
-	glEnableVertexAttribArray(3); // enable normal shader parameter value
-    }
-    if (_hasTexture) {
-	numberFloatsPerVertex += 2;
-	glEnableVertexAttribArray(4);
-    }
+    glEnableVertexAttribArray(3); // enable normal shader parameter value
+    glEnableVertexAttribArray(4);
+
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ebo);
     glBindBuffer(GL_ARRAY_BUFFER, _vbo);
 
@@ -165,10 +161,6 @@ void GRand::GPUBuffer::draw(GLenum drawStyle_) const noexcept {
     // draw the polygon with the shader on the OpenGL draw buffer
     glDrawElements(drawStyle_, _elementArray.size(), GL_UNSIGNED_INT, 0);
     glDisableVertexAttribArray(2);
-    if (_hasNormals) {
-	glDisableVertexAttribArray(3);
-    }
-    if (_hasTexture) {
-	glDisableVertexAttribArray(4);
-    }
+    glDisableVertexAttribArray(3);
+    glDisableVertexAttribArray(4);
 }

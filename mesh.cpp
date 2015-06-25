@@ -7,6 +7,7 @@ GRand::Mesh::Mesh(Core* e_, Material* m_) : _core(e_), _material(m_) {
 void GRand::Mesh::set(const GPUBuffer& b_) noexcept {
     _gb = b_;
     _core->queueIntruction(std::bind(&Mesh::_uploadBuffer, this));
+    _core->addPersistantInstruction(std::bind(&Mesh::_render, this));
 }
 
 void GRand::Mesh::fromFile(const std::string& fname_) {

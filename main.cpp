@@ -4,7 +4,7 @@
 
 #include <GRand>
 
-int main(int ac, char** av){
+int main(int ac, char** av) {
     GRand::Core::Config cfg;
     GRand::Core::Config::autoConf(cfg);
     GRand::Core* e = GRand::Core::start(cfg);
@@ -12,21 +12,23 @@ int main(int ac, char** av){
     e->addPersistantInstruction([](){ glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); });
     GRand::Material mat(e);
     std::vector<GRand::Mesh> mesh;
+
+    mat.addShader(GL_FRAGMENT_SHADER, "./shaders/phongFrag.glsl");
+    mat.addShader(GL_VERTEX_SHADER, "./shaders/phongVert.glsl");
+    mat.link();
+
     if (ac > 1) {
-	while (ac - 1) {
+	int i = 1;
+	while (ac > i) {
+	    std::cout << av[i] << std::endl;
 	    mesh.emplace_back(e, &mat);
-	    mesh[mesh.size() - 1].fromFile(av[ac - 1]);
-	    ac--;
+	    mesh[mesh.size() - 1].fromFile(av[i]);
+	    ++i;
 	}
     } else {
 	mesh.emplace_back(e, &mat);
 	mesh[0].fromFile("./testModels/monkey.dae");
     }
-
-
-    mat.addShader(GL_FRAGMENT_SHADER, "./shaders/phongFrag.glsl");
-    mat.addShader(GL_VERTEX_SHADER, "./shaders/phongVert.glsl");
-    mat.link();
 
     GRand::Texture t("tex.png");
     mat.addTexture(&t);

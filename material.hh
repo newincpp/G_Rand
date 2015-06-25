@@ -12,7 +12,7 @@ namespace GRand {
     class Shader;
     class Material {
 	private:
-	    static const char* const _StexStringArray_[8];
+	    static const char* const _StexStringArray_[16];
 	    GLuint _shaderProgram;
 	    GLuint _samplerArrayLocation;
 	    Core* _core;
