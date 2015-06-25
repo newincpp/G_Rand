@@ -10,7 +10,7 @@ const char* const GRand::Texture::_glErrorToString[7] = {
     "GL_INVALID_FRAMEBUFFER_OPERATION" // 1286
 };
 
-GRand::Texture::Texture(Core* c_, const std::string& fname_) : _core(c_), _loaded(false), _textureId(0), _filename(fname_) {
+GRand::Texture::Texture(const std::string& fname_) : _loaded(false), _textureId(0), _filename(fname_) {
     ilGenImages(1, &_imgId);
 }
 
@@ -18,8 +18,7 @@ GRand::Texture::~Texture() {
     ilDeleteImage(_imgId);
 }
 
-void GRand::Texture::_load() {
-    std::cout << "load texture:" << _filename << std::endl;
+void GRand::Texture::load() noexcept {
     if (!_textureId) {
 	 glDeleteTextures(1, &_textureId);
 	 _textureId = 0;
@@ -59,8 +58,4 @@ void GRand::Texture::_load() {
 	std::cout << _glErrorToString[errCode - GL_INVALID_ENUM] << std::endl;
     }
     _loaded = true;
-}
-
-void GRand::Texture::load() noexcept {
-    _core->queueIntruction(std::bind(&Texture::_load, this));
 }

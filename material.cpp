@@ -136,7 +136,7 @@ decltype(GRand::Material::_textures)::const_iterator GRand::Material::addTexture
 	std::cout << "\e[33myou are exeeding the maximum amout of textures:" << maxTex << "\e[0m" << std::endl;
     }
     if (!t_->isLoaded()) {
-	t_->load();
+	_core->queueIntruction([t_](){ t_->load(); });
     }
     _textures.push_back(t_);
     _uTextureAmount.get() = _textures.size();

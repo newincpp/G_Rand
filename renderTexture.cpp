@@ -1,6 +1,6 @@
 #include "renderTexture.hh"
 
-GRand::RenderTexture::RenderTexture() : Texture(NULL) {
+GRand::RenderTexture::RenderTexture() {
     glGenFramebuffers(1, &_framebufferID);
     glBindFramebuffer(GL_FRAMEBUFFER, _framebufferID);
 }
