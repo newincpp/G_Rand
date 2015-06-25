@@ -19,6 +19,7 @@ This engine is purely public which imply:
     * remote-style transformation (see controller class example)
     * easy display configuration
     * easy/casi-invisible Uniform values
+    * textures (using DevIL)
 
 **what does still not work properly:**
 
@@ -28,7 +29,7 @@ This engine is purely public which imply:
    
 **what is planed soon:**
 
-    * textures (every types in the generic way)
+    * minimalistic input management
     * framebuffer rendering
     * multipass shader
     * dynamic lights
