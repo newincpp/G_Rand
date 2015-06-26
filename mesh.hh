@@ -1,7 +1,6 @@
 #ifndef MESH_H_
 # define MESH_H_
 
-#include <eigen3/Eigen/Dense>
 #include "GPUBuffer.hh"
 #include "core.hh"
 #include "material.hh"

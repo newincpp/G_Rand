@@ -4,7 +4,6 @@
 #include <vector>
 #include <uniform.hh>
 #include <GL/glew.h>
-#include <eigen3/Eigen/Dense>
 #include <assimp/Importer.hpp>
 
 namespace GRand {

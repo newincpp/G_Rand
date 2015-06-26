@@ -9,7 +9,7 @@ namespace GRand {
 	private:
 	    typedef glm::mat4 MatType;
 	    typedef glm::vec3 VectorType;
-	    Uniform<glm::mat4> _utrans;
+	    Uniform<MatType> _utrans;
 	public:
 	    explicit Controller();
 	    void translate(const VectorType&);

@@ -23,6 +23,5 @@ void GRand::Controller::setUniform(const decltype(_utrans)& _newUniform) {
 }
 
 void GRand::Controller::refresh() {
-    std::cout << "?" << std::endl;
     _utrans.upload();
 }

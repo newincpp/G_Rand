@@ -41,7 +41,6 @@ int main(int ac, char** av) {
     cam.setPos(GRand::Camera::VectorType(0,.2,0.6));
     cam.lookAt(GRand::Camera::VectorType(0,0,1.4));
 
-    //ctrl->rotate(-1.571, Eigen::Vector3f::UnitX());
     ctrl->rotate(0, GRand::Camera::VectorType(0.0f,1.0f,0.0f));
     ctrl->translate(GRand::Camera::VectorType(0.0f,-0.5f,0.0f));
     ctrl->scale(GRand::Camera::VectorType(0.1f,0.1f,0.1f));

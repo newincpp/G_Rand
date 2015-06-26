@@ -13,6 +13,7 @@ SRC	=main.cpp \
 
 EXT     =cpp
 NAME	=demo
+GLM_DEFINE=-DGLM_SWIZZLE -DGLM_FORCE_INLINE -DGLM_FORCE_AVX
 CXXFLAGS= -Wall -Wextra -W -std=c++0x -I./ -I./include
 LIBDEVIL= ./libs/libILUT.a ./libs/libILU.a ./libs/libIL.a -ljpeg -lpng16 -ltiff -lGLU
 LIBASSIMPANDDEPS= ./libs/libassimp.a ./libs/libminizip.a ./libs/libz.a

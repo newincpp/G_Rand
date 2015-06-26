@@ -1,7 +1,7 @@
 #include "depthTexture.hh"
 
 template <>
-GRand::DepthTexture<true>::DepthTexture(_Int, _Int) {
+GRand::DepthTexture<true>::DepthTexture(::GRand::DepthTexture<true>::_Int, ::GRand::DepthTexture<true>::_Int) {
     glGenFramebuffers(1, &_fbId.value);
     glBindFramebuffer(GL_FRAMEBUFFER_EXT, _fbId.value);
 
