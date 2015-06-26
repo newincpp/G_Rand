@@ -39,7 +39,7 @@ GRand::Mesh::~Mesh() {
 
 void GRand::Mesh::_render() const noexcept{
     _material->use();
-    //_remote->refresh();
+    _remote->refresh();
     _gb.draw(GL_TRIANGLES);
 }
 
