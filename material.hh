@@ -23,6 +23,7 @@ namespace GRand {
 	    void _addShader(GLenum, const std::string&) noexcept;
 	public:
 	    explicit Material(Core*);
+	    ~Material();
 	    void addShader(GLenum, const std::string&) noexcept;
 	    void link()noexcept;
 	    void use()const noexcept;
@@ -31,7 +32,6 @@ namespace GRand {
 	    void excludeTexture(decltype(_textures)::iterator);
 	    template <typename T> Uniform<T> getUniform(const std::string&);
 	    inline decltype(_textures)& getTextureList();
-	    ~Material();
     };
 }
 

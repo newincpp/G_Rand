@@ -1,9 +1,10 @@
 #include "controller.hh"
-#include <glm/gtx/transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include "glm/gtx/transform.hpp"
 
 GRand::Controller::Controller() {
     _utrans.get() = MatType(1.0f);
-    _utrans.__manual_Location_setting__(0);
+    _utrans.__manual_Location_setting__(3);
 }
 
 void GRand::Controller::translate(const VectorType& f_) {

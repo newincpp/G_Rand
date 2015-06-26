@@ -126,15 +126,18 @@ void GRand::Material::_link() noexcept {
 }
 
 void GRand::Material::use() const noexcept {
+    glUseProgram(_shaderProgram);
+    _uTextureAmount.upload(); 
+    if (_textures.size() != _uTextureAmount.get()) {
+	std::cout << "\e[31;1m_texture.size() = " << _textures.size() << " != uniform TextureAmount = " << _uTextureAmount.get() << "\e[0m" << std::endl;
+	return;
+    }
     unsigned int i = 0;
-    glEnable(GL_TEXTURE_2D);
-
     for (decltype(_textures)::value_type t : _textures) {
 	t->bind(GL_TEXTURE0 + i);
         glUniform1i(glGetUniformLocation(_shaderProgram, _StexStringArray_[i]), i);
+	++i;
     }
-    _uTextureAmount.upload(); 
-    glUseProgram(_shaderProgram);
 }
 
 decltype(GRand::Material::_textures)::const_iterator GRand::Material::addTexture(Texture* t_) {

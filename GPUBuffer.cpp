@@ -9,6 +9,10 @@
 #include "AssimpProgressHandlerOverload.hh"
 #include "GPUBuffer.hh"
 
+#define VERTEX_LOCATION_ 0
+#define NORMAL_LOCATION_ 1
+#define UV_LOCATION_ 2
+
 GRand::GPUBuffer::GPUBuffer() : _vbo(0), _ebo(0), _hasNormals(false), _hasTexture(false) {
 }
 
@@ -36,7 +40,6 @@ void GRand::GPUBuffer::operator=(const GPUBuffer& o_) {
 bool GRand::GPUBuffer::loadFile(std::string const &name) {
     Assimp::Importer importer;
 
-    std::cout << "loading:" << name << std::endl;
     std::ifstream fin(name.c_str());
     if (!fin.fail()) {
 	fin.close();
@@ -44,7 +47,6 @@ bool GRand::GPUBuffer::loadFile(std::string const &name) {
 	std::cout << "Couldn't open file: " << name << std::endl;
 	return false;
     }
-    std::cout << "file" << name << " read" << std::endl;
     importer.SetProgressHandler(new AssimpProgressHandlerOverload(" " + name));
     const aiScene* scene = importer.ReadFile(name.c_str(), aiProcessPreset_TargetRealtime_Quality | aiProcess_Triangulate);
     if (!scene) {
@@ -54,7 +56,6 @@ bool GRand::GPUBuffer::loadFile(std::string const &name) {
     _vertexArray.clear();
     _elementArray.clear();
     _getAllFaces(scene, scene->mRootNode);
-    std::cout << "loading finished" << std::endl;
     importer.FreeScene();
     return true;
 }
@@ -143,24 +144,24 @@ void GRand::GPUBuffer::CPUFree() {
 
 void GRand::GPUBuffer::draw(GLenum drawStyle_) const noexcept {
     int numberFloatsPerVertex = 3 + (3 * _hasNormals) + (2 * _hasTexture); // there are always the 3 coord of the vertex
-    glEnableVertexAttribArray(2); // enable vertex shader parameter value
-    glEnableVertexAttribArray(3); // enable normal shader parameter value
-    glEnableVertexAttribArray(4);
+    glEnableVertexAttribArray(VERTEX_LOCATION_); // enable vertex shader parameter value
+    glEnableVertexAttribArray(NORMAL_LOCATION_); // enable normal shader parameter value
+    glEnableVertexAttribArray(UV_LOCATION_);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ebo);
     glBindBuffer(GL_ARRAY_BUFFER, _vbo);
 
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, numberFloatsPerVertex * sizeof(decltype(_vertexArray)::value_type), (void*)0); // vertex
+    glVertexAttribPointer(VERTEX_LOCATION_, 3, GL_FLOAT, GL_FALSE, numberFloatsPerVertex * sizeof(decltype(_vertexArray)::value_type), (void*)0); // vertex
     if (_hasNormals) {
-	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, numberFloatsPerVertex * sizeof(decltype(_vertexArray)::value_type), (void*)(3 * sizeof(decltype(_vertexArray)::value_type))); //normal
+	glVertexAttribPointer(NORMAL_LOCATION_, 3, GL_FLOAT, GL_FALSE, numberFloatsPerVertex * sizeof(decltype(_vertexArray)::value_type), (void*)(3 * sizeof(decltype(_vertexArray)::value_type))); //normal
     }
     if (_hasTexture) {
-	glVertexAttribPointer(4, 2, GL_FLOAT, GL_FALSE, numberFloatsPerVertex * sizeof(decltype(_vertexArray)::value_type), (void*)(6 * sizeof(decltype(_vertexArray)::value_type))); //uv
+	glVertexAttribPointer(UV_LOCATION_, 2, GL_FLOAT, GL_FALSE, numberFloatsPerVertex * sizeof(decltype(_vertexArray)::value_type), (void*)(6 * sizeof(decltype(_vertexArray)::value_type))); //uv
     }
 
     // draw the polygon with the shader on the OpenGL draw buffer
     glDrawElements(drawStyle_, _elementArray.size(), GL_UNSIGNED_INT, 0);
-    glDisableVertexAttribArray(2);
-    glDisableVertexAttribArray(3);
-    glDisableVertexAttribArray(4);
+    glDisableVertexAttribArray(VERTEX_LOCATION_);
+    glDisableVertexAttribArray(NORMAL_LOCATION_);
+    glDisableVertexAttribArray(UV_LOCATION_);
 }

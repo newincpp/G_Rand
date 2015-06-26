@@ -45,6 +45,7 @@ void GRand::Core::_interal_WaitForWindow_() {
 	glDepthFunc(GL_LESS);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_TEXTURE_2D);
 
 	ilInit();
 	ilClearColour(0, 255, 0, 0);
