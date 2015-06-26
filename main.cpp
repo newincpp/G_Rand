@@ -13,22 +13,28 @@ int main(int ac, char** av) {
     GRand::Material mat(e);
     std::vector<GRand::Mesh> mesh;
 
+    std::cout << ">>>>> step1" << std::endl;
     mat.addShader(GL_FRAGMENT_SHADER, "./shaders/phongFrag.glsl");
     mat.addShader(GL_VERTEX_SHADER, "./shaders/phongVert.glsl");
     mat.link();
 
+    std::cout << ">>>>> step2" << std::endl;
     if (ac > 1) {
 	int i = 1;
 	while (ac > i) {
-	    std::cout << av[i] << std::endl;
+	    std::cout << "av[i]: " << av[i] << std::endl;
 	    mesh.emplace_back(e, &mat);
+	    std::cout << "created: " << av[i] << std::endl;
 	    mesh[mesh.size() - 1].fromFile(av[i]);
+	    std::cout << "generated: " << av[i] << std::endl;
 	    ++i;
 	}
     } else {
 	mesh.emplace_back(e, &mat);
 	mesh[0].fromFile("./testModels/monkey.dae");
     }
+
+    std::cout << ">>>>> step3" << std::endl;
 
     GRand::Texture t("tex.png");
     mat.addTexture(&t);
@@ -41,10 +47,13 @@ int main(int ac, char** av) {
     cam.setPos(GRand::Camera::VectorType(0,.2,0.6));
     cam.lookAt(GRand::Camera::VectorType(0,0,1.4));
 
+    std::cout << ">>>>> step4" << std::endl;
+
     ctrl->rotate(0, GRand::Camera::VectorType(0.0f,1.0f,0.0f));
     ctrl->translate(GRand::Camera::VectorType(0.0f,-0.5f,0.0f));
     ctrl->scale(GRand::Camera::VectorType(0.1f,0.1f,0.1f));
 
+    std::cout << ">>>>> step5" << std::endl;
     while (e->getStateValidity()) { 
 	usleep(10000);
 	ctrl->rotate(0.01, GRand::Camera::VectorType(0.0f,1.0f,0.0f));
