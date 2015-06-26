@@ -1,25 +1,25 @@
-#include "EigenUtility.hh"
+#include <glm/gtc/matrix_transform.hpp>
 #include "camera.hh"
 
-GRand::Camera::Camera(Core* e_) : _core(e_), _center(Eigen::Vector3f::Zero()), _target(Eigen::Vector3f::Zero()) {
-    _utrans.get() = matType::Identity();
+GRand::Camera::Camera(Core* e_) : _core(e_), _center(0.0f), _target(0.0f) {
+    _utrans.get() = MatType(1.0f);
     _utrans.__manual_Location_setting__(1);
     _core->addPersistantInstruction(std::bind(&Camera::_refresh, this));
 }
 
-void GRand::Camera::translate(const Eigen::Vector3f& f_) {
+void GRand::Camera::translate(const Camera::VectorType& f_) {
     _center += f_;
-    _utrans.get() = ::lookAt<float>(_center, _target, Eigen::Vector3f::UnitY());
+    _utrans.get() = glm::lookAt(_center, _target, Camera::VectorType(0.0f, 1.0f, 0.0f));
 }
 
-void GRand::Camera::setPos(const Eigen::Vector3f& f_) {
+void GRand::Camera::setPos(const Camera::VectorType& f_) {
     _center = f_;
-    _utrans.get() = ::lookAt<float>(_center, _target, Eigen::Vector3f::UnitY());
+    _utrans.get() = glm::lookAt(_center, _target, Camera::VectorType(0.0f, 1.0f, 0.0f));
 }
 
-void GRand::Camera::lookAt(const Eigen::Vector3f& f_) {
+void GRand::Camera::lookAt(const Camera::VectorType& f_) {
     _target = f_;
-    _utrans.get() = ::lookAt<float>(_center, _target, Eigen::Vector3f::UnitY());
+    _utrans.get() = glm::lookAt(_center, _target, Camera::VectorType(0.0f, 1.0f, 0.0f));
 }
 
 void GRand::Camera::_refresh() {

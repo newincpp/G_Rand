@@ -1,25 +1,26 @@
 #ifndef CAMERA_H_
 # define CAMERA_H_
 
-#include <eigen3/Eigen/Dense>
+#include <glm/glm.hpp>
 #include "core.hh"
 #include "uniform.hh"
 
 namespace GRand {
     class Camera {
 	public:
-	    typedef Eigen::Matrix4f matType ;
+	    typedef glm::mat4 MatType;
+	    typedef glm::vec3 VectorType;
 	private:
 	    Core* _core;
-	    Uniform<matType> _utrans;
-	    Eigen::Vector3f _center;
-	    Eigen::Vector3f _target;
+	    Uniform<MatType> _utrans;
+	    VectorType _center;
+	    VectorType _target;
 	    void _refresh();
 	public:
 	    explicit Camera(Core*);
-	    void translate(const Eigen::Vector3f&);
-	    void setPos(const Eigen::Vector3f&);
-	    void lookAt(const Eigen::Vector3f&);
+	    void translate(const VectorType&);
+	    void setPos(const VectorType&);
+	    void lookAt(const VectorType&);
     };
 }
 

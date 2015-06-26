@@ -1,6 +1,11 @@
 #include "mesh.hh"
 
-GRand::Mesh::Mesh(Core* e_, Material* m_) : _core(e_), _material(m_) {
+GRand::Mesh::Mesh(Core* e_, Material* m_) : _core(e_), _material(m_), _remote(NULL) {
+    if (!e_) {
+	std::cout << "\e[31;1mgiving null as a pointer to Core will result to a segmentation fault\e0m" << std::endl;
+    } if (!m_) {
+	std::cout << "\e[31;1mgiving null as a pointer to Material will result to a segmentation fault\e0m" << std::endl;
+    }
     std::cout << "add mesh" << std::endl;
 }
 
@@ -34,9 +39,7 @@ GRand::Mesh::~Mesh() {
 
 void GRand::Mesh::_render() const noexcept{
     _material->use();
-    if (_remote) {
-	_remote->refresh();
-    }
+    _remote->refresh();
     _gb.draw(GL_TRIANGLES);
 }
 

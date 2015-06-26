@@ -38,17 +38,17 @@ int main(int ac, char** av) {
     //ctrl->rotate(1.571f, Eigen::Vector3f::UnitX());
     //ctrl->scale(Eigen::Vector3f(0.8f, 0.8f, 0.8f));
     GRand::Camera cam(e);
-    cam.setPos(Eigen::Vector3f(0,.2,0.6));
-    cam.lookAt(Eigen::Vector3f(0,0,1.4));
+    cam.setPos(GRand::Camera::VectorType(0,.2,0.6));
+    cam.lookAt(GRand::Camera::VectorType(0,0,1.4));
 
     //ctrl->rotate(-1.571, Eigen::Vector3f::UnitX());
-    ctrl->rotate(0, Eigen::Vector3f::UnitX());
-    ctrl->translate(Eigen::Vector3f(0,-0.5,0));
-    ctrl->scale(Eigen::Vector3f(0.1,0.1,0.1));
+    ctrl->rotate(0, GRand::Camera::VectorType(0.0f,1.0f,0.0f));
+    ctrl->translate(GRand::Camera::VectorType(0.0f,-0.5f,0.0f));
+    ctrl->scale(GRand::Camera::VectorType(0.1f,0.1f,0.1f));
 
     while (e->getStateValidity()) { 
 	usleep(10000);
-	ctrl->rotate(0.01, Eigen::Vector3f::UnitY());
+	ctrl->rotate(0.01, GRand::Camera::VectorType(0.0f,1.0f,0.0f));
     }
 
     delete e;
