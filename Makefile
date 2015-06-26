@@ -13,12 +13,12 @@ SRC	=main.cpp \
 
 EXT     =cpp
 NAME	=demo
-GLM_DEFINE=-DGLM_SWIZZLE -DGLM_FORCE_INLINE -DGLM_FORCE_AVX
-CXXFLAGS= -Wall -Wextra -W -std=c++0x -I./ -I./include
+GLM_DEFINE=-DGLM_SWIZZLE -DGLM_FORCE_AVX
+CXXFLAGS= -Wall -Wextra -W -std=c++0x -I./ -I./include $(GLM_DEFINE) -march=native
 LIBDEVIL= ./libs/libILUT.a ./libs/libILU.a ./libs/libIL.a -ljpeg -lpng16 -ltiff -lGLU
 LIBASSIMPANDDEPS= ./libs/libassimp.a ./libs/libminizip.a ./libs/libz.a
 DISPLAYLIBS=./libs/libGLEW.a ./libs/libglfw.a -lXrandr -lXi -lGL -lpthread -lX11 -lXxf86vm
-LDFLAGS	= $(LIBDEVIL) $(LIBASSIMPANDDEPS) $(DISPLAYLIBS)
+LDFLAGS	= $(LIBDEVIL) $(LIBASSIMPANDDEPS) $(DISPLAYLIBS) -march=native
 OBJS	= $(SRC:.$(EXT)=.o)
 RM	= rm -f
 CXX	= clang++
