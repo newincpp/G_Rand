@@ -3,7 +3,7 @@
 
 #include "texture.hh"
 namespace GRand {
-    class RenderTexture : public Texture {
+    class RenderTexture : private Texture {
 	private:
 	    GLuint _framebufferID;
 	    GLuint _depthBuffer;

@@ -12,9 +12,10 @@ namespace GRand {
 	    static const char* const _glErrorToString[7];
 	    bool _loaded;
 	    ILuint _imgId;
-	    GLuint _textureId;
-	    std::string _filename;
 	    void _load();
+	    std::string _filename;
+	protected:
+	    GLuint _textureId;
 	public:
 	    explicit Texture(const std::string& = "");
 	    virtual ~Texture();

@@ -29,6 +29,7 @@ namespace GRand {
 	    bool _validState;
 	    RenderTexture* _rtt;
 	    GLuint _renderVbo;
+	    GLuint _vboFboID;
 
 	    void _rmFunc(unsigned long);
 	    static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);

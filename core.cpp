@@ -10,6 +10,7 @@ GRand::Core::Core() : _window(NULL), _state(std::bind(&GRand::Core::_interal_Wai
 GRand::Core::~Core() {
     delete _rtt;
     glfwDestroyWindow(_window);
+    glDeleteBuffers(1, &_vboFboID);
     //glfwTerminate();
 }
 
@@ -62,13 +63,25 @@ void GRand::Core::_interal_WaitForWindow_() {
 	glBufferData(GL_ARRAY_BUFFER, vertexArray.size() * sizeof(decltype(vertexArray)::value_type), &(vertexArray[0]), GL_STATIC_DRAW);
 
 	_rtt = new RenderTexture(viewport[0], viewport[1]);
+
+
+	GLfloat fbo_vertices[] = {
+	    -1, -1,
+	    1, -1,
+	    -1,  1,
+	    1,  1,
+	};
+	glGenBuffers(1, &_vboFboID);
+	glBindBuffer(GL_ARRAY_BUFFER, _vboFboID);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(fbo_vertices), fbo_vertices, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 }
 
 void GRand::Core::_interal_render_() {
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
     //_rtt->bindFramebuffer();
 
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glClear(GL_COLOR_BUFFER_BIT);
     if (_instructionQueue.size()) {
 	_instructionQueue.front()();
@@ -78,6 +91,10 @@ void GRand::Core::_interal_render_() {
 	f();
     }
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+
+
+
     glfwSwapBuffers(_window);
     glfwPollEvents();
     _validState = !glfwWindowShouldClose(_window);
