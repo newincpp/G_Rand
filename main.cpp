@@ -8,7 +8,7 @@ int main(int ac, char** av) {
     GRand::Core::Config cfg;
     GRand::Core::Config::autoConf(cfg);
     GRand::Core* e = GRand::Core::start(cfg);
-    e->addPersistantInstruction([](){ glClearColor(0.05f, 0.05f, 0.05f, 0.0f);} );
+    e->addPersistantInstruction([](){ glClearColor(0.1f, 0.1f, 0.1f, 0.0f);} );
     e->addPersistantInstruction([](){ glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); });
     GRand::Material mat(e);
     std::vector<GRand::Mesh> mesh;

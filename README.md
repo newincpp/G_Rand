@@ -25,7 +25,6 @@ This engine is purely public which imply:
 
     *  a lot of features in the mesh are ignored
     * light are static to the shader for now (for test purpuse)
-   ~~MVP matrix has some bugs~~ (thanks to Yaakuro)
    
 **what is planed soon:**
 

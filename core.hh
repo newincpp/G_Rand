@@ -9,6 +9,7 @@
 #include <thread>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include "renderTexture.hh"
 
 namespace GRand {
     class Core {
@@ -26,6 +27,8 @@ namespace GRand {
 	    std::vector<std::function<void(void)>> _instructionList;
 	    std::map<int, std::function<void(void)>> _inputMap;
 	    bool _validState;
+	    RenderTexture* _rtt;
+	    GLuint _renderVbo;
 
 	    void _rmFunc(unsigned long);
 	    static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);

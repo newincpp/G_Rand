@@ -10,12 +10,13 @@ const char* const GRand::Texture::_glErrorToString[7] = {
     "GL_INVALID_FRAMEBUFFER_OPERATION" // 1286
 };
 
-GRand::Texture::Texture(const std::string& fname_) : _loaded(false), _textureId(0), _filename(fname_) {
-    ilGenImages(1, &_imgId);
+GRand::Texture::Texture(const std::string& fname_) : _loaded(false), _imgId(0), _textureId(0), _filename(fname_) {
 }
 
 GRand::Texture::~Texture() {
-    ilDeleteImage(_imgId);
+    if (_imgId) {
+	ilDeleteImage(_imgId);
+    }
 }
 
 void GRand::Texture::load() noexcept {
@@ -23,14 +24,7 @@ void GRand::Texture::load() noexcept {
 	 glDeleteTextures(1, &_textureId);
 	 _textureId = 0;
     }
-    glGenTextures(1, &_textureId);
-    glBindTexture(GL_TEXTURE_2D, _textureId);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
+    GPUGen();
     glGenerateMipmap(GL_TEXTURE_2D);
 
     if (_filename.size() == 0) {
@@ -43,6 +37,7 @@ void GRand::Texture::load() noexcept {
 	return;
     }
     std::cout << "loading file: " << _filename << std::endl;
+    ilGenImages(1, &_imgId);
     ilBindImage(_imgId);
     ilEnable(IL_ORIGIN_SET);
     ilOriginFunc(IL_ORIGIN_LOWER_LEFT);	
@@ -58,4 +53,20 @@ void GRand::Texture::load() noexcept {
 	std::cout << _glErrorToString[errCode - GL_INVALID_ENUM] << std::endl;
     }
     _loaded = true;
+}
+
+void GRand::Texture::GPUGen() noexcept {
+    glGenTextures(1, &_textureId);
+    glBindTexture(GL_TEXTURE_2D, _textureId);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+}
+
+void GRand::Texture::GPUFree() noexcept {
+    if (_textureId) {
+	 glDeleteTextures(1, &_textureId);
+	 _textureId = 0;
+    }
 }

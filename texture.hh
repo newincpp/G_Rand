@@ -20,6 +20,8 @@ namespace GRand {
 	    virtual ~Texture();
 	    virtual void load()noexcept;
 	    void locate(GLuint)noexcept;
+	    void GPUFree()noexcept;
+	    void GPUGen()noexcept;
 	    inline bool isLoaded() const noexcept { return _loaded; }
 	    inline void setFilename(const std::string& f_) { _filename = f_; }
 	    inline void bind(GLenum textureUnit_) const noexcept {
