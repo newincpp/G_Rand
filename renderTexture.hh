@@ -3,13 +3,14 @@
 
 #include "texture.hh"
 namespace GRand {
-    class RenderTexture : private Texture {
+    class RenderTexture : public Texture {
 	private:
 	    GLuint _framebufferID;
 	    GLuint _depthBuffer;
 	public:
 	    explicit RenderTexture(unsigned int, unsigned int);
 	    void bindFramebuffer();
+	    virtual void load()noexcept;
 	    
 	    ~RenderTexture();
     };

@@ -47,6 +47,12 @@ int main(int ac, char** av) {
     ctrl->translate(GRand::Camera::VectorType(0.0f,-0.5f,0.0f));
     ctrl->scale(GRand::Camera::VectorType(0.1f,0.1f,0.1f));
 
+    e->noPostProcess(true);
+    //GRand::Material postProcessMat(e);
+    //postProcessMat.addShader(GL_VERTEX_SHADER, "./shaders/2DVert.glsl");
+    //postProcessMat.addShader(GL_FRAGMENT_SHADER, "./shaders/simpleFrag.glsl");
+    //postProcessMat.link();
+    //e->setMaterialPostProcess(postProcessMat);
     while (e->getStateValidity()) { 
 	usleep(10000);
 	ctrl->rotate(0.01, GRand::Camera::VectorType(0.0f,1.0f,0.0f));

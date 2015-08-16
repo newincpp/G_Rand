@@ -12,6 +12,7 @@
 #include "renderTexture.hh"
 
 namespace GRand {
+    class Material;
     class Core {
 	private:
 	    explicit Core();
@@ -30,8 +31,10 @@ namespace GRand {
 	    RenderTexture* _rtt;
 	    GLuint _renderVbo;
 	    GLuint _vboFboID;
+	    GLint _postProcessProgram;
 
 	    void _rmFunc(unsigned long);
+	    void _genPPvbo();
 	    static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 	public:
 	    struct Config {
@@ -50,6 +53,8 @@ namespace GRand {
 	    void deletePersistantInstruction(unsigned long i_);
 	    void addInputCallback(int, const std::function<void(void)>&);
 	    bool getStateValidity();
+	    void noPostProcess(bool=false);
+	    void setMaterialPostProcess(GRand::Material&);
     };
 }
 

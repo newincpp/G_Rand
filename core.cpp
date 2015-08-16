@@ -8,7 +8,9 @@ GRand::Core::Core() : _window(NULL), _state(std::bind(&GRand::Core::_interal_Wai
 }
 
 GRand::Core::~Core() {
-    delete _rtt;
+    if (_rtt) {
+	delete _rtt;
+    }
     glfwDestroyWindow(_window);
     glDeleteBuffers(1, &_vboFboID);
     //glfwTerminate();
@@ -57,13 +59,16 @@ void GRand::Core::_interal_WaitForWindow_() {
 	glGetIntegerv(GL_VIEWPORT, viewport);
 	std::cout << "res: " << viewport[0] << " " << viewport[1] << std::endl;
 
+	_genPPvbo();
+	_rtt = new RenderTexture(viewport[0], viewport[1]);
+    }
+}
+
+void GRand::Core::_genPPvbo() {
 	std::array<float, 8> vertexArray = {{ -1, 1, 1, 1, 1, -1, -1, -1 }};
 	glGenBuffers(1, &_renderVbo);
 	glBindBuffer(GL_ARRAY_BUFFER, _renderVbo);
 	glBufferData(GL_ARRAY_BUFFER, vertexArray.size() * sizeof(decltype(vertexArray)::value_type), &(vertexArray[0]), GL_STATIC_DRAW);
-
-	_rtt = new RenderTexture(viewport[0], viewport[1]);
-
 
 	GLfloat fbo_vertices[] = {
 	    -1, -1,
@@ -75,12 +80,21 @@ void GRand::Core::_interal_WaitForWindow_() {
 	glBindBuffer(GL_ARRAY_BUFFER, _vboFboID);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(fbo_vertices), fbo_vertices, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void GRand::Core::noPostProcess(bool destroy_) {
+    if (destroy_) {
+	delete _rtt;
+	_rtt=0;
     }
 }
 
 void GRand::Core::_interal_render_() {
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    //_rtt->bindFramebuffer();
+    // enable render into texture
+    if (_rtt) {
+	_rtt->bindFramebuffer();
+    }
+    // draw the elements
 
     glClear(GL_COLOR_BUFFER_BIT);
     if (_instructionQueue.size()) {
@@ -92,8 +106,15 @@ void GRand::Core::_interal_render_() {
     }
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-
-
+    if (_rtt) {
+	// draw the renderTexture into the screen
+	glBindVertexArray(_vboFboID);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0); // vertex
+	/* better if get from the active camera */
+	glUseProgram(_postProcessProgram);
+	_rtt->bind(GL_TEXTURE0);
+	glDrawArrays(GL_QUADS, 0, 4);
+    }
 
     glfwSwapBuffers(_window);
     glfwPollEvents();
@@ -192,3 +213,5 @@ void GRand::Core::key_callback(GLFWwindow* window, int key, int, int action, int
 //	}
     }
 }
+
+// void GRand::Core::setMaterialPostProcess(GRand::Material* m_) {     // in material.hh file

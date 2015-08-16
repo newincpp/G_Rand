@@ -6,7 +6,6 @@ GRand::RenderTexture::RenderTexture(unsigned int width_, unsigned int height_) {
     glGenRenderbuffers(1, &_depthBuffer);
     glBindRenderbuffer(GL_RENDERBUFFER, _depthBuffer);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width_, height_);
-    //glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _depthBuffer);
     GPUGen();
 
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, GRand::Texture::_textureId, 0);
@@ -27,4 +26,7 @@ GRand::RenderTexture::~RenderTexture() {
     GPUFree();
     glDeleteFramebuffers(1, &_framebufferID);
     glDeleteRenderbuffers(1, &_depthBuffer);
+}
+
+void GRand::RenderTexture::load()noexcept{
 }

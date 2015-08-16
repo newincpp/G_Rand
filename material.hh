@@ -32,6 +32,7 @@ namespace GRand {
 	    void excludeTexture(decltype(_textures)::iterator);
 	    template <typename T> Uniform<T> getUniform(const std::string&);
 	    inline decltype(_textures)& getTextureList();
+	    inline GLuint getShaderProgram()const;
     };
 }
 

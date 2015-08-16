@@ -162,8 +162,20 @@ decltype(GRand::Material::_textures)& GRand::Material::getTextureList() {
     return _textures;
 }
 
+GLuint GRand::Material::getShaderProgram() const {
+    return _shaderProgram;
+}
+
 GRand::Material::~Material() {
     for (Shader& s: _shaders) {
 	glDeleteShader(s.getId());
     }
+}
+
+
+// **************** material linked core functions **************** 
+
+void GRand::Core::setMaterialPostProcess(GRand::Material& m_) {
+    _postProcessProgram = m_.getShaderProgram();
+    m_.addTexture(_rtt);
 }
