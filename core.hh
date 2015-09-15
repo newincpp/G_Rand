@@ -7,6 +7,7 @@
 #include <queue>
 #include <map>
 #include <thread>
+#include <mutex>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include "renderTexture.hh"
@@ -16,7 +17,8 @@ namespace GRand {
     class Core {
 	private:
 	    explicit Core();
-	    static void _exec(Core**, std::thread*);
+	    //static void _exec(Core**, std::thread*);
+	    static void _exec(Core**, std::mutex*);
 	    void _coreLoop();
 
 	    void _interal_WaitForWindow_();

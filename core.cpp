@@ -11,6 +11,8 @@ GRand::Core::~Core() {
     if (_rtt) {
 	delete _rtt;
     }
+    _scope->join();
+    delete _scope;
     glfwDestroyWindow(_window);
     glDeleteBuffers(1, &_vboFboID);
     //glfwTerminate();
@@ -48,7 +50,6 @@ void GRand::Core::_interal_WaitForWindow_() {
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 	glEnable(GL_CULL_FACE);
-	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_TEXTURE_2D);
 
 	ilInit();
@@ -137,11 +138,9 @@ GRand::Core* GRand::Core::start(const Config& conf_) {
     }
     GRand::Core* e = NULL;
 
-    std::thread* t = new std::thread(_exec, &e, t);
-    if (!e) {
-	std::cout << "wait for engine*" << std::endl;
-	while (!e) { } // wierd lock to wait for the construction of the engine...
-    }
+    std::mutex m;
+    std::thread* t = new std::thread(_exec, &e, &m);
+    std::cout << "wait for engine*" << std::endl;
 
     GLFWmonitor* monitor = NULL;
     if (conf_.fullscreen) { // in case of fullscreen override the conf to get the native one for simplicity
@@ -160,13 +159,15 @@ GRand::Core* GRand::Core::start(const Config& conf_) {
 	glfwTerminate();
 	return NULL; 
     }
+    m.lock();
     e->_window = w;
+    e->_scope = t;
     return e;
 }
 
-void GRand::Core::_exec(GRand::Core** e_, std::thread* t_) {
+void GRand::Core::_exec(GRand::Core** e_, std::mutex* m_) {
     *e_ = new Core();
-    (*e_)->_scope = t_;
+    m_->unlock();
     (*e_)->_coreLoop();
 }
 
