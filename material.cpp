@@ -20,14 +20,14 @@ namespace GRand {
 		    GLint compileStatus;
 		    glGetShaderiv(_shaderId, GL_COMPILE_STATUS, &compileStatus);
 		    if (compileStatus) {
-			std::cout << "\033[0;32msuccesfully compiled\033[0m" << std::endl;
+			std::cout << "\033[32msuccesfully compiled\033[0m" << std::endl;
 			return true;
 		    }
 		    GLint InfoLogLength;
 		    glGetShaderiv(_shaderId, GL_INFO_LOG_LENGTH, &InfoLogLength);
 		    char ErrorMessage[InfoLogLength];
 		    glGetShaderInfoLog(_shaderId, InfoLogLength, NULL, ErrorMessage);
-		    std::cout << "\033[1;31mfailed to compile shader!" << std::endl <<
+		    std::cout << "\033[31mfailed to compile shader!\033[0m" << std::endl <<
 			"your shader:" << std::endl << 
 			_source << std::endl <<
 			"error log:" << std::endl << ErrorMessage << std::endl << "-------------------\033[0m" << std::endl;
@@ -103,7 +103,7 @@ void GRand::Material::_link() noexcept {
     _shaderProgram = glCreateProgram();
     for (Shader& s : _shaders) {
 	if (!s.getCompileStatus()) {
-	    std::cout << "\033[1;33m warning: not compiled shader found\033[0m" << std::endl;
+	    std::cout << "\033[33m warning: not compiled shader found\033[0m" << std::endl;
 	}
 	glAttachShader(_shaderProgram, s.getId());
     }
@@ -118,7 +118,7 @@ void GRand::Material::_link() noexcept {
 	glGetProgramInfoLog(_shaderProgram, InfoLogLength, NULL, ErrorMessage);
 	std::cout << "\033[0;31mfailed to link error log: " << std::endl << ErrorMessage << std::endl << "-------------------\033[0m" << std::endl;
     } else {
-	std::cout << "\033[0;32msuccessfully linked\033[0m" << std::endl;
+	std::cout << "\033[32msuccessfully linked\033[0m" << std::endl;
     }
 
     _uTextureAmount.__manual_Location_setting__(8);
@@ -129,7 +129,7 @@ void GRand::Material::use() const noexcept {
     glUseProgram(_shaderProgram);
     _uTextureAmount.upload(); 
     if (_textures.size() != _uTextureAmount.get()) {
-	std::cout << "\e[31;1m_texture.size() = " << _textures.size() << " != uniform TextureAmount = " << _uTextureAmount.get() << "\e[0m" << std::endl;
+	std::cout << "\033[31;1m_texture.size() = " << _textures.size() << " != uniform TextureAmount = " << _uTextureAmount.get() << "\e[0m" << std::endl;
 	return;
     }
     unsigned int i = 0;

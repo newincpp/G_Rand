@@ -98,12 +98,21 @@ void GRand::Core::_interal_render_() {
     // draw the elements
 
     glClear(GL_COLOR_BUFFER_BIT);
+#ifdef THREAD_SHOW
+    std::cout << "\033[1m";
+#endif
     if (_instructionQueue.size()) {
 	_instructionQueue.front()();
 	_instructionQueue.pop();
     }
     for (std::function<void()>& f : _instructionList) {
+#ifdef THREAD_SHOW
+	std::cout << "\033[1m";
 	f();
+	std::cout << "\033[0m";
+#else
+	f();
+#endif
     }
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 

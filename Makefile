@@ -12,9 +12,11 @@ SRC	=main.cpp \
 
 EXT     =cpp
 NAME	=demo
+DEFINE 	=-D THREAD_SHOW
+DEBUG 	= -g -fsanitize=memory
 #OPTIM= -march=native -O2
 #GLM_DEFINE=-DGLM_SWIZZLE -DGLM_FORCE_AVX
-CXXFLAGS= -Wall -Wextra -W -std=c++0x -I./ -I./include $(GLM_DEFINE) $(OPTIM) -g
+CXXFLAGS= -Wall -Wextra -W -std=c++0x -I./ -I./include $(GLM_DEFINE) $(OPTIM) $(DEFINE) 
 LIBDEVIL= ./libs/libILUT.a ./libs/libILU.a ./libs/libIL.a -ljpeg -lpng16 -ltiff -lGLU
 LIBASSIMPANDDEPS= ./libs/libassimp.a ./libs/libminizip.a ./libs/libz.a
 DISPLAYLIBS=./libs/libGLEW.a ./libs/libglfw.a -lXrandr -lXi -lGL -lpthread -lX11 -lXxf86vm
