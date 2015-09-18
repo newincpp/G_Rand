@@ -9,12 +9,13 @@ AssimpProgressHandlerOverload::AssimpProgressHandlerOverload(std::string msg) : 
 
 bool AssimpProgressHandlerOverload::Update(float percentage) {
     if (percentage != -1) {
-	std::cout << "Loading" << _loadingMessage << ": " << percentage << "%" << std::endl;
+	std::cout << "Loading" << _loadingMessage << ": " << percentage << "%";
 	_p = percentage;
     } else {
-	std::cout << "Loading" << _loadingMessage << ": " << _p << "%" << std::endl;
+	std::cout << "Loading" << _loadingMessage << ": " << _p << "%";
 	_p += 6;
     }
+    std::cout << "\r";
     return (true);
 }
 
