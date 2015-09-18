@@ -1,12 +1,3 @@
-#include <istream>
-#include <fstream>
-#include <iostream>
-#include <assimp/scene.h>
-#include <assimp/Importer.hpp>
-#include <assimp/postprocess.h>
-#include "assimp/ProgressHandler.hpp"
-#include <fstream>
-#include "AssimpProgressHandlerOverload.hh"
 #include "GPUBuffer.hh"
 
 #define VERTEX_LOCATION_ 0
@@ -37,73 +28,6 @@ void GRand::GPUBuffer::operator=(const GPUBuffer& o_) {
     _elementArray = o_._elementArray;
 }
 
-bool GRand::GPUBuffer::loadFile(std::string const &name) {
-    Assimp::Importer importer;
-
-    std::ifstream fin(name.c_str());
-    if (!fin.fail()) {
-	fin.close();
-    } else {
-	std::cout << "Couldn't open file: " << name << std::endl;
-	return false;
-    }
-    importer.SetProgressHandler(new AssimpProgressHandlerOverload(" " + name));
-    const aiScene* scene = importer.ReadFile(name.c_str(), aiProcessPreset_TargetRealtime_Quality | aiProcess_Triangulate);
-    if (!scene) {
-	std::cout << importer.GetErrorString() << std::endl;
-	return false;
-    }
-    _vertexArray.clear();
-    _elementArray.clear();
-    _getAllFaces(scene, scene->mRootNode);
-    importer.FreeScene();
-    return true;
-}
-
-void GRand::GPUBuffer::_getAllFaces(const struct aiScene *sc, const struct aiNode* nd) {
-    unsigned int n = 0;
-
-    for (; n < nd->mNumMeshes; ++n) {
-	const struct aiMesh* mesh = sc->mMeshes[nd->mMeshes[n]];
-	if (_vertexArray.size() + mesh->mNumFaces * 6 > _vertexArray.capacity()) {
-	    _vertexArray.reserve(_vertexArray.capacity() + mesh->mNumFaces * 9);
-	}
-	for (unsigned int i = 0; i < mesh->mNumVertices; ++i) {
-	    _vertexArray.push_back(mesh->mVertices[i].z);
-	    _vertexArray.push_back(mesh->mVertices[i].y);
-	    _vertexArray.push_back(mesh->mVertices[i].x);
-	    if (mesh->HasNormals()) {
-		_vertexArray.push_back(mesh->mNormals[i].z);
-		_vertexArray.push_back(mesh->mNormals[i].y);
-		_vertexArray.push_back(mesh->mNormals[i].x);
-		if (!_hasNormals) {
-		    _hasNormals = true;
-		}
-	    }
-	    if (mesh->HasTextureCoords(0)) {
-		_vertexArray.push_back(mesh->mTextureCoords[0][i].x);
-		_vertexArray.push_back(mesh->mTextureCoords[0][i].y);
-		if (!_hasTexture) {
-		    _hasTexture = true;
-		}
-	    }
-	}
-	if (_elementArray.size() + mesh->mNumFaces > _elementArray.capacity()) {
-	    _elementArray.reserve(_elementArray.capacity() + mesh->mNumFaces);
-	}
-	for (unsigned int t = 0; t < mesh->mNumFaces; ++t) {
-	    const struct aiFace* face = &mesh->mFaces[t];
-	    for (unsigned int i = 0; i < face->mNumIndices; i++) { // go through all vertices in face
-		unsigned int tmp = face->mIndices[i];
-		_elementArray.push_back(tmp);
-	    }
-	}
-    }
-    for (n = 0; n < nd->mNumChildren; ++n) {
-	_getAllFaces(sc, nd->mChildren[n]);
-    }
-}
-
 void GRand::GPUBuffer::regenVboEbo() {
     if (_vbo) {
 	glDeleteBuffers(1, &_vbo);
@@ -118,12 +42,10 @@ void GRand::GPUBuffer::regenVboEbo() {
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, _elementArray.size() * sizeof(decltype(_vertexArray)::value_type), &(_elementArray[0]), GL_STATIC_DRAW);
 }
 
-void GRand::GPUBuffer::setBuffer(const decltype(_vertexArray)& v_, const decltype(_elementArray)& e_) {
+void GRand::GPUBuffer::setBuffer() {
     if (_vbo) {
 	glDeleteBuffers(1, &_vbo);
     }
-    _vertexArray = v_;
-    _elementArray = e_;
     regenVboEbo();
 }
 

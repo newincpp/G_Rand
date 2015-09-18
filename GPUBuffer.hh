@@ -15,14 +15,16 @@ namespace GRand {
 	    bool _hasTexture;
 	    std::vector<GLfloat> _vertexArray;
 	    std::vector<GLuint> _elementArray;
-	    void _getAllFaces(const struct aiScene *sc, const struct aiNode*);
 	public:
 	    explicit GPUBuffer();
 	    GPUBuffer(const GPUBuffer&);
 	    ~GPUBuffer();
 	    void operator=(const GPUBuffer&);
-	    void setBuffer(const decltype(_vertexArray)& , const decltype(_elementArray)&);
-	    bool loadFile(std::string const &name);
+	    inline decltype(_vertexArray)& getVertexArray() { return _vertexArray; }
+	    inline decltype(_elementArray)& getElementArray() { return _elementArray; }
+	    inline void setHasNormals(bool&& b_) { _hasNormals = b_; }
+	    inline void setHasTexture(bool&& b_) { _hasTexture = b_; }
+	    void setBuffer();
 	    void regenVboEbo();
 	    void GPUFree();
 	    void CPUFree();
