@@ -4,6 +4,8 @@
 #include "IL/il.h"
 #include "core.hh"
 
+#include <chrono>
+
 GRand::Core::Core() : _window(NULL), _state(std::bind(&GRand::Core::_interal_WaitForWindow_, this)), _validState(true) {
 }
 
@@ -92,6 +94,10 @@ void GRand::Core::noPostProcess(bool destroy_) {
 
 void GRand::Core::_interal_render_() {
     // enable render into texture
+#ifdef FPS_COUNTER
+    std::chrono::high_resolution_clock::time_point before = std::chrono::high_resolution_clock::now();
+    std::chrono::high_resolution_clock::time_point after;
+#endif
     if (_rtt) {
 	_rtt->bindFramebuffer();
     }
@@ -127,6 +133,11 @@ void GRand::Core::_interal_render_() {
     }
 
     glfwSwapBuffers(_window);
+#ifdef FPS_COUNTER
+    after = std::chrono::high_resolution_clock::now();
+    float nanosec = std::chrono::duration_cast<std::chrono::nanoseconds>(after - before).count();
+    std::cout << nanosec << " ns = " << 1 / (nanosec / 1000000000) << "fps" << std::endl;
+#endif
     glfwPollEvents();
     _validState = !glfwWindowShouldClose(_window);
 }

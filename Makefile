@@ -12,7 +12,7 @@ SRC	=main.cpp \
 
 EXT     =cpp
 NAME	=demo
-DEFINE 	=-D THREAD_SHOW
+DEFINE 	=-D THREAD_SHOW #-D FPS_COUNTER
 DEBUG 	= -g 
 OPTIM= -march=native -O2
 GLM_DEFINE=-DGLM_SWIZZLE -DGLM_FORCE_AVX
@@ -40,4 +40,3 @@ fclean: clean
 re: make -B -j4
 
 .PHONY: all clean fclean re
-
