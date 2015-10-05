@@ -20,13 +20,13 @@ int main(int ac, char** av) {
     if (ac > 1) {
 	int i = 1;
 	while (ac > i) {
-	    mesh.emplace_back(e, &mat);
+	    mesh.emplace_back(e, mat);
 	    mesh[mesh.size() - 1].fromFile(av[i]);
 	    std::cout << "generated: " << av[i] << std::endl;
 	    ++i;
 	}
     } else {
-	mesh.emplace_back(e, &mat);
+	mesh.emplace_back(e, mat);
 	mesh[0].fromFile("./testModels/monkey.dae");
     }
 

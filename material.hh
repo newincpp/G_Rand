@@ -6,9 +6,9 @@
 #include <uniform.hh>
 #include "core.hh"
 #include "texture.hh"
+#include "shader.hh"
 
 namespace GRand {
-    class Shader;
     class Material {
 	private:
 	    static const char* const _StexStringArray_[16];
@@ -31,7 +31,10 @@ namespace GRand {
 	    void excludeTexture(decltype(_textures)::iterator);
 	    template <typename T> Uniform<T> getUniform(const std::string&);
 	    inline decltype(_textures)& getTextureList();
-	    inline GLuint getShaderProgram()const;
+	    inline GLuint getShaderProgram()const {
+		return _shaderProgram;
+	    }
+
     };
 }
 

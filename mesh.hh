@@ -10,7 +10,7 @@ namespace GRand {
     class Mesh {
 	private:
 	    Core* _core;
-	    Material* _material;
+	    Material& _material;
 	    GPUBuffer _gb;
 	    GLuint _vertexArray;
 
@@ -20,13 +20,13 @@ namespace GRand {
 	    void _render() const noexcept;
 	    void _uploadBuffer() noexcept;
 	public:
-	    explicit Mesh(Core* e, Material*);
+	    explicit Mesh(Core* e, Material&);
 	    void set(const GPUBuffer&)noexcept;
 	    void fromFile(const std::string&);
 	    Controller* genController();
 	    Controller* getController();
 	    void setExistantController(std::shared_ptr<Controller>);
-	    void setMaterial(Material* m_) { _material = m_; }
+	    void setMaterial(Material& m_) { _material = m_; }
 	    ~Mesh();
     };
 }

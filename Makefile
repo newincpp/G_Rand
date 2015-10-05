@@ -2,6 +2,7 @@ SRC	=main.cpp \
 	 core.cpp \
 	 mesh.cpp \
 	 material.cpp \
+	 shader.cpp \
 	 postProcMaterial.cpp \
 	 controller.cpp \
 	 uniform.cpp \
@@ -15,8 +16,8 @@ EXT     =cpp
 NAME	=demo
 DEFINE 	=-D THREAD_SHOW #-D FPS_COUNTER
 DEBUG 	= -g 
-OPTIM= -march=native -O2
-GLM_DEFINE=-DGLM_SWIZZLE -DGLM_FORCE_AVX
+#OPTIM= -march=native -O2
+#GLM_DEFINE=-DGLM_SWIZZLE -DGLM_FORCE_AVX
 CXXFLAGS= -Wall -Wextra -W -std=c++0x -I./ -I./include $(GLM_DEFINE) $(OPTIM) $(DEFINE) $(DEBUG)
 LIBDEVIL= ./libs/libILUT.a ./libs/libILU.a ./libs/libIL.a -ljpeg -lpng16 -ltiff -lGLU
 LIBASSIMPANDDEPS= ./libs/libassimp.a ./libs/libminizip.a ./libs/libz.a

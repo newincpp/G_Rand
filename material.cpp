@@ -1,67 +1,6 @@
-#include <iostream>
-#include <fstream>
-#include <string>
 #include <GL/glew.h>
 #include <GL/gl.h>
 #include "material.hh"
-
-namespace GRand {
-	class Shader {
-	    private:
-		GLuint _shaderId;
-		bool _compiled;
-		std::string _source;
-		inline void getStringFromFile(const std::string& filename) noexcept {
-		    std::ifstream t(filename);
-		    const std::string s((std::istreambuf_iterator<char>(t)), std::istreambuf_iterator<char>());
-		    _source = s;
-		}
-		inline bool _checkCompile()const noexcept {
-		    GLint compileStatus;
-		    glGetShaderiv(_shaderId, GL_COMPILE_STATUS, &compileStatus);
-		    if (compileStatus) {
-			std::cout << "\033[32msuccesfully compiled\033[0m" << std::endl;
-			return true;
-		    }
-		    GLint InfoLogLength;
-		    glGetShaderiv(_shaderId, GL_INFO_LOG_LENGTH, &InfoLogLength);
-		    char ErrorMessage[InfoLogLength];
-		    glGetShaderInfoLog(_shaderId, InfoLogLength, NULL, ErrorMessage);
-		    std::cout << "\033[31mfailed to compile shader!\033[0m" << std::endl <<
-			"your shader:" << std::endl << 
-			_source << std::endl <<
-			"error log:" << std::endl << ErrorMessage << std::endl << "-------------------\033[0m" << std::endl;
-		    return false;
-		}
-	    public:
-		explicit Shader(GLenum, const std::string&);
-		Shader(Shader&&);
-		void compile()noexcept;
-		inline GLuint getId()const noexcept { return _shaderId; }
-		inline bool getCompileStatus()const noexcept { return _compiled; }
-		~Shader();
-	};
-}
-
-GRand::Shader::Shader(GLenum type, const std::string& filename) : _shaderId(0), _compiled(false) {
-    _shaderId = glCreateShader(type);
-    getStringFromFile(filename);
-    const char* source = _source.c_str();
-    glShaderSource(_shaderId, 1, &source, NULL);
-    std::cout << "compiling: " << filename << std::endl;
-    compile();
-}
-
-GRand::Shader::Shader(Shader&& s_) : _shaderId(s_._shaderId), _compiled(s_._compiled), _source(s_._source) {
-}
-
-void GRand::Shader::compile() noexcept {
-    glCompileShader(_shaderId);
-    _compiled = _checkCompile();
-}
-
-GRand::Shader::~Shader() {
-}
 
 const char* const GRand::Material::_StexStringArray_[16] = {
     "tex[0]",
@@ -82,6 +21,8 @@ const char* const GRand::Material::_StexStringArray_[16] = {
 };
 
 GRand::Material::Material(Core* c_) : _shaderProgram(0), _core(c_) {
+    std::cout << "------------> created Material:" << this << std::endl;
+    _uTextureAmount.get() = 0;
 }
 
 void GRand::Material::_addShader(GLenum type_, const std::string& filename_) noexcept {
@@ -123,12 +64,18 @@ void GRand::Material::_link() noexcept {
 
     _uTextureAmount.__manual_Location_setting__(8);
     _samplerArrayLocation = glGetUniformLocation(_shaderProgram, "tex");
+    std::cout << "-----------> created program: " << _shaderProgram << std::endl;
 }
 
 void GRand::Material::use() const noexcept {
+    if (!_shaderProgram) {
+	std::cout << "shader not compiled" << std::endl;
+	return;
+    }
     glUseProgram(_shaderProgram);
     _uTextureAmount.upload(); 
     if (_textures.size() != _uTextureAmount.get()) {
+	std::cout << "program id: " << _shaderProgram << std::endl;
 	std::cout << "\033[31;1m_texture.size() = " << _textures.size() << " != uniform TextureAmount = " << _uTextureAmount.get() << "\e[0m" << std::endl;
 	return;
     }
@@ -160,10 +107,6 @@ void GRand::Material::excludeTexture(decltype(_textures)::iterator iterator_) {
 
 decltype(GRand::Material::_textures)& GRand::Material::getTextureList() {
     return _textures;
-}
-
-GLuint GRand::Material::getShaderProgram() const {
-    return _shaderProgram;
 }
 
 GRand::Material::~Material() {
