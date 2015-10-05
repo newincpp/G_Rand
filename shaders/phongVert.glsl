@@ -12,7 +12,7 @@ out vec3 eye;
 
 void main() {
     mat4 proj;
-    float tanHalfFovy = tan(0.785 /2);
+    float tanHalfFovy = tan(0.858 /2); // focale length from blender
     float zFar = 1000;
     float zNear = 1;
     float zRange = zFar - zNear;
@@ -44,5 +44,5 @@ void main() {
     eye.x = -camera[0][3];
     eye.y = -camera[1][3];
     eye.z = -camera[2][3];
-    gl_Position = camera * model * p;
+    gl_Position = proj * camera * model * p;
 }

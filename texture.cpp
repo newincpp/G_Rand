@@ -10,7 +10,7 @@ const char* const GRand::Texture::_glErrorToString[7] = {
     "GL_INVALID_FRAMEBUFFER_OPERATION" // 1286
 };
 
-GRand::Texture::Texture(const std::string& fname_) : _loaded(false), _imgId(0), _filename(fname_), _textureId(0) {
+GRand::Texture::Texture(const std::string& fname_) : _imgId(0), _filename(fname_), _loaded(false), _textureId(0) {
 }
 
 GRand::Texture::~Texture() {

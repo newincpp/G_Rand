@@ -2,6 +2,7 @@ SRC	=main.cpp \
 	 core.cpp \
 	 mesh.cpp \
 	 material.cpp \
+	 postProcMaterial.cpp \
 	 controller.cpp \
 	 uniform.cpp \
 	 AssimpProgressHandlerOverload.cpp \

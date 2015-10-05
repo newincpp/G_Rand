@@ -1,5 +1,4 @@
-#ifndef MATERIAL_H_
-# define MATERIAL_H_
+#pragma once
 
 #include <vector>
 #include <string>
@@ -39,5 +38,3 @@ namespace GRand {
 template <typename T> Uniform<T> GRand::Material::getUniform(const std::string& name) {
     return Uniform<T>(T(), _shaderProgram, name);
 }
-
-#endif /* !MATERIAL_H_ */

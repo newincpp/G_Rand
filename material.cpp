@@ -171,11 +171,3 @@ GRand::Material::~Material() {
 	glDeleteShader(s.getId());
     }
 }
-
-
-// **************** material linked core functions **************** 
-
-void GRand::Core::setMaterialPostProcess(GRand::Material& m_) {
-    _postProcessProgram = m_.getShaderProgram();
-    m_.addTexture(_rtt);
-}

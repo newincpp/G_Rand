@@ -10,11 +10,11 @@ namespace GRand {
     class Texture {
 	private:
 	    static const char* const _glErrorToString[7];
-	    bool _loaded;
 	    ILuint _imgId;
 	    void _load();
 	    std::string _filename;
 	protected:
+	    bool _loaded;
 	    GLuint _textureId;
 	public:
 	    explicit Texture(const std::string& = "");

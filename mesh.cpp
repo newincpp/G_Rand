@@ -11,7 +11,7 @@
 
 #include "mesh.hh"
 
-GRand::Mesh::Mesh(Core* e_, Material* m_) : _core(e_), _material(m_), _remote(NULL) {
+GRand::Mesh::Mesh(Core* e_, Material* m_) : _core(e_), _material(m_), _vertexArray(0), _remote(NULL) {
     if (!e_) {
 	std::cout << "\e[31;1mgiving null as a pointer to Core will result to a segmentation fault\e0m" << std::endl;
     } if (!m_) {
@@ -42,6 +42,7 @@ void GRand::Mesh::fromFile(const std::string& fname_) {
 	std::cout << importer.GetErrorString() << std::endl;
 	return;
     }
+
     _gb.getVertexArray().clear();
     _gb.getElementArray().clear();
     _getAllFaces(scene, scene->mRootNode);
@@ -53,6 +54,9 @@ void GRand::Mesh::fromFile(const std::string& fname_) {
 }
 
 void GRand::Mesh::_getAllFaces(const struct aiScene *sc, const struct aiNode* nd) {
+    if (!_gb.getVertexArray().empty()) {
+	return;
+    }
     unsigned int n = 0;
     decltype(_gb.getVertexArray())&& vertexArray = _gb.getVertexArray();
     decltype(_gb.getElementArray())&& elementArray = _gb.getElementArray();
@@ -117,5 +121,9 @@ void GRand::Mesh::_render() const noexcept{
 }
 
 void GRand::Mesh::_uploadBuffer() noexcept {
+    if (!_vertexArray) {
+	glGenVertexArrays(1, &_vertexArray);
+    }
+    glBindVertexArray(_vertexArray);
     _gb.regenVboEbo();
 }

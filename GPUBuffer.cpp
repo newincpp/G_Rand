@@ -40,6 +40,19 @@ void GRand::GPUBuffer::regenVboEbo() {
     glGenBuffers(1, &_ebo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, _elementArray.size() * sizeof(decltype(_vertexArray)::value_type), &(_elementArray[0]), GL_STATIC_DRAW);
+
+
+
+
+
+    int numberFloatsPerVertex = 3 + (3 * _hasNormals) + (2 * _hasTexture); // there are always the 3 coord of the vertex
+    glVertexAttribPointer(VERTEX_LOCATION_, 3, GL_FLOAT, GL_FALSE, numberFloatsPerVertex * sizeof(decltype(_vertexArray)::value_type), (void*)0); // vertex
+    if (_hasNormals) {
+	glVertexAttribPointer(NORMAL_LOCATION_, 3, GL_FLOAT, GL_FALSE, numberFloatsPerVertex * sizeof(decltype(_vertexArray)::value_type), (void*)(3 * sizeof(decltype(_vertexArray)::value_type))); //normal
+    }
+    if (_hasTexture) {
+	glVertexAttribPointer(UV_LOCATION_, 2, GL_FLOAT, GL_FALSE, numberFloatsPerVertex * sizeof(decltype(_vertexArray)::value_type), (void*)(6 * sizeof(decltype(_vertexArray)::value_type))); //uv
+    }
 }
 
 void GRand::GPUBuffer::setBuffer() {
@@ -64,21 +77,12 @@ void GRand::GPUBuffer::CPUFree() {
 }
 
 void GRand::GPUBuffer::draw(GLenum drawStyle_) const noexcept {
-    int numberFloatsPerVertex = 3 + (3 * _hasNormals) + (2 * _hasTexture); // there are always the 3 coord of the vertex
     glEnableVertexAttribArray(VERTEX_LOCATION_); // enable vertex shader parameter value
     glEnableVertexAttribArray(NORMAL_LOCATION_); // enable normal shader parameter value
     glEnableVertexAttribArray(UV_LOCATION_);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ebo);
     glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-
-    glVertexAttribPointer(VERTEX_LOCATION_, 3, GL_FLOAT, GL_FALSE, numberFloatsPerVertex * sizeof(decltype(_vertexArray)::value_type), (void*)0); // vertex
-    if (_hasNormals) {
-	glVertexAttribPointer(NORMAL_LOCATION_, 3, GL_FLOAT, GL_FALSE, numberFloatsPerVertex * sizeof(decltype(_vertexArray)::value_type), (void*)(3 * sizeof(decltype(_vertexArray)::value_type))); //normal
-    }
-    if (_hasTexture) {
-	glVertexAttribPointer(UV_LOCATION_, 2, GL_FLOAT, GL_FALSE, numberFloatsPerVertex * sizeof(decltype(_vertexArray)::value_type), (void*)(6 * sizeof(decltype(_vertexArray)::value_type))); //uv
-    }
 
     // draw the polygon with the shader on the OpenGL draw buffer
     glDrawElements(drawStyle_, _elementArray.size(), GL_UNSIGNED_INT, 0);

@@ -2,6 +2,7 @@
 # define RENDERTEXTURE_H_
 
 #include "texture.hh"
+
 namespace GRand {
     class RenderTexture : public Texture {
 	private:

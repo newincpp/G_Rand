@@ -1,10 +1,11 @@
 #include <iostream>
+#include <chrono>
 #include "IL/ilut.h"
 #include "IL/ilu.h"
 #include "IL/il.h"
 #include "core.hh"
 
-#include <chrono>
+#include "postProcMaterial.hh"
 
 GRand::Core::Core() : _window(NULL), _state(std::bind(&GRand::Core::_interal_WaitForWindow_, this)), _validState(true) {
 }
@@ -16,7 +17,7 @@ GRand::Core::~Core() {
     _scope->join();
     delete _scope;
     glfwDestroyWindow(_window);
-    glDeleteBuffers(1, &_vboFboID);
+    glDeleteBuffers(1, &_renderVbo);
     //glfwTerminate();
 }
 
@@ -46,9 +47,6 @@ void GRand::Core::_interal_WaitForWindow_() {
 	std::cout << "runing on: " << glGetString(GL_VENDOR) << std::endl;
 	std::cout << "Shading language version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
 
-	GLuint VertexArray;
-	glGenVertexArrays(1, &VertexArray);
-	glBindVertexArray(VertexArray);
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 	glEnable(GL_CULL_FACE);
@@ -58,46 +56,44 @@ void GRand::Core::_interal_WaitForWindow_() {
 	ilClearColour(0, 255, 0, 0);
 	ilutRenderer(ILUT_OPENGL);
 
-	int viewport[4];
-	glGetIntegerv(GL_VIEWPORT, viewport);
-	std::cout << "res: " << viewport[0] << " " << viewport[1] << std::endl;
-
-	_genPPvbo();
-	_rtt = new RenderTexture(viewport[0], viewport[1]);
+	_postProcessInit();
     }
 }
 
-void GRand::Core::_genPPvbo() {
-	std::array<float, 8> vertexArray = {{ -1, 1, 1, 1, 1, -1, -1, -1 }};
-	glGenBuffers(1, &_renderVbo);
-	glBindBuffer(GL_ARRAY_BUFFER, _renderVbo);
-	glBufferData(GL_ARRAY_BUFFER, vertexArray.size() * sizeof(decltype(vertexArray)::value_type), &(vertexArray[0]), GL_STATIC_DRAW);
+void GRand::Core::_postProcessInit() {
+    _genPPvbo();
+    int viewport[4];
+    glGetIntegerv(GL_VIEWPORT, viewport);
 
-	GLfloat fbo_vertices[] = {
-	    -1, -1,
-	    1, -1,
-	    -1,  1,
-	    1,  1,
-	};
-	glGenBuffers(1, &_vboFboID);
-	glBindBuffer(GL_ARRAY_BUFFER, _vboFboID);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(fbo_vertices), fbo_vertices, GL_STATIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+    _rtt = new RenderTexture(viewport[2] - viewport[0], viewport[3] - viewport[1]);
+    _postProcessMaterial = new ppMaterial(this, _rtt);
+}
+
+void GRand::Core::_genPPvbo() {
+    GLfloat vertexArray[8] = {
+	-1, -1,
+	1, -1,
+	-1,  1,
+	1,  1,
+    };
+    glGenBuffers(1, &_renderVbo);
+    glBindBuffer(GL_ARRAY_BUFFER, _renderVbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertexArray), vertexArray, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void GRand::Core::noPostProcess(bool destroy_) {
     if (destroy_) {
 	delete _rtt;
-	_rtt=0;
+	_rtt = 0;
+	std::cout << "del" << std::endl;
     }
 }
 
 void GRand::Core::_interal_render_() {
     // enable render into texture
-#ifdef FPS_COUNTER
     std::chrono::high_resolution_clock::time_point before = std::chrono::high_resolution_clock::now();
     std::chrono::high_resolution_clock::time_point after;
-#endif
     if (_rtt) {
 	_rtt->bindFramebuffer();
     }
@@ -124,20 +120,18 @@ void GRand::Core::_interal_render_() {
 
     if (_rtt) {
 	// draw the renderTexture into the screen
-	glBindVertexArray(_vboFboID);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0); // vertex
+	_postProcessMaterial->use();	
+	glBindBuffer(GL_ARRAY_BUFFER, _renderVbo);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
+	//glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0); // vertex
 	/* better if get from the active camera */
-	glUseProgram(_postProcessProgram);
 	_rtt->bind(GL_TEXTURE0);
-	glDrawArrays(GL_QUADS, 0, 4);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     }
 
     glfwSwapBuffers(_window);
-#ifdef FPS_COUNTER
     after = std::chrono::high_resolution_clock::now();
-    float nanosec = std::chrono::duration_cast<std::chrono::nanoseconds>(after - before).count();
-    std::cout << nanosec << " ns = " << 1 / (nanosec / 1000000000) << "fps" << std::endl;
-#endif
+    _rendertime = std::chrono::duration_cast<std::chrono::nanoseconds>(after - before).count();
     glfwPollEvents();
     _validState = !glfwWindowShouldClose(_window);
 }
@@ -234,5 +228,3 @@ void GRand::Core::key_callback(GLFWwindow* window, int key, int, int action, int
 //	}
     }
 }
-
-// void GRand::Core::setMaterialPostProcess(GRand::Material* m_) {     // in material.hh file

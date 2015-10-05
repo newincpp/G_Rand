@@ -1,5 +1,4 @@
-#ifndef STARTUPENGINE_H_
-# define STARTUPENGINE_H_
+#pragma once
 
 #include <string>
 #include <functional>
@@ -13,11 +12,10 @@
 #include "renderTexture.hh"
 
 namespace GRand {
-    class Material;
+    class ppMaterial;
     class Core {
 	private:
 	    explicit Core();
-	    //static void _exec(Core**, std::thread*);
 	    static void _exec(Core**, std::mutex*);
 	    void _coreLoop();
 
@@ -31,12 +29,13 @@ namespace GRand {
 	    std::map<int, std::function<void(void)>> _inputMap;
 	    bool _validState;
 	    RenderTexture* _rtt;
+	    ppMaterial* _postProcessMaterial;
 	    GLuint _renderVbo;
-	    GLuint _vboFboID;
-	    GLint _postProcessProgram;
+	    float _rendertime; // in nanosecond
 
 	    void _rmFunc(unsigned long);
 	    void _genPPvbo();
+	    void _postProcessInit();
 	    static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 	public:
 	    struct Config {
@@ -56,11 +55,10 @@ namespace GRand {
 	    void addInputCallback(int, const std::function<void(void)>&);
 	    bool getStateValidity();
 	    void noPostProcess(bool=false);
-	    void setMaterialPostProcess(GRand::Material&);
+	    inline float getRenderTime() const { return _rendertime; };
     };
 }
 
 #define PUSH_CORE_INST(e, exp) e->queueIntruction([](){ exp; });
 #define PUSH_CORE_INSTA(e, arg, exp) e->queueIntruction([&arg](){ exp; });
-
-#endif /* !STARTUPENGINE_H_ */
+#define TO_SECOND(x) (x / 1000000000)
