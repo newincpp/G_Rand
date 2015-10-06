@@ -17,37 +17,38 @@ int main(int ac, char** av) {
     mat.addShader(GL_VERTEX_SHADER, "./shaders/phongVert.glsl");
     mat.link();
 
-    if (ac > 1) {
-	int i = 1;
-	while (ac > i) {
-	    mesh.emplace_back(e, mat);
-	    mesh[mesh.size() - 1].fromFile(av[i]);
-	    std::cout << "generated: " << av[i] << std::endl;
-	    ++i;
-	}
-    } else {
+    GRand::Controller* ctrl;
+    if (ac == 1) {
 	mesh.emplace_back(e, mat);
 	mesh[0].fromFile("./testModels/monkey.dae");
+	ctrl = mesh[0].genController();
+	ctrl->translate(GRand::Camera::VectorType(0.5,0.7,0.0f));
+	ctrl->scale(GRand::Camera::VectorType(0.5f,0.5f,0.0f));
     }
 
-    GRand::Texture t;
+    GRand::Texture t("tex.png");
     mat.addTexture(&t);
 
-    GRand::Controller* ctrl = mesh[0].genController();
     GRand::Camera cam(e);
     cam.setPos(GRand::Camera::VectorType(0,.2,1.1));
     cam.lookAt(GRand::Camera::VectorType(0,0,1.4));
-
-    ctrl->translate(GRand::Camera::VectorType(0.5,0.7,0.0f));
-    ctrl->scale(GRand::Camera::VectorType(0.5f,0.5f,0.0f));
 
     e->noPostProcess(true);
 
     //e->setMaterialPostProcess(postProcessMat);
 
+    unsigned int i = 1;
+    //for (std::string line; std::getline(std::cin, line);) {
+    //    std::cout << line << std::endl;
+    //    mesh.emplace_back(e, mat);
+    //    mesh[mesh.size() - 1].fromFile(line);
+    //    mesh[mesh.size() - 1].setExistantController(mesh[0].getController());
+    //}
+
     float fps_Sample[10000];
-    unsigned int i = 0;
     float avg = 0;
+
+
     while (e->getStateValidity()) { 
 	ctrl->rotate(0.00001 * TO_SECOND(avg), GRand::Camera::VectorType(0.0f,1.0f,0.0f));
 	//std::cout << "avg: " << avg << " " << TO_SECOND(avg) << std::endl;

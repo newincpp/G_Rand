@@ -11,11 +11,13 @@
 
 #include "mesh.hh"
 
-GRand::Mesh::Mesh(Core* e_, Material& m_) : _core(e_), _material(m_), _vertexArray(0), _remote(NULL) {
+GRand::Controller GRand::Mesh::_static_defaultControler;
+
+GRand::Mesh::Mesh(Core* e_, Material& m_) : _core(e_), _material(m_), _vertexArray(0), _remote(&_static_defaultControler) {
     if (!e_) {
 	std::cout << "\e[31;1mgiving null as a pointer to Core will result to a segmentation fault\e0m" << std::endl;
     }
-    std::cout << "add mesh" << std::endl;
+    std::cout << "[add] mesh -> " << this << std::endl;
 }
 
 void GRand::Mesh::set(const GPUBuffer& b_) noexcept {
@@ -97,15 +99,15 @@ void GRand::Mesh::_getAllFaces(const struct aiScene *sc, const struct aiNode* nd
 }
 
 GRand::Controller* GRand::Mesh::genController() {
-    _remote = std::make_shared<Controller>();
-    return _remote.get();
+    _remote = new Controller();
+    return _remote;
 }
 
 GRand::Controller* GRand::Mesh::getController() {
-    return _remote.get();
+    return _remote;
 }
 
-void GRand::Mesh::setExistantController(std::shared_ptr<GRand::Controller> c_) {
+void GRand::Mesh::setExistantController(GRand::Controller* c_) {
     _remote = c_;
 }
 
@@ -113,8 +115,6 @@ GRand::Mesh::~Mesh() {
 }
 
 void GRand::Mesh::_render() const noexcept{
-    std::cout << &_material << std::endl;
-
     _material.use();
     _remote->refresh();
     _gb.draw(GL_TRIANGLES);

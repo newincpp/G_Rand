@@ -21,7 +21,6 @@ const char* const GRand::Material::_StexStringArray_[16] = {
 };
 
 GRand::Material::Material(Core* c_) : _shaderProgram(0), _core(c_) {
-    std::cout << "------------> created Material:" << this << std::endl;
     _uTextureAmount.get() = 0;
 }
 
@@ -64,12 +63,11 @@ void GRand::Material::_link() noexcept {
 
     _uTextureAmount.__manual_Location_setting__(8);
     _samplerArrayLocation = glGetUniformLocation(_shaderProgram, "tex");
-    std::cout << "-----------> created program: " << _shaderProgram << std::endl;
 }
 
 void GRand::Material::use() const noexcept {
     if (!_shaderProgram) {
-	std::cout << "shader not compiled" << std::endl;
+	std::cout << "invalid shader program id" << _shaderProgram << std::endl;
 	return;
     }
     glUseProgram(_shaderProgram);
