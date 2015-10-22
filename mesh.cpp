@@ -17,10 +17,9 @@ GRand::Mesh::Mesh(Core* e_, Material& m_) : _core(e_), _material(m_), _vertexArr
     if (!e_) {
 	std::cout << "\e[31;1mgiving null as a pointer to Core will result to a segmentation fault\e0m" << std::endl;
     }
-    std::cout << "[add] mesh -> " << this << std::endl;
 }
 
-void GRand::Mesh::set(const GPUBuffer& b_) noexcept {
+void GRand::Mesh::set(const GPUBuffer& b_) {
     _gb = b_;
     _core->queueIntruction(std::bind(&Mesh::_uploadBuffer, this));
     _core->addPersistantInstruction(std::bind(&Mesh::_render, this));
@@ -114,13 +113,13 @@ void GRand::Mesh::setExistantController(GRand::Controller* c_) {
 GRand::Mesh::~Mesh() {
 }
 
-void GRand::Mesh::_render() const noexcept{
+void GRand::Mesh::_render() const {
     _material.use();
     _remote->refresh();
     _gb.draw(GL_TRIANGLES);
 }
 
-void GRand::Mesh::_uploadBuffer() noexcept {
+void GRand::Mesh::_uploadBuffer() {
     std::cout << "material in use: " << _material.getShaderProgram() << std::endl;
     if (!_vertexArray) {
 	glGenVertexArrays(1, &_vertexArray);

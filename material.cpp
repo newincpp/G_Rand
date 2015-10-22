@@ -24,19 +24,19 @@ GRand::Material::Material(Core* c_) : _shaderProgram(0), _core(c_) {
     _uTextureAmount.get() = 0;
 }
 
-void GRand::Material::_addShader(GLenum type_, const std::string& filename_) noexcept {
+void GRand::Material::_addShader(GLenum type_, const std::string& filename_) {
     _shaders.emplace_back(type_, filename_);
 }
 
-void GRand::Material::addShader(GLenum type_, const std::string& filename_) noexcept {
+void GRand::Material::addShader(GLenum type_, const std::string& filename_) {
     _core->queueIntruction(std::bind(&::GRand::Material::_addShader, this, type_, filename_));
 }
 
-void GRand::Material::link() noexcept {
+void GRand::Material::link() {
     _core->queueIntruction(std::bind(&::GRand::Material::_link, this));
 }
 
-void GRand::Material::_link() noexcept {
+void GRand::Material::_link() {
     if (!_shaderProgram) {
 	glDeleteProgram(_shaderProgram);
     }
@@ -62,10 +62,10 @@ void GRand::Material::_link() noexcept {
     }
 
     _uTextureAmount.__manual_Location_setting__(8);
-    _samplerArrayLocation = glGetUniformLocation(_shaderProgram, "tex");
+    //_samplerArrayLocation = glGetUniformLocation(_shaderProgram, "tex");
 }
 
-void GRand::Material::use() const noexcept {
+void GRand::Material::use() const {
     if (!_shaderProgram) {
 	std::cout << "invalid shader program id" << _shaderProgram << std::endl;
 	return;
@@ -95,7 +95,7 @@ decltype(GRand::Material::_textures)::const_iterator GRand::Material::addTexture
 	_core->queueIntruction([t_](){ t_->load(); });
     }
     _textures.push_back(t_);
-    _uTextureAmount.get() = _textures.size();
+    _uTextureAmount.get() = (unsigned int)_textures.size();
     return _textures.end()--;
 }
 

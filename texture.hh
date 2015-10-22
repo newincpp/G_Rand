@@ -19,13 +19,13 @@ namespace GRand {
 	public:
 	    explicit Texture(const std::string& = "");
 	    virtual ~Texture();
-	    virtual void load()noexcept;
-	    void locate(GLuint)noexcept;
-	    void GPUFree()noexcept;
-	    void GPUGen()noexcept;
-	    inline bool isLoaded() const noexcept { return _loaded; }
+	    virtual void load();
+	    void locate(GLuint);
+	    void GPUFree();
+	    void GPUGen();
+	    inline bool isLoaded() const { return _loaded; }
 	    inline void setFilename(const std::string& f_) { _filename = f_; }
-	    inline void bind(GLenum textureUnit_) const noexcept {
+	    inline void bind(GLenum textureUnit_) const {
 		glActiveTexture(textureUnit_);
 		glBindTexture(GL_TEXTURE_2D, _textureId);
 	    }

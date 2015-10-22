@@ -6,7 +6,7 @@
 class AssimpProgressHandlerOverload : public Assimp::ProgressHandler {
     private:
 	std::string _loadingMessage;
-	int	    _p;
+	float _p;
     public:
 	AssimpProgressHandlerOverload();
 	AssimpProgressHandlerOverload(std::string msg);

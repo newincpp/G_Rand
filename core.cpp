@@ -34,7 +34,7 @@ void GRand::Core::_interal_WaitForWindow_() {
 	glfwSetKeyCallback(_window, key_callback);
 	_state = std::bind(&GRand::Core::_interal_render_, this);
 	glewExperimental = GL_TRUE;
-	int err;
+	GLenum err;
 	if ((err = glewInit()) != GLEW_OK) {
 	    std::cout << glewGetErrorString(err) << std::endl;
 	}
@@ -63,10 +63,10 @@ void GRand::Core::_interal_WaitForWindow_() {
 
 void GRand::Core::_postProcessInit() {
     _genPPvbo();
-    int viewport[4];
+    GLint viewport[4];
     glGetIntegerv(GL_VIEWPORT, viewport);
 
-    _rtt = new RenderTexture(viewport[2] - viewport[0], viewport[3] - viewport[1]);
+    _rtt = new RenderTexture((unsigned int)(viewport[2] - viewport[0]), (unsigned int)(viewport[3] - viewport[1]));
     _postProcessMaterial = new ppMaterial(this, _rtt);
 }
 
@@ -101,6 +101,7 @@ void GRand::Core::_interal_render_() {
     // draw the elements
 
     glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_DEPTH_BUFFER_BIT);
 #ifdef THREAD_SHOW
     std::cout << "\033[1m";
 #endif
@@ -168,7 +169,7 @@ GRand::Core* GRand::Core::start(const Config& conf_) {
 	glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
     }
 
-    GLFWwindow* w = glfwCreateWindow(conf_.winWidth, conf_.winHeight, conf_.winName.c_str(), monitor, NULL);
+    GLFWwindow* w = glfwCreateWindow((int)conf_.winWidth, (int)conf_.winHeight, conf_.winName.c_str(), monitor, NULL);
     if (!w) {
 	std::cout << "failed to create window" << std::endl; // TODO add log system
 	glfwTerminate();
@@ -207,10 +208,10 @@ void GRand::Core::deletePersistantInstruction(unsigned long i_) {
 	return;
     }
     _instructionList[i_] = [](){};
-    _instructionQueue.push(std::bind(&::GRand::Core::_rmFunc, this, i_));
+    _instructionQueue.push(std::bind(&::GRand::Core::_rmFunc, this, (long)i_));
 }
 
-void GRand::Core::_rmFunc(unsigned long id_) {
+void GRand::Core::_rmFunc(long id_) {
     _instructionList.erase(_instructionList.begin() + id_);
 }
 

@@ -19,7 +19,7 @@ GRand::Texture::~Texture() {
     }
 }
 
-void GRand::Texture::load() noexcept {
+void GRand::Texture::load() {
     if (!_textureId) {
 	 glDeleteTextures(1, &_textureId);
 	 _textureId = 0;
@@ -55,7 +55,7 @@ void GRand::Texture::load() noexcept {
     _loaded = true;
 }
 
-void GRand::Texture::GPUGen() noexcept {
+void GRand::Texture::GPUGen() {
     glGenTextures(1, &_textureId);
     glBindTexture(GL_TEXTURE_2D, _textureId);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -64,7 +64,7 @@ void GRand::Texture::GPUGen() noexcept {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 }
 
-void GRand::Texture::GPUFree() noexcept {
+void GRand::Texture::GPUFree() {
     if (_textureId) {
 	 glDeleteTextures(1, &_textureId);
 	 _textureId = 0;

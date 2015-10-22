@@ -17,11 +17,11 @@ namespace GRand {
 	    Controller* _remote; 
 
 	    void _getAllFaces(const struct aiScene *sc, const struct aiNode*);
-	    void _render() const noexcept;
-	    void _uploadBuffer() noexcept;
+	    void _render() const ;
+	    void _uploadBuffer();
 	public:
 	    explicit Mesh(Core* e, Material&);
-	    void set(const GPUBuffer&)noexcept;
+	    void set(const GPUBuffer&);
 	    void fromFile(const std::string&);
 	    Controller* genController();
 	    Controller* getController();

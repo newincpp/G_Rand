@@ -13,6 +13,7 @@ namespace GRand {
 	private:
 	    Core* _core;
 	    Uniform<MatType> _utrans;
+	    Uniform<MatType> _uproj;
 	    VectorType _center;
 	    VectorType _target;
 	    void _refresh();

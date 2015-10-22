@@ -18,7 +18,7 @@ GRand::RenderTexture::RenderTexture(unsigned int width_, unsigned int height_) {
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _textureId, 0);
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _depthBuffer);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width_, height_, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, (GLsizei)width_, (GLsizei)height_, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _textureId, 0);
 
     GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
@@ -41,5 +41,5 @@ GRand::RenderTexture::~RenderTexture() {
     glDeleteRenderbuffers(1, &_depthBuffer);
 }
 
-void GRand::RenderTexture::load()noexcept{
+void GRand::RenderTexture::load() {
 }

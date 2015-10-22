@@ -4,7 +4,7 @@
 
 #include <GRand>
 
-int main(int ac, char** av) {
+int main(int ac, char**) {
     GRand::Core::Config cfg;
     GRand::Core::Config::autoConf(cfg);
     GRand::Core* e = GRand::Core::start(cfg);
@@ -38,19 +38,20 @@ int main(int ac, char** av) {
     //e->setMaterialPostProcess(postProcessMat);
 
     unsigned int i = 1;
-    //for (std::string line; std::getline(std::cin, line);) {
-    //    std::cout << line << std::endl;
-    //    mesh.emplace_back(e, mat);
-    //    mesh[mesh.size() - 1].fromFile(line);
-    //    mesh[mesh.size() - 1].setExistantController(mesh[0].getController());
-    //}
+    for (std::string line; std::getline(std::cin, line);) {
+        mesh.emplace_back(e, mat);
+	std::cout << mesh.size() << std::endl;
+        mesh[mesh.size() - 1].fromFile(line);
+        mesh[mesh.size() - 1].setMaterial(mat);
+        mesh[mesh.size() - 1].setExistantController(mesh[0].getController());
+    }
 
+    std::cout << "run" << std::endl;
     float fps_Sample[10000];
     float avg = 0;
 
-
     while (e->getStateValidity()) { 
-	ctrl->rotate(0.00001 * TO_SECOND(avg), GRand::Camera::VectorType(0.0f,1.0f,0.0f));
+	ctrl->rotate(0.0001f * TO_SECOND(avg), GRand::Camera::VectorType(0.0f,1.0f,0.0f));
 	//std::cout << "avg: " << avg << " " << TO_SECOND(avg) << std::endl;
 	fps_Sample[i] = e->getRenderTime();
 	if (i == (10000 - 1)) {
@@ -64,6 +65,8 @@ int main(int ac, char** av) {
 	}
 	++i;
     }
+
+    std::cout << "shutdown" << std::endl;
 
     delete e;
     return 0;

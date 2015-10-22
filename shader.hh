@@ -11,12 +11,12 @@ namespace GRand {
 		GLuint _shaderId;
 		bool _compiled;
 		std::string _source;
-		inline void getStringFromFile(const std::string& filename) noexcept {
+		inline void getStringFromFile(const std::string& filename) {
 		    std::ifstream t(filename);
 		    const std::string s((std::istreambuf_iterator<char>(t)), std::istreambuf_iterator<char>());
 		    _source = s;
 		}
-		inline bool _checkCompile()const noexcept {
+		inline bool _checkCompile()const {
 		    GLint compileStatus;
 		    glGetShaderiv(_shaderId, GL_COMPILE_STATUS, &compileStatus);
 		    if (compileStatus) {
@@ -36,9 +36,9 @@ namespace GRand {
 	    public:
 		explicit Shader(GLenum, const std::string&);
 		Shader(const Shader&);
-		void compile()noexcept;
-		inline GLuint getId()const noexcept { return _shaderId; }
-		inline bool getCompileStatus()const noexcept { return _compiled; }
+		void compile();
+		inline GLuint getId()const { return _shaderId; }
+		inline bool getCompileStatus()const { return _compiled; }
 		~Shader();
 	};
 }

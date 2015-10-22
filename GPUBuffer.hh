@@ -9,6 +9,7 @@
 namespace GRand {
     class GPUBuffer {
 	private:
+	    GLsizei _elementBufferSize; // for performance reason
 	    GLuint _vbo;
 	    GLuint _ebo;
 	    bool _hasNormals;
@@ -28,7 +29,7 @@ namespace GRand {
 	    void regenVboEbo();
 	    void GPUFree();
 	    void CPUFree();
-	    void draw(GLenum drawStyle_)const noexcept;
+	    void draw(GLenum drawStyle_)const;
     };
 }
 

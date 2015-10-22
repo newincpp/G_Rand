@@ -38,5 +38,6 @@ void main() {
     //diffuse = vec4(fUVCoord, 0,1);
 
     diffuse = texture(tex[0], fUVCoord);
-    outColor = lighting(diffuse);
+    outColor = diffuse;
+    //outColor = lighting(diffuse);
 }

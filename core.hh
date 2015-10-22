@@ -33,7 +33,7 @@ namespace GRand {
 	    GLuint _renderVbo;
 	    float _rendertime; // in nanosecond
 
-	    void _rmFunc(unsigned long);
+	    void _rmFunc(long);
 	    void _genPPvbo();
 	    void _postProcessInit();
 	    static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
