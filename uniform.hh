@@ -61,7 +61,7 @@ class Uniform {
 		T& get() { return _value; }
 		const T& get() const { return _value; }
 		// this function update uniform value on GPU  (so usually need to call it before drawing polygons)
-		virtual void upload() const;
+		void upload() const;
 };
 
 #endif /* !UNIFORM_H_ */

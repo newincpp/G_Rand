@@ -31,7 +31,7 @@ namespace GRand {
 	    RenderTexture* _rtt;
 	    ppMaterial* _postProcessMaterial;
 	    GLuint _renderVbo;
-	    float _rendertime; // in nanosecond
+	    long _rendertime; // in nanosecond
 
 	    void _rmFunc(long);
 	    void _genPPvbo();
@@ -55,10 +55,10 @@ namespace GRand {
 	    void addInputCallback(int, const std::function<void(void)>&);
 	    bool getStateValidity();
 	    void noPostProcess(bool=false);
-	    inline float getRenderTime() const { return _rendertime; };
+	    inline long int getRenderTime() const { return _rendertime; };
     };
 }
 
 #define PUSH_CORE_INST(e, exp) e->queueIntruction([](){ exp; });
 #define PUSH_CORE_INSTA(e, arg, exp) e->queueIntruction([&arg](){ exp; });
-#define TO_SECOND(x) (x / 1000000000)
+#define TO_SECOND(x) (x / 1000000000.0f)

@@ -21,10 +21,10 @@ int main(int ac, char**) {
     if (ac == 1) {
 	mesh.emplace_back(e, mat);
 	mesh[0].fromFile("./testModels/monkey.dae");
-	ctrl = mesh[0].genController();
-	ctrl->translate(GRand::Camera::VectorType(0.5,0.7,0.0f));
-	ctrl->scale(GRand::Camera::VectorType(0.5f,0.5f,0.0f));
     }
+    ctrl = mesh[0].genController();
+    ctrl->translate(GRand::Camera::VectorType(0.5,0.7,0.0f));
+    ctrl->scale(GRand::Camera::VectorType(0.5f,0.5f,0.0f));
 
     GRand::Texture t("tex.png");
     mat.addTexture(&t);
@@ -43,27 +43,16 @@ int main(int ac, char**) {
 	std::cout << mesh.size() << std::endl;
         mesh[mesh.size() - 1].fromFile(line);
         mesh[mesh.size() - 1].setMaterial(mat);
-        mesh[mesh.size() - 1].setExistantController(mesh[0].getController());
+        mesh[mesh.size() - 1].setExistantController(ctrl);
     }
-
     std::cout << "run" << std::endl;
-    float fps_Sample[10000];
-    float avg = 0;
 
     while (e->getStateValidity()) { 
-	ctrl->rotate(0.0001f * TO_SECOND(avg), GRand::Camera::VectorType(0.0f,1.0f,0.0f));
+	usleep(10000);
+	ctrl->rotate(TO_SECOND(e->getRenderTime()), GRand::Camera::VectorType(0.0f,1.0f,0.0f));
 	//std::cout << "avg: " << avg << " " << TO_SECOND(avg) << std::endl;
-	fps_Sample[i] = e->getRenderTime();
-	if (i == (10000 - 1)) {
-	    for (float sample : fps_Sample) {
-		avg += sample;
-	    }
-	    avg = avg / 10000;
-	    //std::cout << avg << " ns = " << 1 / (e->getRenderTime() / 1000000000) << "fps" << std::endl;
-	    //std::cout <<  TO_SECOND(avg) << " ns = " << 1 / (e->getRenderTime() / 1000000000) << "fps\r";
-	    i = 0;
-	}
-	++i;
+	std::cout << e->getRenderTime() << " ns\t-\t"; // 677857
+	std::cout << 1 / (TO_SECOND(e->getRenderTime())) << " FPS" << std::endl; // 677857
     }
 
     std::cout << "shutdown" << std::endl;

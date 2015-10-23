@@ -19,27 +19,27 @@ GRand::GPUBuffer& GRand::GPUBuffer::operator=(const GPUBuffer& o_) {
 }
 
 void GRand::GPUBuffer::regenVboEbo(const std::vector<GLfloat>& vertexArray_, const std::vector<GLuint>& elementArray_) {
-    typedef std::remove_reference<decltype(vertexArray_)>::type::value_type vArray_T;
-    typedef std::remove_reference<decltype(elementArray_)>::type::value_type eArray_T;
+    static const auto szTypeV = sizeof(typename std::remove_reference<decltype(vertexArray_)>::type::value_type);
+    static const auto szTypeE = sizeof(typename std::remove_reference<decltype(elementArray_)>::type::value_type);
     if (_vbo) {
 	glDeleteBuffers(1, &_vbo);
 	glDeleteBuffers(1, &_ebo);
     }
     glGenBuffers(1, &_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-    glBufferData(GL_ARRAY_BUFFER, vertexArray_.size() * sizeof(vArray_T), &(vertexArray_[0]), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vertexArray_.size() * szTypeV, &(vertexArray_[0]), GL_STATIC_DRAW);
 
     glGenBuffers(1, &_ebo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementArray_.size() * sizeof(eArray_T), &(elementArray_[0]), GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementArray_.size() * szTypeE, &(elementArray_[0]), GL_STATIC_DRAW);
 
-    unsigned long numberFloatsPerVertex = 3 + (3 * _hasNormals) + (2 * _hasTexture); // there are always the 3 coord of the vertex
-    glVertexAttribPointer(VERTEX_LOCATION_, 3, GL_FLOAT, GL_FALSE, numberFloatsPerVertex * sizeof(vArray_T), (void*)0); // vertex
+    GLsizei stride = (3 + (3 * _hasNormals) + (2 * _hasTexture)) * (GLsizei)szTypeV; // there are always the 3 coord of the vertex
+    glVertexAttribPointer(VERTEX_LOCATION_, 3, GL_FLOAT, GL_FALSE, stride, (void*)0); // vertex
     if (_hasNormals) {
-	glVertexAttribPointer(NORMAL_LOCATION_, 3, GL_FLOAT, GL_FALSE, numberFloatsPerVertex * sizeof(vArray_T), (void*)(3 * sizeof(vArray_T))); //normal
+	glVertexAttribPointer(NORMAL_LOCATION_, 3, GL_FLOAT, GL_FALSE, stride, (void*)(3 * szTypeV)); //normal
     }
     if (_hasTexture) {
-	glVertexAttribPointer(UV_LOCATION_, 2, GL_FLOAT, GL_FALSE, numberFloatsPerVertex * sizeof(vArray_T), (void*)(6 * sizeof(vArray_T))); //uv
+	glVertexAttribPointer(UV_LOCATION_, 2, GL_FLOAT, GL_FALSE, stride, (void*)(6 * szTypeV)); //uv
     }
     _elementBufferSize = (GLsizei)elementArray_.size();
 }
