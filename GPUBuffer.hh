@@ -14,19 +14,17 @@ namespace GRand {
 	    GLuint _ebo;
 	    bool _hasNormals;
 	    bool _hasTexture;
-	    std::vector<GLfloat> _vertexArray;
-	    std::vector<GLuint> _elementArray;
 	public:
 	    explicit GPUBuffer();
 	    GPUBuffer(const GPUBuffer&);
 	    ~GPUBuffer();
-	    void operator=(const GPUBuffer&);
-	    inline decltype(_vertexArray)& getVertexArray() { return _vertexArray; }
-	    inline decltype(_elementArray)& getElementArray() { return _elementArray; }
+	    GPUBuffer& operator=(const GPUBuffer&);
+	    //inline decltype(_vertexArray)& getVertexArray() { return _vertexArray; }
+	    //inline decltype(_elementArray)& getElementArray() { return _elementArray; }
 	    inline void setHasNormals(bool&& b_) { _hasNormals = b_; }
 	    inline void setHasTexture(bool&& b_) { _hasTexture = b_; }
 	    void setBuffer();
-	    void regenVboEbo();
+	    void regenVboEbo(const std::vector<GLfloat>&, const std::vector<GLuint>&);
 	    void GPUFree();
 	    void CPUFree();
 	    void draw(GLenum drawStyle_)const;

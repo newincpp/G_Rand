@@ -13,8 +13,10 @@ namespace GRand {
 	    Core* _core;
 	    Material& _material;
 	    GPUBuffer _gb;
-	    GLuint _vertexArray;
+	    GLuint _glVertexArray;
 	    Controller* _remote; 
+	    std::vector<GLfloat> _vertexArray;
+	    std::vector<GLuint> _elementArray;
 
 	    void _getAllFaces(const struct aiScene *sc, const struct aiNode*);
 	    void _render() const ;
