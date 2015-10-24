@@ -37,22 +37,22 @@ int main(int ac, char**) {
 
     //e->setMaterialPostProcess(postProcessMat);
 
-    unsigned int i = 1;
+    /*
     for (std::string line; std::getline(std::cin, line);) {
         mesh.emplace_back(e, mat);
 	std::cout << mesh.size() << std::endl;
         mesh[mesh.size() - 1].fromFile(line);
         mesh[mesh.size() - 1].setMaterial(mat);
         mesh[mesh.size() - 1].setExistantController(ctrl);
-    }
+    }*/
     std::cout << "run" << std::endl;
 
     while (e->getStateValidity()) { 
 	usleep(10000);
 	ctrl->rotate(TO_SECOND(e->getRenderTime()), GRand::Camera::VectorType(0.0f,1.0f,0.0f));
 	//std::cout << "avg: " << avg << " " << TO_SECOND(avg) << std::endl;
-	std::cout << e->getRenderTime() << " ns\t-\t"; // 677857
-	std::cout << 1 / (TO_SECOND(e->getRenderTime())) << " FPS" << std::endl; // 677857
+//	std::cout << e->getRenderTime() << " ns\t-\t"; // 677857
+//	std::cout << 1 / (TO_SECOND(e->getRenderTime())) << " FPS" << std::endl; // 677857
     }
 
     std::cout << "shutdown" << std::endl;

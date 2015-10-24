@@ -11,7 +11,7 @@ namespace GRand {
 	public:
 	    explicit RenderTexture(unsigned int, unsigned int);
 	    void bindFramebuffer();
-	    virtual void load()noexcept;
+	    virtual void load();
 	    
 	    ~RenderTexture();
     };

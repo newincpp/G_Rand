@@ -37,7 +37,7 @@ void GRand::Material::link() {
 }
 
 void GRand::Material::_link() {
-    if (!_shaderProgram) {
+    if (_shaderProgram) {
 	glDeleteProgram(_shaderProgram);
     }
     _shaderProgram = glCreateProgram();
