@@ -12,7 +12,7 @@ namespace GRand {
 	    GLsizei _elementBufferSize; // for performance reason
 	    GLuint _vbo;
 	    GLuint _ebo;
-	    bool _hasNormals;
+	    bool _hasNormals; // should be a bitfield
 	    bool _hasTexture;
 	public:
 	    explicit GPUBuffer();

@@ -4,6 +4,7 @@
 #include "IL/ilu.h"
 #include "IL/il.h"
 #include "core.hh"
+#include <imgui/imgui.h>
 
 #include "postProcMaterial.hh"
 
@@ -57,6 +58,13 @@ void GRand::Core::_interal_WaitForWindow_() {
 	ilClearColour(0, 255, 0, 0);
 	ilutRenderer(ILUT_OPENGL);
 
+	ImGuiIO& io = ImGui::GetIO();
+	io.DisplaySize.x = 1920.0f;
+	io.DisplaySize.y = 1280.0f;
+	io.Fonts->AddFontDefault();
+	unsigned char* pixels;
+	int width, height, bytes_per_pixels;
+	io.Fonts->GetTexDataAsRGBA32(&pixels, &width, &height, &bytes_per_pixels);
 	_postProcessInit();
     }
 }
@@ -102,6 +110,10 @@ void GRand::Core::_interal_render_() {
 
     glClear(GL_COLOR_BUFFER_BIT);
     glClear(GL_DEPTH_BUFFER_BIT);
+    ImGui::NewFrame();
+    ImGui::ShowTestWindow();
+    ImGui::Render();
+
 #ifdef THREAD_SHOW
     std::cout << "\033[1m";
 #endif
@@ -130,7 +142,6 @@ void GRand::Core::_interal_render_() {
 	_rtt->bind(GL_TEXTURE0);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     }
-
     glfwSwapBuffers(_window);
     after = std::chrono::high_resolution_clock::now();
     _rendertime = std::chrono::duration_cast<std::chrono::nanoseconds>(after - before).count();
