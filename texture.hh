@@ -9,7 +9,7 @@
 namespace GRand {
     class Texture {
 	private:
-	    static const char* const _glErrorToString[7];
+	    static const char* const _glErrorToString[9];
 	    ILuint _imgId;
 	    void _load();
 	    std::string _filename;
