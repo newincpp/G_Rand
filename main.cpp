@@ -4,7 +4,7 @@
 
 #include <GRand>
 
-int main(int ac, char**) {
+int main(int ac, char** av) {
     GRand::Core::Config cfg;
     GRand::Core::Config::autoConf(cfg);
     GRand::Core* e = GRand::Core::start(cfg);
@@ -21,7 +21,11 @@ int main(int ac, char**) {
     if (ac == 1) {
 	mesh.emplace_back(e, mat);
 	mesh[0].fromFile("./testModels/monkey.dae");
+    } else {
+	mesh.emplace_back(e, mat);
+	mesh[0].fromFile(av[1]);
     }
+
     ctrl = mesh[0].genController();
     ctrl->translate(GRand::Camera::VectorType(0.5,0.7,0.0f));
     ctrl->scale(GRand::Camera::VectorType(0.5f,0.5f,0.0f));
