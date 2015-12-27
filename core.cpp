@@ -5,7 +5,6 @@
 #include "IL/il.h"
 #include "core.hh"
 #include <imgui/imgui.h>
-
 #include "postProcMaterial.hh"
 
 GRand::Core::Core() : _window(NULL), _state(std::bind(&GRand::Core::_interal_WaitForWindow_, this)), _validState(true) {
