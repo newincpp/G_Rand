@@ -37,9 +37,9 @@ int main(int ac, char** av) {
     cam.setPos(GRand::Camera::VectorType(0,.2,1.1));
     cam.lookAt(GRand::Camera::VectorType(0,0,1.4));
 
-    e->noPostProcess(true);
+    //e->noPostProcess(true);
 
-    //e->setMaterialPostProcess(postProcessMat);
+    e->setMaterialPostProcess(postProcessMat);
 
     /*
     for (std::string line; std::getline(std::cin, line);) {
